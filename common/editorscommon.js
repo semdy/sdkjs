@@ -5732,7 +5732,7 @@
 	{
 		var ctx = overlay.m_oContext;
 		ctx.strokeStyle = color;
-		ctx.lineWidth = 1;
+		ctx.lineWidth = Math.round(window.devicePixelRatio);
 		ctx.beginPath();
 
 		var Points = oPath.Points;

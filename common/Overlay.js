@@ -114,7 +114,7 @@ COverlay.prototype =
         }
 
         this.SetBaseTransform();
-
+        var dPR = window.devicePixelRatio;
         this.m_oContext.beginPath();
         if (this.max_x != -0xFFFF && this.max_y != -0xFFFF)
         {
@@ -126,7 +126,7 @@ COverlay.prototype =
             else
             {
                 var _eps = 5;
-                this.m_oContext.clearRect(this.min_x - _eps, this.min_y - _eps, this.max_x - this.min_x + 2*_eps, this.max_y - this.min_y + 2*_eps);
+                this.m_oContext.clearRect(this.min_x - _eps, this.min_y - _eps, this.max_x - this.min_x + 2*_eps, this.max_y - this.min_y + 2 * _eps);
             }
         }
         this.min_x = 0xFFFF;
@@ -149,9 +149,9 @@ COverlay.prototype =
 
     SetBaseTransform : function()
     {
-        if (AscCommon.AscBrowser.isCustomScaling())
-            this.m_oContext.setTransform(AscCommon.AscBrowser.retinaPixelRatio, 0, 0, AscCommon.AscBrowser.retinaPixelRatio, 0, 0);
-        else
+        // if (AscCommon.AscBrowser.isCustomScaling())
+        //     this.m_oContext.setTransform(AscCommon.AscBrowser.retinaPixelRatio, 0, 0, AscCommon.AscBrowser.retinaPixelRatio, 0, 0);
+        // else
             this.m_oContext.setTransform(1, 0, 0, 1, 0, 0);
     },
 
@@ -174,6 +174,7 @@ COverlay.prototype =
 
     VertLine : function(position, bIsSimpleAdd)
     {
+        var dPR = window.devicePixelRatio;
         if (bIsSimpleAdd !== true)
         {
             this.Clear();
@@ -185,7 +186,7 @@ COverlay.prototype =
                 }
             }
         }
-
+        position *= dPR;
         if (this.min_x > position)
             this.min_x = position;
         if (this.max_x < position)
@@ -196,42 +197,42 @@ COverlay.prototype =
         this.min_y = 0;
         this.max_y = this.m_oControl.HtmlElement.height;
 
-        this.m_oContext.lineWidth = 1;
-
-        var x = ((position + 0.5) >> 0) + 0.5;
+        this.m_oContext.lineWidth = Math.round(dPR);
+        var x = ((position + 0.5 * this.m_oContext.lineWidth) >> 0) + 0.5 * this.m_oContext.lineWidth;
         var y = 0;
 
         this.m_oContext.strokeStyle = this.DashLineColor;
         this.m_oContext.beginPath();
 
+        var lineWidth = this.m_oContext.lineWidth;
         while (y < this.max_y)
         {
-            this.m_oContext.moveTo(x, y); y++;
-            this.m_oContext.lineTo(x, y); y+=1;
-            this.m_oContext.moveTo(x, y); y++;
-            this.m_oContext.lineTo(x, y); y+=1;
-            this.m_oContext.moveTo(x, y); y++;
-            this.m_oContext.lineTo(x, y); y++;
+            this.m_oContext.moveTo(x, y); y += lineWidth;
+            this.m_oContext.lineTo(x, y); y += lineWidth;
+            this.m_oContext.moveTo(x, y); y += lineWidth;
+            this.m_oContext.lineTo(x, y); y += lineWidth;
+            this.m_oContext.moveTo(x, y); y += lineWidth;
+            this.m_oContext.lineTo(x, y); y += lineWidth;
 
-            y += 5;
+            y += 5 * lineWidth;
         }
 
         this.m_oContext.stroke();
 
-        y = 1;
+        y = lineWidth;
         this.m_oContext.strokeStyle = "#FFFFFF";
         this.m_oContext.beginPath();
 
         while (y < this.max_y)
         {
-            this.m_oContext.moveTo(x, y); y++;
-            this.m_oContext.lineTo(x, y); y+=1;
-            this.m_oContext.moveTo(x, y); y++;
-            this.m_oContext.lineTo(x, y); y+=1;
-            this.m_oContext.moveTo(x, y); y++;
-            this.m_oContext.lineTo(x, y); y++;
+            this.m_oContext.moveTo(x, y); y += lineWidth;
+            this.m_oContext.lineTo(x, y); y += lineWidth;
+            this.m_oContext.moveTo(x, y); y += lineWidth;
+            this.m_oContext.lineTo(x, y); y += lineWidth;
+            this.m_oContext.moveTo(x, y); y += lineWidth;
+            this.m_oContext.lineTo(x, y); y += lineWidth;
 
-            y += 5;
+            y += 5 * lineWidth;
         }
 
         this.m_oContext.stroke();
@@ -240,6 +241,8 @@ COverlay.prototype =
 
     VertLine2 : function(position)
     {
+        var dPR = window.devicePixelRatio;
+        position *= dPR;
         if (this.min_x > position)
             this.min_x = position;
         if (this.max_x < position)
@@ -251,9 +254,10 @@ COverlay.prototype =
         this.min_y = 0;
         this.max_y = this.m_oControl.HtmlElement.height;
 
-        this.m_oContext.lineWidth = 1;
+        this.m_oContext.lineWidth = Math.round(dPR);
+        var indent = 0.5 * this.m_oContext.lineWidth;
 
-        var x = ((position + 0.5) >> 0) + 0.5;
+        var x = ((position + indent) >> 0) + indent;
         var y = 0;
 
         /*
@@ -267,7 +271,7 @@ COverlay.prototype =
         this.m_oContext.strokeStyle = this.DashLineColor;
         this.m_oContext.beginPath();
 
-        var dist = 1;
+        var dist = this.m_oContext.lineWidth;
 
         while (y < this.max_y)
         {
@@ -286,6 +290,8 @@ COverlay.prototype =
 
     HorLine : function(position, bIsSimpleAdd)
     {
+        var dPR = window.devicePixelRatio;
+
         if (bIsSimpleAdd !== true)
         {
             this.Clear();
@@ -301,47 +307,47 @@ COverlay.prototype =
         this.min_x = 0;
         this.max_x = this.m_oControl.HtmlElement.width;
 
+        position *= dPR;
         if (this.min_y > position)
             this.min_y = position;
         if (this.max_y < position)
             this.max_y = position;
 
-        this.m_oContext.lineWidth = 1;
-
-        var y = ((position + 0.5) >> 0) + 0.5;
+        this.m_oContext.lineWidth = Math.round(dPR);
+        var y = ((position + 0.5 * this.m_oContext.lineWidth) >> 0) + 0.5 * this.m_oContext.lineWidth;
         var x = 0;
 
         this.m_oContext.strokeStyle = this.DashLineColor;
         this.m_oContext.beginPath();
-
+        var lineWidth = this.m_oContext.lineWidth;
         while (x < this.max_x)
         {
-            this.m_oContext.moveTo(x, y); x++;
-            this.m_oContext.lineTo(x, y); x+=1;
-            this.m_oContext.moveTo(x, y); x++;
-            this.m_oContext.lineTo(x, y); x+=1;
-            this.m_oContext.moveTo(x, y); x++;
-            this.m_oContext.lineTo(x, y); x++;
+            this.m_oContext.moveTo(x, y); x += lineWidth;
+            this.m_oContext.lineTo(x, y); x += lineWidth;
+            this.m_oContext.moveTo(x, y); x += lineWidth;
+            this.m_oContext.lineTo(x, y); x += lineWidth;
+            this.m_oContext.moveTo(x, y); x += lineWidth;
+            this.m_oContext.lineTo(x, y); x += lineWidth;
 
-            x += 5;
+            x += 5 * lineWidth;
         }
 
         this.m_oContext.stroke();
 
-        x = 1;
+        x = lineWidth;
         this.m_oContext.strokeStyle = "#FFFFFF";
         this.m_oContext.beginPath();
 
         while (x < this.max_x)
         {
-            this.m_oContext.moveTo(x, y); x++;
-            this.m_oContext.lineTo(x, y); x+=1;
-            this.m_oContext.moveTo(x, y); x++;
-            this.m_oContext.lineTo(x, y); x+=1;
-            this.m_oContext.moveTo(x, y); x++;
-            this.m_oContext.lineTo(x, y); x++;
+            this.m_oContext.moveTo(x, y); x += lineWidth;
+            this.m_oContext.lineTo(x, y); x += lineWidth;
+            this.m_oContext.moveTo(x, y); x += lineWidth;
+            this.m_oContext.lineTo(x, y); x += lineWidth;
+            this.m_oContext.moveTo(x, y); x += lineWidth;
+            this.m_oContext.lineTo(x, y); x += lineWidth;
 
-            x += 5;
+            x += 5 * lineWidth;
         }
 
         this.m_oContext.stroke();
@@ -350,6 +356,9 @@ COverlay.prototype =
 
     HorLine2 : function(position)
     {
+        var dPR = window.devicePixelRatio;
+
+        position *= dPR;
         if (this.min_y > position)
             this.min_y = position;
         if (this.max_y < position)
@@ -361,9 +370,10 @@ COverlay.prototype =
         this.min_x = 0;
         this.max_x = this.m_oControl.HtmlElement.width;
 
-        this.m_oContext.lineWidth = 1;
+        this.m_oContext.lineWidth = Math.round(dPR);
+        var indent = 0.5 * this.m_oContext.lineWidth;
 
-        var y = ((position + 0.5) >> 0) + 0.5;
+        var y = ((position + indent) >> 0) + indent;
         var x = 0;
 
         /*
@@ -377,7 +387,7 @@ COverlay.prototype =
         this.m_oContext.strokeStyle = this.DashLineColor;
         this.m_oContext.beginPath();
 
-        var dist = 1;
+        var dist = this.m_oContext.lineWidth;
 
         while (x < this.max_x)
         {
@@ -411,7 +421,7 @@ COverlay.prototype =
     CheckPoint : function(x,y)
     {
         if (x < this.min_x)
-            this.min_x = x;
+            this.min_x = x ;
         if (y < this.min_y)
             this.min_y = y;
         if (x > this.max_x)
@@ -928,10 +938,11 @@ CAutoshapeTrack.prototype =
 
         var drPage = this.CurrentPageInfo.drawingPage;
 
-        var xDst = drPage.left;
-        var yDst = drPage.top;
-        var wDst = drPage.right - drPage.left;
-        var hDst = drPage.bottom - drPage.top;
+        var dPR = window.devicePixelRatio;
+        var xDst = drPage.left * dPR;
+        var yDst = drPage.top * dPR;
+        var wDst = (drPage.right - drPage.left) * dPR;
+        var hDst = (drPage.bottom - drPage.top) * dPR;
 
         var dKoefX = wDst / this.CurrentPageInfo.width_mm;
         var dKoefY = hDst / this.CurrentPageInfo.height_mm;
@@ -956,7 +967,7 @@ CAutoshapeTrack.prototype =
         var dx4 = xDst + dKoefX * (matrix.TransformPointX(r, b));
         var dy4 = yDst + dKoefY * (matrix.TransformPointY(r, b));
 
-        var x1 = dx1 >> 0;
+        var x1 = dx1  >> 0;
         var y1 = dy1 >> 0;
 
         var x2 = dx2 >> 0;
@@ -1081,11 +1092,16 @@ CAutoshapeTrack.prototype =
 			bIsRectsTrackY = _tmp;
 		}
 
-        ctx.lineWidth = 1;
+        ctx.lineWidth = Math.round(dPR);
         ctx.beginPath();
 
         var _oldGlobalAlpha = ctx.globalAlpha;
         ctx.globalAlpha = 1;
+
+        var SCALE_TRACK_RECT_SIZE = Math.round(TRACK_RECT_SIZE * dPR),
+            SCALE_TRACK_RECT_SIZE_CT =  Math.round(TRACK_RECT_SIZE_CT * dPR);
+
+        var indent = 0.5 * Math.round(dPR);
 
         switch (type)
         {
@@ -1100,7 +1116,7 @@ CAutoshapeTrack.prototype =
 
                     if (!isLine)
                     {
-                        ctx.rect(x1 + 0.5, y2 + 0.5, x4 - x1, y4 - y1);
+                        ctx.rect(x1 + indent, y2 + indent, x4 - x1, y4 - y1);
                         ctx.stroke();
                         ctx.beginPath();
                     }
@@ -1124,7 +1140,7 @@ CAutoshapeTrack.prototype =
                             if (_image_track_rotate.asc_complete)
                             {
                                 var _w = IMAGE_ROTATE_TRACK_W;
-                                var _xI = (xC + 0.5 - _w / 2) >> 0;
+                                var _xI = (xC + indent - _w / 2) >> 0;
                                 var _yI = y1 - TRACK_DISTANCE_ROTATE - (_w >> 1);
 
                                 overlay.CheckRect(_xI, _yI, _w, _w);
@@ -1133,15 +1149,17 @@ CAutoshapeTrack.prototype =
                         }
 
                         ctx.beginPath();
-                        ctx.moveTo(xC + 0.5, y1);
-                        ctx.lineTo(xC + 0.5, y1 - TRACK_DISTANCE_ROTATE2);
+                        ctx.moveTo(xC + indent, y1);
+                        ctx.lineTo(xC + indent, y1 - TRACK_DISTANCE_ROTATE2);
                         ctx.stroke();
 
                         ctx.beginPath();
                     }
 
+
+
                     ctx.fillStyle = (type != AscFormat.TYPE_TRACK.CHART_TEXT) ? _style_white : _style_blue;
-                    var TRACK_RECT_SIZE_CUR = (type != AscFormat.TYPE_TRACK.CHART_TEXT) ? TRACK_RECT_SIZE : TRACK_RECT_SIZE_CT;
+                    var TRACK_RECT_SIZE_CUR = (type != AscFormat.TYPE_TRACK.CHART_TEXT) ? SCALE_TRACK_RECT_SIZE : SCALE_TRACK_RECT_SIZE_CT;
                     if (type == AscFormat.TYPE_TRACK.CHART_TEXT)
                         ctx.strokeStyle = _style_white;
 
@@ -1157,30 +1175,30 @@ CAutoshapeTrack.prototype =
                     }
                     else
                     {
-                        overlay.AddRect2(x1 + 0.5, y1 + 0.5, TRACK_RECT_SIZE_CUR);
+                        overlay.AddRect2(x1 + indent, y1 + indent, TRACK_RECT_SIZE_CUR);
                         if (!isLine)
                         {
-                            overlay.AddRect2(x2 + 0.5, y2 + 0.5, TRACK_RECT_SIZE_CUR);
-                            overlay.AddRect2(x3 + 0.5, y3 + 0.5, TRACK_RECT_SIZE_CUR);
+                            overlay.AddRect2(x2 + indent, y2 + indent, TRACK_RECT_SIZE_CUR);
+                            overlay.AddRect2(x3 + indent, y3 + indent, TRACK_RECT_SIZE_CUR);
                         }
-                        overlay.AddRect2(x4 + 0.5, y4 + 0.5, TRACK_RECT_SIZE_CUR);
+                        overlay.AddRect2(x4 + indent, y4 + indent, TRACK_RECT_SIZE_CUR);
                     }
 
                     if (bIsRectsTrack && !isLine)
                     {
-                        var _xC = (((x1 + x2) / 2) >> 0) + 0.5;
-                        var _yC = (((y1 + y3) / 2) >> 0) + 0.5;
+                        var _xC = (((x1 + x2) / 2) >> 0) + indent;
+                        var _yC = (((y1 + y3) / 2) >> 0) + indent;
 
                         if (bIsRectsTrackX)
                         {
-                            overlay.AddRect2(_xC, y1+0.5, TRACK_RECT_SIZE);
-                            overlay.AddRect2(_xC, y3+0.5, TRACK_RECT_SIZE);
+                            overlay.AddRect2(_xC, y1 + indent, SCALE_TRACK_RECT_SIZE);
+                            overlay.AddRect2(_xC, y3 + indent, SCALE_TRACK_RECT_SIZE);
                         }
 
                         if (bIsRectsTrackY)
                         {
-                            overlay.AddRect2(x2+0.5, _yC, TRACK_RECT_SIZE);
-                            overlay.AddRect2(x1+0.5, _yC, TRACK_RECT_SIZE);
+                            overlay.AddRect2(x2 + indent, _yC, SCALE_TRACK_RECT_SIZE);
+                            overlay.AddRect2(x1 + indent, _yC, SCALE_TRACK_RECT_SIZE);
                         }
                     }
 
@@ -1246,7 +1264,7 @@ CAutoshapeTrack.prototype =
                     {
                         if (nIsCleverWithTransform)
                         {
-                            ctx.rect(_x1 + 0.5, _y2 + 0.5, _x4 - _x1, _y4 - _y1);
+                            ctx.rect(_x1 + indent, _y2 + indent, _x4 - _x1, _y4 - _y1);
                             ctx.stroke();
                             ctx.beginPath();
                         }
@@ -1363,8 +1381,8 @@ CAutoshapeTrack.prototype =
 						}
 						else
 						{
-							ctx.moveTo((xc1 >> 0) + 0.5, (yc1 >> 0) + 0.5);
-							ctx.lineTo(((xc1 + ex2 * TRACK_DISTANCE_ROTATE2) >> 0) + 0.5, ((yc1 + ey2 * TRACK_DISTANCE_ROTATE2) >> 0) + 0.5);
+							ctx.moveTo((xc1 >> 0) + indent, (yc1 >> 0) + indent);
+							ctx.lineTo(((xc1 + ex2 * TRACK_DISTANCE_ROTATE2) >> 0) + indent, ((yc1 + ey2 * TRACK_DISTANCE_ROTATE2) >> 0) + indent);
 						}
 
                         ctx.stroke();
@@ -1373,7 +1391,7 @@ CAutoshapeTrack.prototype =
                     }
 
                     ctx.fillStyle = (type != AscFormat.TYPE_TRACK.CHART_TEXT) ? _style_white : _style_blue;
-                    var TRACK_RECT_SIZE_CUR = (type != AscFormat.TYPE_TRACK.CHART_TEXT) ? TRACK_RECT_SIZE : TRACK_RECT_SIZE_CT;
+                    var TRACK_RECT_SIZE_CUR = (type != AscFormat.TYPE_TRACK.CHART_TEXT) ? SCALE_TRACK_RECT_SIZE : SCALE_TRACK_RECT_SIZE_CT;
                     if (type == AscFormat.TYPE_TRACK.CHART_TEXT)
                         ctx.strokeStyle = _style_white;
 
@@ -1416,15 +1434,15 @@ CAutoshapeTrack.prototype =
 						{
                             if (!isLine)
                             {
-                                overlay.AddRect2(_x1 + 0.5, _y1 + 0.5, TRACK_RECT_SIZE_CUR);
-                                overlay.AddRect2(_x2 + 0.5, _y2 + 0.5, TRACK_RECT_SIZE_CUR);
-                                overlay.AddRect2(_x3 + 0.5, _y3 + 0.5, TRACK_RECT_SIZE_CUR);
-                                overlay.AddRect2(_x4 + 0.5, _y4 + 0.5, TRACK_RECT_SIZE_CUR);
+                                overlay.AddRect2(_x1 + indent, _y1 + indent, TRACK_RECT_SIZE_CUR);
+                                overlay.AddRect2(_x2 + indent, _y2 + indent, TRACK_RECT_SIZE_CUR);
+                                overlay.AddRect2(_x3 + indent, _y3 + indent, TRACK_RECT_SIZE_CUR);
+                                overlay.AddRect2(_x4 + indent, _y4 + indent, TRACK_RECT_SIZE_CUR);
                             }
                             else
                             {
-                                overlay.AddRect2(x1 + 0.5, y1 + 0.5, TRACK_RECT_SIZE_CUR);
-                                overlay.AddRect2(x4 + 0.5, y4 + 0.5, TRACK_RECT_SIZE_CUR);
+                                overlay.AddRect2(x1 + indent, y1 + indent, TRACK_RECT_SIZE_CUR);
+                                overlay.AddRect2(x4 + indent, y4 + indent, TRACK_RECT_SIZE_CUR);
                             }
 						}
 					}
@@ -1437,31 +1455,31 @@ CAutoshapeTrack.prototype =
                             {
                                 if (bIsRectsTrackX)
                                 {
-                                    overlay.AddRect3((x1 + x2) / 2, (y1 + y2) / 2, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
-                                    overlay.AddRect3((x3 + x4) / 2, (y3 + y4) / 2, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+                                    overlay.AddRect3((x1 + x2) / 2, (y1 + y2) / 2, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+                                    overlay.AddRect3((x3 + x4) / 2, (y3 + y4) / 2, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
                                 }
                                 if (bIsRectsTrackY)
                                 {
-                                    overlay.AddRect3((x2 + x4) / 2, (y2 + y4) / 2, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
-                                    overlay.AddRect3((x3 + x1) / 2, (y3 + y1) / 2, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+                                    overlay.AddRect3((x2 + x4) / 2, (y2 + y4) / 2, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+                                    overlay.AddRect3((x3 + x1) / 2, (y3 + y1) / 2, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
                                 }
                             }
                         }
                         else
                         {
-                            var _xC = (((_x1 + _x2) / 2) >> 0) + 0.5;
-                            var _yC = (((_y1 + _y3) / 2) >> 0) + 0.5;
+                            var _xC = (((_x1 + _x2) / 2) >> 0) + indent;
+                            var _yC = (((_y1 + _y3) / 2) >> 0) + indent;
 
                             if (bIsRectsTrackX)
                             {
-                                overlay.AddRect2(_xC, _y1+0.5, TRACK_RECT_SIZE);
-                                overlay.AddRect2(_xC, _y3+0.5, TRACK_RECT_SIZE);
+                                overlay.AddRect2(_xC, _y1 + indent, SCALE_TRACK_RECT_SIZE);
+                                overlay.AddRect2(_xC, _y3 + indent, SCALE_TRACK_RECT_SIZE);
                             }
 
                             if (bIsRectsTrackY)
                             {
-                                overlay.AddRect2(_x2+0.5, _yC, TRACK_RECT_SIZE);
-                                overlay.AddRect2(_x1+0.5, _yC, TRACK_RECT_SIZE);
+                                overlay.AddRect2(_x2 + indent, _yC, SCALE_TRACK_RECT_SIZE);
+                                overlay.AddRect2(_x1 + indent, _yC, SCALE_TRACK_RECT_SIZE);
                             }
                         }
                     }
@@ -1505,7 +1523,7 @@ CAutoshapeTrack.prototype =
                             if (_image_track_rotate.asc_complete)
                             {
                                 var _w = IMAGE_ROTATE_TRACK_W;
-                                var _xI = (xC + 0.5 - _w / 2) >> 0;
+                                var _xI = (xC + indent - _w / 2) >> 0;
                                 var _yI = y1 - TRACK_DISTANCE_ROTATE - (_w >> 1);
 
                                 overlay.CheckRect(_xI, _yI, _w, _w);
@@ -1515,8 +1533,8 @@ CAutoshapeTrack.prototype =
 
                         ctx.beginPath();
 
-                        ctx.moveTo(xC + 0.5, y1);
-                        ctx.lineTo(xC + 0.5, y1 - TRACK_DISTANCE_ROTATE2);
+                        ctx.moveTo(xC + indent, y1);
+                        ctx.lineTo(xC + indent, y1 - TRACK_DISTANCE_ROTATE2);
                         ctx.stroke();
 
                         ctx.beginPath();
@@ -1533,26 +1551,26 @@ CAutoshapeTrack.prototype =
                     }
                     else
                     {
-                        overlay.AddRect2(x1 + 0.5, y1 + 0.5, TRACK_RECT_SIZE);
-                        overlay.AddRect2(x2 + 0.5, y2 + 0.5, TRACK_RECT_SIZE);
-                        overlay.AddRect2(x3 + 0.5, y3 + 0.5, TRACK_RECT_SIZE);
-                        overlay.AddRect2(x4 + 0.5, y4 + 0.5, TRACK_RECT_SIZE);
+                        overlay.AddRect2(x1 + indent, y1 + indent, SCALE_TRACK_RECT_SIZE);
+                        overlay.AddRect2(x2 + indent, y2 + indent, SCALE_TRACK_RECT_SIZE);
+                        overlay.AddRect2(x3 + indent, y3 + indent, SCALE_TRACK_RECT_SIZE);
+                        overlay.AddRect2(x4 + indent, y4 + indent, SCALE_TRACK_RECT_SIZE);
                     }
 
                     if (bIsRectsTrack)
                     {
-                        var _xC = (((x1 + x2) / 2) >> 0) + 0.5;
-                        var _yC = (((y1 + y3) / 2) >> 0) + 0.5;
+                        var _xC = (((x1 + x2) / 2) >> 0) + indent;
+                        var _yC = (((y1 + y3) / 2) >> 0) + indent;
 
                         if (bIsRectsTrackX)
                         {
-                            overlay.AddRect2(_xC, y1+0.5, TRACK_RECT_SIZE);
-                            overlay.AddRect2(_xC, y3+0.5, TRACK_RECT_SIZE);
+                            overlay.AddRect2(_xC, y1 + indent, SCALE_TRACK_RECT_SIZE);
+                            overlay.AddRect2(_xC, y3 + indent, SCALE_TRACK_RECT_SIZE);
                         }
                         if (bIsRectsTrackY)
                         {
-                            overlay.AddRect2(x2+0.5, _yC, TRACK_RECT_SIZE);
-                            overlay.AddRect2(x1+0.5, _yC, TRACK_RECT_SIZE);
+                            overlay.AddRect2(x2 + indent, _yC, SCALE_TRACK_RECT_SIZE);
+                            overlay.AddRect2(x1 + indent, _yC, SCALE_TRACK_RECT_SIZE);
                         }
                     }
 
@@ -1724,8 +1742,8 @@ CAutoshapeTrack.prototype =
 						}
 						else
 						{
-							ctx.moveTo((xc1 >> 0) + 0.5, (yc1 >> 0) + 0.5);
-							ctx.lineTo(((xc1 + ex2 * TRACK_DISTANCE_ROTATE2) >> 0) + 0.5, ((yc1 + ey2 * TRACK_DISTANCE_ROTATE2) >> 0) + 0.5);
+							ctx.moveTo((xc1 >> 0) + indent, (yc1 >> 0) + indent);
+							ctx.lineTo(((xc1 + ex2 * TRACK_DISTANCE_ROTATE2) >> 0) + indent, ((yc1 + ey2 * TRACK_DISTANCE_ROTATE2) >> 0) + indent);
 						}
 
                         ctx.stroke();
@@ -1747,10 +1765,10 @@ CAutoshapeTrack.prototype =
 						}
 						else
 						{
-							overlay.AddRect3(x1, y1, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
-							overlay.AddRect3(x2, y2, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
-							overlay.AddRect3(x3, y3, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
-							overlay.AddRect3(x4, y4, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+							overlay.AddRect3(x1, y1, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+							overlay.AddRect3(x2, y2, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+							overlay.AddRect3(x3, y3, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+							overlay.AddRect3(x4, y4, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
 						}
 					}
 					else
@@ -1764,10 +1782,10 @@ CAutoshapeTrack.prototype =
 						}
 						else
 						{
-							overlay.AddRect2(_x1 + 0.5, _y1 + 0.5, TRACK_RECT_SIZE);
-							overlay.AddRect2(_x2 + 0.5, _y2 + 0.5, TRACK_RECT_SIZE);
-							overlay.AddRect2(_x3 + 0.5, _y3 + 0.5, TRACK_RECT_SIZE);
-							overlay.AddRect2(_x4 + 0.5, _y4 + 0.5, TRACK_RECT_SIZE);
+							overlay.AddRect2(_x1 + indent, _y1 + indent, SCALE_TRACK_RECT_SIZE);
+							overlay.AddRect2(_x2 + indent, _y2 + indent, SCALE_TRACK_RECT_SIZE);
+							overlay.AddRect2(_x3 + indent, _y3 + indent, SCALE_TRACK_RECT_SIZE);
+							overlay.AddRect2(_x4 + indent, _y4 + indent, SCALE_TRACK_RECT_SIZE);
 						}
 					}
 
@@ -1777,13 +1795,13 @@ CAutoshapeTrack.prototype =
 						{
 							if (bIsRectsTrackX)
 							{
-								overlay.AddRect3((x1 + x2) / 2, (y1 + y2) / 2, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
-								overlay.AddRect3((x3 + x4) / 2, (y3 + y4) / 2, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+								overlay.AddRect3((x1 + x2) / 2, (y1 + y2) / 2, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+								overlay.AddRect3((x3 + x4) / 2, (y3 + y4) / 2, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
 							}
 							if (bIsRectsTrackY)
 							{
-								overlay.AddRect3((x2 + x4) / 2, (y2 + y4) / 2, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
-								overlay.AddRect3((x3 + x1) / 2, (y3 + y1) / 2, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+								overlay.AddRect3((x2 + x4) / 2, (y2 + y4) / 2, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+								overlay.AddRect3((x3 + x1) / 2, (y3 + y1) / 2, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
 							}
 						}
 					}
@@ -1791,18 +1809,18 @@ CAutoshapeTrack.prototype =
 					{
 						if (bIsRectsTrack)
 						{
-							var _xC = (((_x1 + _x2) / 2) >> 0) + 0.5;
-							var _yC = (((_y1 + _y3) / 2) >> 0) + 0.5;
+							var _xC = (((_x1 + _x2) / 2) >> 0) + indent;
+							var _yC = (((_y1 + _y3) / 2) >> 0) + indent;
 
 							if (bIsRectsTrackX)
 							{
-								overlay.AddRect2(_xC, _y1+0.5, TRACK_RECT_SIZE);
-								overlay.AddRect2(_xC, _y3+0.5, TRACK_RECT_SIZE);
+								overlay.AddRect2(_xC, _y1 + indent, SCALE_TRACK_RECT_SIZE);
+								overlay.AddRect2(_xC, _y3 + indent, SCALE_TRACK_RECT_SIZE);
 							}
 							if (bIsRectsTrackY)
 							{
-								overlay.AddRect2(_x2+0.5, _yC, TRACK_RECT_SIZE);
-								overlay.AddRect2(_x1+0.5, _yC, TRACK_RECT_SIZE);
+								overlay.AddRect2(_x2 + indent, _yC, SCALE_TRACK_RECT_SIZE);
+								overlay.AddRect2(_x1 + indent, _yC, SCALE_TRACK_RECT_SIZE);
 							}
 						}
 					}
@@ -1820,7 +1838,7 @@ CAutoshapeTrack.prototype =
                 if (bIsClever)
                 {
                     overlay.CheckRect(x1, y1, x4 - x1, y4 - y1);
-                    ctx.rect(x1 + 0.5, y2 + 0.5, x4 - x1 + 1, y4 - y1);
+                    ctx.rect(x1 + indent, y2 + indent, x4 - x1 + 1, y4 - y1);
                     ctx.fillStyle = _style_white;
                     ctx.stroke();
 
@@ -1848,7 +1866,7 @@ CAutoshapeTrack.prototype =
                         if (_image_track_rotate.asc_complete)
                         {
                             var _w = IMAGE_ROTATE_TRACK_W;
-                            var _xI = (xC + 0.5 - _w / 2) >> 0;
+                            var _xI = (xC + indent - _w / 2) >> 0;
                             var _yI = y1 - TRACK_DISTANCE_ROTATE - (_w >> 1);
 
                             overlay.CheckRect(_xI, _yI, _w, _w);
@@ -1857,8 +1875,8 @@ CAutoshapeTrack.prototype =
                     }
 
                     ctx.beginPath();
-                    ctx.moveTo(xC + 0.5, y1);
-                    ctx.lineTo(xC + 0.5, y1 - TRACK_DISTANCE_ROTATE2);
+                    ctx.moveTo(xC + indent, y1);
+                    ctx.lineTo(xC + indent, y1 - TRACK_DISTANCE_ROTATE2);
                     ctx.stroke();
 
                     ctx.beginPath();
@@ -1874,21 +1892,21 @@ CAutoshapeTrack.prototype =
                     }
                     else
                     {
-                        overlay.AddRect2(x1 + 0.5, y1 + 0.5, TRACK_RECT_SIZE);
-                        overlay.AddRect2(x2 + 0.5, y2 + 0.5, TRACK_RECT_SIZE);
-                        overlay.AddRect2(x3 + 0.5, y3 + 0.5, TRACK_RECT_SIZE);
-                        overlay.AddRect2(x4 + 0.5, y4 + 0.5, TRACK_RECT_SIZE);
+                        overlay.AddRect2(x1 + indent, y1 + indent, SCALE_TRACK_RECT_SIZE);
+                        overlay.AddRect2(x2 + indent, y2 + indent, SCALE_TRACK_RECT_SIZE);
+                        overlay.AddRect2(x3 + indent, y3 + indent, SCALE_TRACK_RECT_SIZE);
+                        overlay.AddRect2(x4 + indent, y4 + indent, SCALE_TRACK_RECT_SIZE);
                     }
 
                     if (bIsRectsTrack && false)
                     {
-                        var _xC = (((x1 + x2) / 2) >> 0) + 0.5;
-                        var _yC = (((y1 + y3) / 2) >> 0) + 0.5;
+                        var _xC = (((x1 + x2) / 2) >> 0) + indent;
+                        var _yC = (((y1 + y3) / 2) >> 0) + indent;
 
-                        overlay.AddRect2(_xC, y1+0.5, TRACK_RECT_SIZE);
-                        overlay.AddRect2(x2+0.5, _yC, TRACK_RECT_SIZE);
-                        overlay.AddRect2(_xC, y3+0.5, TRACK_RECT_SIZE);
-                        overlay.AddRect2(x1+0.5, _yC, TRACK_RECT_SIZE);
+                        overlay.AddRect2(_xC, y1 + indent, SCALE_TRACK_RECT_SIZE);
+                        overlay.AddRect2(x2 + indent, _yC, SCALE_TRACK_RECT_SIZE);
+                        overlay.AddRect2(_xC, y3 + indent, SCALE_TRACK_RECT_SIZE);
+                        overlay.AddRect2(x1 + indent, _yC, SCALE_TRACK_RECT_SIZE);
                     }
 
                     ctx.fill();
@@ -2009,18 +2027,18 @@ CAutoshapeTrack.prototype =
                     }
                     else
                     {
-                        overlay.AddRect3(x1, y1, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
-                        overlay.AddRect3(x2, y2, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
-                        overlay.AddRect3(x3, y3, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
-                        overlay.AddRect3(x4, y4, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+                        overlay.AddRect3(x1, y1, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+                        overlay.AddRect3(x2, y2, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+                        overlay.AddRect3(x3, y3, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+                        overlay.AddRect3(x4, y4, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
                     }
 
                     if (bIsRectsTrack)
                     {
-                        overlay.AddRect3((x1 + x2) / 2, (y1 + y2) / 2, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
-                        overlay.AddRect3((x2 + x4) / 2, (y2 + y4) / 2, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
-                        overlay.AddRect3((x3 + x4) / 2, (y3 + y4) / 2, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
-                        overlay.AddRect3((x3 + x1) / 2, (y3 + y1) / 2, TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+                        overlay.AddRect3((x1 + x2) / 2, (y1 + y2) / 2, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+                        overlay.AddRect3((x2 + x4) / 2, (y2 + y4) / 2, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+                        overlay.AddRect3((x3 + x4) / 2, (y3 + y4) / 2, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
+                        overlay.AddRect3((x3 + x1) / 2, (y3 + y1) / 2, SCALE_TRACK_RECT_SIZE, ex1, ey1, ex2, ey2);
                     }
 
                     ctx.fill();
@@ -2045,7 +2063,7 @@ CAutoshapeTrack.prototype =
                     if (heightCorner > 17)
                         heightCorner = 17;
 
-                    ctx.rect(x1 + 0.5, y2 + 0.5, x4 - x1 + 1, y4 - y1);
+                    ctx.rect(x1 + indent, y2 + indent, x4 - x1 + 1, y4 - y1);
                     ctx.strokeStyle = _style_black;
                     ctx.stroke();
 
@@ -2054,67 +2072,67 @@ CAutoshapeTrack.prototype =
                     ctx.strokeStyle = _style_white;
                     ctx.fillStyle = _style_black;
 
-                    ctx.moveTo(x1 + 0.5, y1 + 0.5);
-                    ctx.lineTo(x1 + widthCorner + 0.5, y1 + 0.5);
-                    ctx.lineTo(x1 + widthCorner + 0.5, y1 + 5.5);
+                    ctx.moveTo(x1 + indent, y1 + indent);
+                    ctx.lineTo(x1 + widthCorner + indent, y1 + indent);
+                    ctx.lineTo(x1 + widthCorner + indent, y1 + 5.5);
                     ctx.lineTo(x1 + 5.5, y1 + 5.5);
-                    ctx.lineTo(x1 + 5.5, y1 + widthCorner + 0.5);
-                    ctx.lineTo(x1 + 0.5, y1 + widthCorner + 0.5);
+                    ctx.lineTo(x1 + 5.5, y1 + widthCorner + indent);
+                    ctx.lineTo(x1 + indent, y1 + widthCorner + indent);
                     ctx.closePath();
 
-                    ctx.moveTo(x2 - widthCorner + 0.5, y2 + 0.5);
-                    ctx.lineTo(x2 + 0.5, y2 + 0.5);
-                    ctx.lineTo(x2 + 0.5, y2 + heightCorner + 0.5);
-                    ctx.lineTo(x2 - 4.5, y2 + heightCorner + 0.5);
+                    ctx.moveTo(x2 - widthCorner + indent, y2 + indent);
+                    ctx.lineTo(x2 + indent, y2 + indent);
+                    ctx.lineTo(x2 + indent, y2 + heightCorner + indent);
+                    ctx.lineTo(x2 - 4.5, y2 + heightCorner + indent);
                     ctx.lineTo(x2 - 4.5, y2 + 5.5);
-                    ctx.lineTo(x2 - widthCorner + 0.5, y2 + 5.5);
+                    ctx.lineTo(x2 - widthCorner + indent, y2 + 5.5);
                     ctx.closePath();
 
-                    ctx.moveTo(x4 - 4.5, y4 - heightCorner + 0.5);
-                    ctx.lineTo(x4 + 0.5, y4 - heightCorner + 0.5);
-                    ctx.lineTo(x4 + 0.5, y4 + 0.5);
-                    ctx.lineTo(x4 - widthCorner + 0.5, y4 + 0.5);
-                    ctx.lineTo(x4 - widthCorner + 0.5, y4 - 4.5);
+                    ctx.moveTo(x4 - 4.5, y4 - heightCorner + indent);
+                    ctx.lineTo(x4 + indent, y4 - heightCorner + indent);
+                    ctx.lineTo(x4 + indent, y4 + indent);
+                    ctx.lineTo(x4 - widthCorner + indent, y4 + indent);
+                    ctx.lineTo(x4 - widthCorner + indent, y4 - 4.5);
                     ctx.lineTo(x4 - 4.5, y4 - 4.5);
                     ctx.closePath();
 
-                    ctx.moveTo(x3 + 0.5, y3 - heightCorner + 0.5);
-                    ctx.lineTo(x3 + 5.5, y3 - heightCorner + 0.5);
+                    ctx.moveTo(x3 + indent, y3 - heightCorner + indent);
+                    ctx.lineTo(x3 + 5.5, y3 - heightCorner + indent);
                     ctx.lineTo(x3 + 5.5, y3 - 4.5);
-                    ctx.lineTo(x3 + widthCorner + 0.5, y3 - 4.5);
-                    ctx.lineTo(x3 + widthCorner + 0.5, y3 + 0.5);
-                    ctx.lineTo(x3 + 0.5, y3 + 0.5);
+                    ctx.lineTo(x3 + widthCorner + indent, y3 - 4.5);
+                    ctx.lineTo(x3 + widthCorner + indent, y3 + indent);
+                    ctx.lineTo(x3 + indent, y3 + indent);
                     ctx.closePath();
 
                     if (isCentralMarkerX)
                     {
                         var xCentral = (x4 + x1 - widthCorner) >> 1;
-                        ctx.moveTo(xCentral + 0.5, y1 + 0.5);
-                        ctx.lineTo(xCentral + widthCorner + 0.5, y1 + 0.5);
-                        ctx.lineTo(xCentral + widthCorner + 0.5, y1 + 5.5);
-                        ctx.lineTo(xCentral + 0.5, y1 + 5.5);
+                        ctx.moveTo(xCentral + indent, y1 + indent);
+                        ctx.lineTo(xCentral + widthCorner + indent, y1 + indent);
+                        ctx.lineTo(xCentral + widthCorner + indent, y1 + 5.5);
+                        ctx.lineTo(xCentral + indent, y1 + 5.5);
                         ctx.closePath();
 
-                        ctx.moveTo(xCentral + 0.5, y4 - 4.5);
-                        ctx.lineTo(xCentral + widthCorner + 0.5, y4 - 4.5);
-                        ctx.lineTo(xCentral + widthCorner + 0.5, y4);
-                        ctx.lineTo(xCentral + 0.5, y4 + 0.5);
+                        ctx.moveTo(xCentral + indent, y4 - 4.5);
+                        ctx.lineTo(xCentral + widthCorner + indent, y4 - 4.5);
+                        ctx.lineTo(xCentral + widthCorner + indent, y4);
+                        ctx.lineTo(xCentral + indent, y4 + indent);
                         ctx.closePath();
                     }
 
                     if (isCentralMarkerY)
                     {
                         var yCentral = (y4 + y1 - heightCorner) >> 1;
-                        ctx.moveTo(x1 + 0.5, yCentral + 0.5);
-                        ctx.lineTo(x1 + 5.5, yCentral + 0.5);
-                        ctx.lineTo(x1 + 5.5, yCentral + heightCorner + 0.5);
-                        ctx.lineTo(x1 + 0.5, yCentral + heightCorner + 0.5);
+                        ctx.moveTo(x1 + indent, yCentral + indent);
+                        ctx.lineTo(x1 + 5.5, yCentral + indent);
+                        ctx.lineTo(x1 + 5.5, yCentral + heightCorner + indent);
+                        ctx.lineTo(x1 + indent, yCentral + heightCorner + indent);
                         ctx.closePath();
 
-                        ctx.moveTo(x4 - 4.5, yCentral + 0.5);
-                        ctx.lineTo(x4 + 0.5, yCentral + 0.5);
-                        ctx.lineTo(x4 + 0.5, yCentral + heightCorner + 0.5);
-                        ctx.lineTo(x4 - 4.5, yCentral + heightCorner + 0.5);
+                        ctx.moveTo(x4 - 4.5, yCentral + indent);
+                        ctx.lineTo(x4 + indent, yCentral + indent);
+                        ctx.lineTo(x4 + indent, yCentral + heightCorner + indent);
+                        ctx.lineTo(x4 - 4.5, yCentral + heightCorner + indent);
                         ctx.closePath();
                     }
 
@@ -2297,11 +2315,12 @@ CAutoshapeTrack.prototype =
         this.CurrentPageInfo = overlay.m_oHtmlPage.GetDrawingPageInfo(this.PageIndex);
 
         var drPage = this.CurrentPageInfo.drawingPage;
-
-        var xDst = drPage.left;
-        var yDst = drPage.top;
-        var wDst = drPage.right - drPage.left;
-        var hDst = drPage.bottom - drPage.top;
+        var dPR = window.devicePixelRatio;
+        var xDst = drPage.left * dPR;
+        var yDst = drPage.top * dPR;
+        var wDst = (drPage.right - drPage.left) * dPR;
+        var hDst = (drPage.bottom - drPage.top) * dPR;
+        var indent = 0.5 * Math.round(dPR);
 
         var dKoefX = wDst / this.CurrentPageInfo.width_mm;
         var dKoefY = hDst / this.CurrentPageInfo.height_mm;
@@ -2337,14 +2356,14 @@ CAutoshapeTrack.prototype =
         ctx.lineWidth = 1;
         ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
         ctx.beginPath();
-        ctx.strokeRect(x1 - 0.5, y1 - 0.5, x2 - x1 + 1, y2 - y1 + 1);
+        ctx.strokeRect(x1 - indent, y1 - indent, x2 - x1 + 1, y2 - y1 + 1);
         ctx.globalAlpha = globalAlphaOld;
     },
 
     AddRect : function(ctx, x, y, r, b, bIsClever)
     {
         if (bIsClever)
-            ctx.rect(x + 0.5, y + 0.5, r - x + 1, b - y + 1);
+            ctx.rect(x + indent, y + indent, r - x + 1, b - y + 1);
         else
         {
             ctx.moveTo(x,y);
@@ -2355,18 +2374,21 @@ CAutoshapeTrack.prototype =
     AddRectDashClever : function(ctx, x, y, r, b, w_dot, w_dist, bIsStrokeAndCanUseNative)
     {
         var _support_native_dash = (undefined !== ctx.setLineDash);
-
+        var dPR = window.devicePixelRatio;
+        var indent = 0.5 * Math.round(dPR);
         // здесь расчитано на толщину линии в один пиксел!
-        var _x = x + 0.5;
-        var _y = y + 0.5;
-        var _r = r + 0.5;
-        var _b = b + 0.5;
+        w_dot *= Math.round(dPR);
+        w_dist *= Math.round(dPR);
+        var _x = x + indent;
+        var _y = y + indent;
+        var _r = r + indent;
+        var _b = b + indent;
 
         if (_support_native_dash && bIsStrokeAndCanUseNative === true)
         {
             ctx.setLineDash([w_dot, w_dist]);
 
-            //ctx.rect(x + 0.5, y + 0.5, r - x, b - y);
+            // ctx.rect(x + indent, y + indent, r - x, b - y);
             ctx.moveTo(x, _y);
             ctx.lineTo(r - 1, _y);
 
@@ -2645,7 +2667,7 @@ CAutoshapeTrack.prototype =
         ctx.beginPath();
         for (var i = 0; i < _len; i++)
         {
-            overlay.AddRect2(_tr_points_x[i] + 0.5, _tr_points_y[i] + 0.5, TRACK_WRAPPOINTS_SIZE);
+            overlay.AddRect2(_tr_points_x[i] + indent, _tr_points_y[i] + indent, TRACK_WRAPPOINTS_SIZE);
         }
         ctx.strokeStyle = "#FFFFFF";
         ctx.fillStyle = "#000000";
@@ -2722,11 +2744,12 @@ CAutoshapeTrack.prototype =
         this.CurrentPageInfo = overlay.m_oHtmlPage.GetDrawingPageInfo(this.PageIndex);
 
         var drPage = this.CurrentPageInfo.drawingPage;
+        var dPR = window.devicePixelRatio;
 
-        var xDst = drPage.left;
-        var yDst = drPage.top;
-        var wDst = drPage.right - drPage.left;
-        var hDst = drPage.bottom - drPage.top;
+        var xDst = drPage.left * dPR;
+        var yDst = drPage.top * dPR;
+        var wDst = (drPage.right - drPage.left) * dPR;
+        var hDst = (drPage.bottom - drPage.top) * dPR;
 
         var dKoefX = wDst / this.CurrentPageInfo.width_mm;
         var dKoefY = hDst / this.CurrentPageInfo.height_mm;
@@ -2772,21 +2795,23 @@ CAutoshapeTrack.prototype =
             var _oldAlpha = ctx.globalAlpha;
             ctx.globalAlpha = 1;
 
-            ctx.lineWidth = 1;
+            ctx.lineWidth = Math.round(dPR);
             ctx.strokeStyle = "#000000";
-            for (var i = 0; i < __h; i+=2)
+            var indent = 0.5 * Math.round(dPR);
+
+            for (var i = 0; i < __h; i+= 2 * Math.round(dPR))
             {
-                ctx.moveTo(__x,__y+i+0.5);
-                ctx.lineTo(__x+2,__y+i+0.5);
+                ctx.moveTo(__x,__y + i + indent);
+                ctx.lineTo(__x + 2 * Math.round( dPR),__y + i + indent);
             }
             ctx.stroke();
 
             ctx.beginPath();
             ctx.strokeStyle = "#FFFFFF";
-            for (var i = 1; i < __h; i+=2)
+            for (var i = Math.round(dPR); i < __h; i+= 2 * Math.round(dPR))
             {
-                ctx.moveTo(__x,__y+i+0.5);
-                ctx.lineTo(__x+2,__y+i+0.5);
+                ctx.moveTo(__x,__y + i + indent);
+                ctx.lineTo(__x + 2 * Math.round(dPR),__y + i + indent);
             }
             ctx.stroke();
 
@@ -2814,7 +2839,7 @@ CAutoshapeTrack.prototype =
             var _oldAlpha = ctx.globalAlpha;
             ctx.globalAlpha = 1;
 
-            ctx.lineWidth = 2;
+            ctx.lineWidth = Math.round(2 * dPR);
             ctx.beginPath();
             ctx.strokeStyle = "#FFFFFF";
             ctx.moveTo(_x1, _y1);
@@ -2830,7 +2855,7 @@ CAutoshapeTrack.prototype =
 
             var __x = _x1;
             var __y = _y1;
-            for (var i = 0; i < _vec_len; i += 2)
+            for (var i = 0; i < _vec_len; i += Math.round(2 * dPR))
             {
                 ctx.moveTo(__x, __y);
 
@@ -2894,13 +2919,14 @@ CAutoshapeTrack.prototype =
 
         var drPage = this.CurrentPageInfo.drawingPage;
 
-        var xDst = drPage.left;
-        var yDst = drPage.top;
+        var dPR = window.devicePixelRatio;
+        var xDst = drPage.left * dPR;
+        var yDst = drPage.top * dPR;
         var wDst = drPage.right - drPage.left;
         var hDst = drPage.bottom - drPage.top;
 
-        var dKoefX = wDst / this.CurrentPageInfo.width_mm;
-        var dKoefY = hDst / this.CurrentPageInfo.height_mm;
+        var dKoefX = wDst / this.CurrentPageInfo.width_mm * dPR;
+        var dKoefY = hDst / this.CurrentPageInfo.height_mm * dPR;
 
         var __x = (xDst + dKoefX * x) >> 0;
         var __y = (yDst + dKoefY * y) >> 0;
@@ -2918,9 +2944,9 @@ CAutoshapeTrack.prototype =
             _index += 1;
 
         var _offset = AscCommon.g_comment_image_offsets[_index];
-        overlay.CheckRect(__x, __y, _offset[2], _offset[3]);
+        overlay.CheckRect(__x, __y, dPR *_offset[2], dPR *_offset[3]);
 
-        this.m_oContext.drawImage(AscCommon.g_comment_image, _offset[0], _offset[1], _offset[2], _offset[3], __x, __y, _offset[2], _offset[3]);
+        this.m_oContext.drawImage(AscCommon.g_comment_image, _offset[0], _offset[1], _offset[2], _offset[3], __x, __y, dPR * _offset[2], dPR * _offset[3]);
 
         ctx.globalAlpha = _oldAlpha;
     },

@@ -2319,10 +2319,12 @@ function CDrawingDocument()
 		if (pageIndex < 0 || pageIndex != this.SlideCurrent || Math.abs(width) < 0.001 || Math.abs(height) < 0.001)
 			return;
 
-		var xDst = this.SlideCurrectRect.left;
-		var yDst = this.SlideCurrectRect.top;
-		var wDst = this.SlideCurrectRect.right - this.SlideCurrectRect.left;
-		var hDst = this.SlideCurrectRect.bottom - this.SlideCurrectRect.top;
+		var dPR = window.devicePixelRatio;
+		var xDst = this.SlideCurrectRect.left * dPR;
+		var yDst = this.SlideCurrectRect.top * dPR;
+		var wDst = (this.SlideCurrectRect.right - this.SlideCurrectRect.left) * dPR;
+		var hDst = (this.SlideCurrectRect.bottom - this.SlideCurrectRect.top) * dPR;
+		var indent = 0.5 * Math.round(dPR);
 
 		var dKoefX = wDst / this.m_oLogicDocument.Width;
 		var dKoefY = hDst / this.m_oLogicDocument.Height;
@@ -2339,11 +2341,11 @@ function CDrawingDocument()
 
 		if (null == this.TextMatrix || global_MatrixTransformer.IsIdentity(this.TextMatrix))
 		{
-			var _x = ((xDst + dKoefX * x + 0.5) >> 0) - 0.5;
-			var _y = ((yDst + dKoefY * y + 0.5) >> 0) - 0.5;
+			var _x = ((xDst + dKoefX * x + indent) >> 0) - indent;
+			var _y = ((yDst + dKoefY * y + indent) >> 0) - indent;
 
-			var _r = ((xDst + dKoefX * (x + width) + 0.5) >> 0) - 0.5;
-			var _b = ((yDst + dKoefY * (y + height) + 0.5) >> 0) - 0.5;
+			var _r = ((xDst + dKoefX * (x + width) + indent) >> 0) - indent;
+			var _b = ((yDst + dKoefY * (y + height) + indent) >> 0) - indent;
 
 			if (_x < overlay.min_x)
 				overlay.min_x = _x;
@@ -2385,17 +2387,17 @@ function CDrawingDocument()
 
 			if (global_MatrixTransformer.IsIdentity2(this.TextMatrix))
 			{
-				x1 = (x1 >> 0) + 0.5;
-				y1 = (y1 >> 0) + 0.5;
+				x1 = (x1 >> 0) + indent;
+				y1 = (y1 >> 0) + indent;
 
-				x2 = (x2 >> 0) + 0.5;
-				y2 = (y2 >> 0) + 0.5;
+				x2 = (x2 >> 0) + indent;
+				y2 = (y2 >> 0) + indent;
 
-				x3 = (x3 >> 0) + 0.5;
-				y3 = (y3 >> 0) + 0.5;
+				x3 = (x3 >> 0) + indent;
+				y3 = (y3 >> 0) + indent;
 
-				x4 = (x4 >> 0) + 0.5;
-				y4 = (y4 >> 0) + 0.5;
+				x4 = (x4 >> 0) + indent;
+				y4 = (y4 >> 0) + indent;
 			}
 
 			overlay.CheckPoint(x1, y1);
@@ -2404,6 +2406,7 @@ function CDrawingDocument()
 			overlay.CheckPoint(x4, y4);
 
 			var ctx = overlay.m_oContext;
+			ctx.lineWidth = Math.round(dPR);
 			ctx.moveTo(x1, y1);
 			ctx.lineTo(x2, y2);
 			ctx.lineTo(x3, y3);
