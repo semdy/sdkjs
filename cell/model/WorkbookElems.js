@@ -2950,11 +2950,11 @@ var g_oBorderProperties = {
         return (AscCommon.vertalign_SuperScript === this.getFont2().getVerticalAlign());
     };
 
-	CellXfs.prototype.asc_setNumFormat = function (val) {
-		//return this.getNum2().getFormat();
+	CellXfs.prototype.asc_getNumFormat = function () {
+		return this.getNum2().getFormat();
 	};
-	CellXfs.prototype.asc_getNumFormatInfo = function (val) {
-		//return this.getNum2().getNumFormat().getTypeInfo();
+	CellXfs.prototype.asc_getNumFormatInfo = function () {
+		return this.getNum2().getNumFormat().getTypeInfo();
 	};
 
 	CellXfs.prototype.asc_getHorAlign = function () {
@@ -2988,7 +2988,7 @@ var g_oBorderProperties = {
 		//new AscCommonExcel.Font()
 		return this.getFont2().setName(val);
 	};
-	CellXfs.prototype.asc_getFontSize = function (val) {
+	CellXfs.prototype.asc_setFontSize = function (val) {
 		//new AscCommonExcel.Font()
 		return this.getFont2().setSize(val);
 	};
