@@ -2241,8 +2241,8 @@
 			var oCanvas = ctx.getCanvas();
 			var graphics = getGraphics(ctx);
 
-			var style = new AscCommonExcel.CCellStyle();
-			style.xfs = xfs;
+			var oStyle = new AscCommonExcel.CCellStyle();
+			oStyle.xfs = xfs;
 
 			drawStyle(ctx, graphics, wb.stringRender, oStyle, text, w, h);
 			return new AscCommon.CStyleImage(text, null, oCanvas.toDataURL("image/png"));
