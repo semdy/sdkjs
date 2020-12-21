@@ -2950,11 +2950,11 @@ var g_oBorderProperties = {
         return (AscCommon.vertalign_SuperScript === this.getFont2().getVerticalAlign());
     };
 
-	CellXfs.prototype.asc_getNumFormat = function () {
-		return this.getNum2().getFormat();
+	CellXfs.prototype.asc_setNumFormat = function (val) {
+		//return this.getNum2().getFormat();
 	};
-	CellXfs.prototype.asc_getNumFormatInfo = function () {
-		return this.getNum2().getNumFormat().getTypeInfo();
+	CellXfs.prototype.asc_getNumFormatInfo = function (val) {
+		//return this.getNum2().getNumFormat().getTypeInfo();
 	};
 
 	CellXfs.prototype.asc_getHorAlign = function () {
@@ -2972,10 +2972,79 @@ var g_oBorderProperties = {
 	CellXfs.prototype.asc_getShrinkToFit = function () {
 		return this.getAlign2().getShrinkToFit();
 	};
-
 	CellXfs.prototype.asc_getPreview = function (api, text, width, height) {
 		return AscCommonExcel.generateXfsStyle(width, height, api.wb, this, text);
 	};
+
+
+	CellXfs.prototype.asc_setFillColor = function (val) {
+		//var color = AscCommonExcel.CorrectAscColor(val);
+		//this.getFill2().bg() = color;
+	};
+	CellXfs.prototype.asc_setFill = function (val) {
+		return this.setFill(val);
+	};
+	CellXfs.prototype.asc_setFontName = function (val) {
+		//new AscCommonExcel.Font()
+		return this.getFont2().setName(val);
+	};
+	CellXfs.prototype.asc_getFontSize = function (val) {
+		//new AscCommonExcel.Font()
+		return this.getFont2().setSize(val);
+	};
+	CellXfs.prototype.asc_setFontColor = function (val) {
+		//new AscCommonExcel.Font()
+		var color = AscCommonExcel.CorrectAscColor(val);
+		return this.getFont2().setColor(color);
+	};
+	CellXfs.prototype.asc_setFontBold = function (val) {
+		//new AscCommonExcel.Font()
+		return this.getFont2().setBold(val);
+	};
+	CellXfs.prototype.asc_setFontItalic = function (val) {
+		//new AscCommonExcel.Font()
+		return this.getFont2().setItalic(val);
+	};
+	CellXfs.prototype.asc_setFontUnderline = function (val) {
+		//new AscCommonExcel.Font()
+		//return (Asc.EUnderline.underlineNone !== this.getFont2().getUnderline());
+	};
+	CellXfs.prototype.asc_setFontStrikeout = function (val) {
+		//new AscCommonExcel.Font()
+		return this.getFont2().setStrikeout(val);
+	};
+	CellXfs.prototype.asc_setFontSubscript = function (val) {
+		//new AscCommonExcel.Font()
+		//return (AscCommon.vertalign_SubScript === this.getFont2().setVerticalAlign(val));
+	};
+	CellXfs.prototype.asc_setFontSuperscript = function () {
+		//new AscCommonExcel.Font()
+		//return (AscCommon.vertalign_SuperScript === this.getFont2().setVerticalAlign());
+	};
+
+	/*CellXfs.prototype.asc_setNumFormat = function () {
+		return this.getNum2().getFormat();
+	};
+	CellXfs.prototype.asc_setNumFormatInfo = function () {
+		return this.getNum2().getNumFormat().getTypeInfo();
+	};
+
+	CellXfs.prototype.asc_setHorAlign = function () {
+		return this.getAlign2().getAlignHorizontal();
+	};
+	CellXfs.prototype.asc_setVertAlign = function () {
+		return this.getAlign2().getAlignVertical();
+	};
+	CellXfs.prototype.asc_setAngle = function () {
+		return this.getAlign2().getAngle();
+	};
+	CellXfs.prototype.asc_setWrapText = function () {
+		return this.getAlign2().getWrap();
+	};
+	CellXfs.prototype.asc_setShrinkToFit = function () {
+		return this.getAlign2().getShrinkToFit();
+	};*/
+
 
 	function FromXml_ST_HorizontalAlignment(val) {
 		var res = -1;
