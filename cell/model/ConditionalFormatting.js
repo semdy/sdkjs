@@ -47,44 +47,46 @@
 	 * @constructor
 	 * @memberOf Asc
 	 */
-	function CConditionalFormatting () {
+	function CConditionalFormatting() {
 		this.pivot = false;
 		this.ranges = null;
 		this.aRules = [];
 
 		return this;
 	}
-	CConditionalFormatting.prototype.setSqRef = function(sqRef) {
+
+	CConditionalFormatting.prototype.setSqRef = function (sqRef) {
 		this.ranges = AscCommonExcel.g_oRangeCache.getRangesFromSqRef(sqRef);
 	};
-	CConditionalFormatting.prototype.isValid = function() {
+	CConditionalFormatting.prototype.isValid = function () {
 		//todo more checks
 		return this.ranges && this.ranges.length > 0;
 	};
-	CConditionalFormatting.prototype.initRules = function() {
+	CConditionalFormatting.prototype.initRules = function () {
 		for (var i = 0; i < this.aRules.length; ++i) {
 			this.aRules[i].updateConditionalFormatting(this);
-	}
+		}
 	};
 
 	//todo need another approach
-	function CConditionalFormattingFormulaParent (ws, rule, isDefName) {
+	function CConditionalFormattingFormulaParent(ws, rule, isDefName) {
 		this.ws = ws;
 		this.rule = rule;
 		this.isDefName = isDefName;
 	}
-	CConditionalFormattingFormulaParent.prototype.onFormulaEvent = function(type, eventData) {
+
+	CConditionalFormattingFormulaParent.prototype.onFormulaEvent = function (type, eventData) {
 		if (AscCommon.c_oNotifyParentType.IsDefName === type && this.isDefName) {
 			return {bbox: this.rule.getBBox(), ranges: this.rule.ranges};
 		} else if (AscCommon.c_oNotifyParentType.Change === type) {
 			this.ws.setDirtyConditionalFormatting(new AscCommonExcel.MultiplyRange(this.rule.ranges));
 		}
 	};
-	CConditionalFormattingFormulaParent.prototype.clone = function() {
+	CConditionalFormattingFormulaParent.prototype.clone = function () {
 		return new CConditionalFormattingFormulaParent(this.ws, this.rule, this.isDefName);
 	};
 
-	function CConditionalFormattingRule () {
+	function CConditionalFormattingRule() {
 		this.aboveAverage = true;
 		this.activePresent = false;
 		this.bottom = false;
@@ -111,7 +113,8 @@
 
 		return this;
 	}
-	CConditionalFormattingRule.prototype.clone = function() {
+
+	CConditionalFormattingRule.prototype.clone = function () {
 		var i, res = new CConditionalFormattingRule();
 		res.aboveAverage = this.aboveAverage;
 		res.bottom = this.bottom;
@@ -136,7 +139,7 @@
 		}
 		return res;
 	};
-	CConditionalFormattingRule.prototype.getTimePeriod = function() {
+	CConditionalFormattingRule.prototype.getTimePeriod = function () {
 		var start, end;
 		var now = new Asc.cDate();
 		now.setUTCHours(0, 0, 0, 0);
@@ -203,7 +206,7 @@
 		}
 		return {start: start, end: end};
 	};
-	CConditionalFormattingRule.prototype.getValueCellIs = function(ws, opt_parent, opt_bbox, opt_offset, opt_returnRaw) {
+	CConditionalFormattingRule.prototype.getValueCellIs = function (ws, opt_parent, opt_bbox, opt_offset, opt_returnRaw) {
 		var res;
 		if (null !== this.text) {
 			res = new AscCommonExcel.cString(this.text);
@@ -212,10 +215,10 @@
 		}
 		return res;
 	};
-	CConditionalFormattingRule.prototype.getFormulaCellIs = function() {
+	CConditionalFormattingRule.prototype.getFormulaCellIs = function () {
 		return null === this.text && this.aRuleElements[1];
 	};
-	CConditionalFormattingRule.prototype.cellIs = function(operator, cell, v1, v2) {
+	CConditionalFormattingRule.prototype.cellIs = function (operator, cell, v1, v2) {
 		if (operator === AscCommonExcel.ECfOperator.Operator_beginsWith ||
 			operator === AscCommonExcel.ECfOperator.Operator_endsWith ||
 			operator === AscCommonExcel.ECfOperator.Operator_containsText ||
@@ -225,7 +228,7 @@
 			return this._cellIsNumber(operator, cell, v1, v2);
 		}
 	};
-	CConditionalFormattingRule.prototype._cellIsText = function(operator, cell, v1) {
+	CConditionalFormattingRule.prototype._cellIsText = function (operator, cell, v1) {
 		if (!v1 || AscCommonExcel.cElementType.empty === v1.type) {
 			v1 = new AscCommonExcel.cString("");
 		}
@@ -262,7 +265,7 @@
 		}
 		return res;
 	};
-	CConditionalFormattingRule.prototype._cellIsNumber = function(operator, cell, v1, v2) {
+	CConditionalFormattingRule.prototype._cellIsNumber = function (operator, cell, v1, v2) {
 		if (!v1 || AscCommonExcel.cElementType.empty === v1.type) {
 			v1 = new AscCommonExcel.cNumber(0);
 		}
@@ -350,7 +353,7 @@
 		}
 		return res;
 	};
-	CConditionalFormattingRule.prototype.getAverage = function(val, average, stdDev) {
+	CConditionalFormattingRule.prototype.getAverage = function (val, average, stdDev) {
 		var res = false;
 		/*if (this.stdDev) {
 			average += (this.aboveAverage ? 1 : -1) * this.stdDev + stdDev;
@@ -363,7 +366,7 @@
 		res = res || (this.equalAverage && val == average);
 		return res;
 	};
-	CConditionalFormattingRule.prototype.hasStdDev = function() {
+	CConditionalFormattingRule.prototype.hasStdDev = function () {
 		return null !== this.stdDev;
 	};
 	CConditionalFormattingRule.prototype.updateConditionalFormatting = function (cf) {
@@ -376,17 +379,17 @@
 			}
 		}
 	};
-	CConditionalFormattingRule.prototype.getBBox = function() {
+	CConditionalFormattingRule.prototype.getBBox = function () {
 		var bbox = null;
 		if (this.ranges && this.ranges.length > 0) {
 			bbox = this.ranges[0].clone();
-			for(var i = 1 ; i < this.ranges.length; ++i){
+			for (var i = 1; i < this.ranges.length; ++i) {
 				bbox.union2(this.ranges[i]);
 			}
 		}
 		return bbox;
 	};
-	CConditionalFormattingRule.prototype.getIndexRule = function(values, ws, value) {
+	CConditionalFormattingRule.prototype.getIndexRule = function (values, ws, value) {
 		var valueCFVO;
 		var aCFVOs = this._getCFVOs();
 		for (var i = aCFVOs.length - 1; i >= 0; --i) {
@@ -397,17 +400,17 @@
 		}
 		return 0;
 	};
-	CConditionalFormattingRule.prototype.getMin = function(values, ws) {
+	CConditionalFormattingRule.prototype.getMin = function (values, ws) {
 		var aCFVOs = this._getCFVOs();
 		var oCFVO = (aCFVOs && 0 < aCFVOs.length) ? aCFVOs[0] : null;
 		return this._getValue(values, oCFVO, ws);
 	};
-	CConditionalFormattingRule.prototype.getMid = function(values, ws) {
+	CConditionalFormattingRule.prototype.getMid = function (values, ws) {
 		var aCFVOs = this._getCFVOs();
 		var oCFVO = (aCFVOs && 2 < aCFVOs.length) ? aCFVOs[1] : null;
 		return this._getValue(values, oCFVO, ws);
 	};
-	CConditionalFormattingRule.prototype.getMax = function(values, ws) {
+	CConditionalFormattingRule.prototype.getMax = function (values, ws) {
 		var aCFVOs = this._getCFVOs();
 		var oCFVO = (aCFVOs && 2 === aCFVOs.length) ? aCFVOs[1] : ((aCFVOs && 2 < aCFVOs.length) ? aCFVOs[2] : null);
 		return this._getValue(values, oCFVO, ws);
