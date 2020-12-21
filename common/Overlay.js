@@ -114,7 +114,6 @@ COverlay.prototype =
         }
 
         this.SetBaseTransform();
-        var dPR = window.devicePixelRatio;
         this.m_oContext.beginPath();
         if (this.max_x != -0xFFFF && this.max_y != -0xFFFF)
         {
@@ -2572,10 +2571,11 @@ CAutoshapeTrack.prototype =
 
         var drPage = this.CurrentPageInfo.drawingPage;
 
-        var xDst = drPage.left;
-        var yDst = drPage.top;
-        var wDst = drPage.right - drPage.left;
-        var hDst = drPage.bottom - drPage.top;
+        var dPR = window.devicePixelRatio;
+        var xDst = drPage.left * dPR;
+        var yDst = drPage.top * dPR;
+        var wDst = (drPage.right - drPage.left) * dPR;
+        var hDst = (drPage.bottom - drPage.top) * dPR;
 
         var dKoefX = wDst / this.CurrentPageInfo.width_mm;
         var dKoefY = hDst / this.CurrentPageInfo.height_mm;
@@ -2589,18 +2589,19 @@ CAutoshapeTrack.prototype =
 
         var ctx = overlay.m_oContext;
 
-        var dist = TRACK_ADJUSTMENT_SIZE / 2;
+        var dist = TRACK_ADJUSTMENT_SIZE * dPR / 2;
 
         if (overlay.IsCellEditor)
             dist *= AscCommon.AscBrowser.retinaPixelRatio;
 
+        ctx.lineWidth = Math.round(dPR);
         ctx.moveTo(cx - dist, cy);
         ctx.lineTo(cx, cy - dist);
         ctx.lineTo(cx + dist, cy);
         ctx.lineTo(cx, cy + dist);
         ctx.closePath();
 
-        overlay.CheckRect(cx - dist, cy - dist, TRACK_ADJUSTMENT_SIZE, TRACK_ADJUSTMENT_SIZE);
+        overlay.CheckRect(cx - dist, cy - dist, Math.round(TRACK_ADJUSTMENT_SIZE * dPR), Math.round(TRACK_ADJUSTMENT_SIZE * dPR));
 
 
         if(bTextWarp === true)
