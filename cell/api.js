@@ -4898,6 +4898,27 @@ var editor;
       return rules;
     };
 
+  spreadsheet_api.prototype.asc_getPreviewCF = function (type, props, text, w, h) {
+      var res;
+
+      if (!props) {
+        return null;
+      }
+
+      switch (type) {
+        case Asc.ECfType.colorScale:
+            //todo преобразовать цвета
+            res = AscCommonExcel.drawColorScalePreview(this.wb, w, h, props);
+          break;
+        case Asc.ECfType.dataBar:
+
+          break;
+        default:
+          res = props.asc_getPreview(this, text, w, h);
+      }
+
+      return res;
+  };
   spreadsheet_api.prototype.asc_beforeInsertSlicer = function () {
     //пока возвращаю только данные о ф/т
     return this.wb.beforeInsertSlicer();
@@ -5360,7 +5381,8 @@ var editor;
   prot["asc_getRemoveDuplicates"] = prot.asc_getRemoveDuplicates;
   prot["asc_setRemoveDuplicates"] = prot.asc_setRemoveDuplicates;
 
-  prot["asc_getCF"] = prot.asc_getCF;
+  prot["asc_getCF"]        = prot.asc_getCF;
+  prot["asc_getPreviewCF"] = prot.asc_getPreviewCF;
 
   prot["asc_beforeInsertSlicer"] = prot.asc_beforeInsertSlicer;
   prot["asc_insertSlicer"] = prot.asc_insertSlicer;

@@ -10974,7 +10974,7 @@ AutoFilterDateElem.prototype.convertDateGroupItemToRange = function(oDateGroupIt
 	window['AscCommonExcel'].BorderProp = BorderProp;
 	window['AscCommonExcel'].Border = Border;
 	window['AscCommonExcel'].Num = Num;
-	window['AscCommonExcel'].CellXfs = CellXfs;
+	window["Asc"]["asc_CellXfs"] = window['AscCommonExcel'].CellXfs = CellXfs;
 	prot = CellXfs.prototype;
 	prot["asc_getFillColor"] = prot.asc_getFillColor;
 	prot["asc_getFill"] = prot.asc_getFill;
