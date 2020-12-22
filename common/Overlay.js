@@ -2054,13 +2054,14 @@ CAutoshapeTrack.prototype =
                 {
                     overlay.CheckRect(x1, y1, x4 - x1, y4 - y1);
                     var widthCorner = (x4 - x1 + 1) >> 1;
-                    var isCentralMarkerX = widthCorner > 40 ? true : false;
-                    if (widthCorner > 17)
-                        widthCorner = 17;
+                    var isCentralMarkerX = widthCorner > Math.round(40 * rPR) ? true : false;
+                    var cropMarkerSize = Math.round(17 * rPR);
+                    if (widthCorner > cropMarkerSize)
+                        widthCorner = cropMarkerSize;
                     var heightCorner = (y4 - y1 + 1) >> 1;
-                    var isCentralMarkerY = heightCorner > 40 ? true : false;
-                    if (heightCorner > 17)
-                        heightCorner = 17;
+                    var isCentralMarkerY = heightCorner > Math.round(40 * rPR) ? true : false;
+                    if (heightCorner > cropMarkerSize)
+                        heightCorner = cropMarkerSize;
 
                     ctx.rect(x1 + indent, y2 + indent, x4 - x1 + 1, y4 - y1);
                     ctx.strokeStyle = _style_black;
@@ -2071,34 +2072,35 @@ CAutoshapeTrack.prototype =
                     ctx.strokeStyle = _style_white;
                     ctx.fillStyle = _style_black;
 
+                    var roundRPR = Math.round(rPR);
                     ctx.moveTo(x1 + indent, y1 + indent);
                     ctx.lineTo(x1 + widthCorner + indent, y1 + indent);
-                    ctx.lineTo(x1 + widthCorner + indent, y1 + 5.5);
-                    ctx.lineTo(x1 + 5.5, y1 + 5.5);
-                    ctx.lineTo(x1 + 5.5, y1 + widthCorner + indent);
+                    ctx.lineTo(x1 + widthCorner + indent, y1 + 5.5 * roundRPR);
+                    ctx.lineTo(x1 + 5.5 * roundRPR, y1 + 5.5 * roundRPR);
+                    ctx.lineTo(x1 + 5.5 * roundRPR, y1 + widthCorner + indent);
                     ctx.lineTo(x1 + indent, y1 + widthCorner + indent);
                     ctx.closePath();
 
                     ctx.moveTo(x2 - widthCorner + indent, y2 + indent);
                     ctx.lineTo(x2 + indent, y2 + indent);
                     ctx.lineTo(x2 + indent, y2 + heightCorner + indent);
-                    ctx.lineTo(x2 - 4.5, y2 + heightCorner + indent);
-                    ctx.lineTo(x2 - 4.5, y2 + 5.5);
-                    ctx.lineTo(x2 - widthCorner + indent, y2 + 5.5);
+                    ctx.lineTo(x2 - 4.5 * roundRPR, y2 + heightCorner + indent);
+                    ctx.lineTo(x2 - 4.5 * roundRPR, y2 + 5.5 * roundRPR);
+                    ctx.lineTo(x2 - widthCorner + indent, y2 + 5.5 * roundRPR);
                     ctx.closePath();
 
-                    ctx.moveTo(x4 - 4.5, y4 - heightCorner + indent);
+                    ctx.moveTo(x4 - 4.5 * roundRPR, y4 - heightCorner + indent);
                     ctx.lineTo(x4 + indent, y4 - heightCorner + indent);
                     ctx.lineTo(x4 + indent, y4 + indent);
                     ctx.lineTo(x4 - widthCorner + indent, y4 + indent);
-                    ctx.lineTo(x4 - widthCorner + indent, y4 - 4.5);
-                    ctx.lineTo(x4 - 4.5, y4 - 4.5);
+                    ctx.lineTo(x4 - widthCorner + indent, y4 - 4.5 * roundRPR);
+                    ctx.lineTo(x4 - 4.5 * roundRPR, y4 - 4.5 * roundRPR);
                     ctx.closePath();
 
                     ctx.moveTo(x3 + indent, y3 - heightCorner + indent);
-                    ctx.lineTo(x3 + 5.5, y3 - heightCorner + indent);
-                    ctx.lineTo(x3 + 5.5, y3 - 4.5);
-                    ctx.lineTo(x3 + widthCorner + indent, y3 - 4.5);
+                    ctx.lineTo(x3 + 5.5 * roundRPR, y3 - heightCorner + indent);
+                    ctx.lineTo(x3 + 5.5 * roundRPR, y3 - 4.5 * roundRPR);
+                    ctx.lineTo(x3 + widthCorner + indent, y3 - 4.5 * roundRPR);
                     ctx.lineTo(x3 + widthCorner + indent, y3 + indent);
                     ctx.lineTo(x3 + indent, y3 + indent);
                     ctx.closePath();
@@ -2108,12 +2110,12 @@ CAutoshapeTrack.prototype =
                         var xCentral = (x4 + x1 - widthCorner) >> 1;
                         ctx.moveTo(xCentral + indent, y1 + indent);
                         ctx.lineTo(xCentral + widthCorner + indent, y1 + indent);
-                        ctx.lineTo(xCentral + widthCorner + indent, y1 + 5.5);
-                        ctx.lineTo(xCentral + indent, y1 + 5.5);
+                        ctx.lineTo(xCentral + widthCorner + indent, y1 + 5.5 * roundRPR);
+                        ctx.lineTo(xCentral + indent, y1 + 5.5 * roundRPR);
                         ctx.closePath();
 
-                        ctx.moveTo(xCentral + indent, y4 - 4.5);
-                        ctx.lineTo(xCentral + widthCorner + indent, y4 - 4.5);
+                        ctx.moveTo(xCentral + indent, y4 - 4.5 * roundRPR);
+                        ctx.lineTo(xCentral + widthCorner + indent, y4 - 4.5 * roundRPR);
                         ctx.lineTo(xCentral + widthCorner + indent, y4);
                         ctx.lineTo(xCentral + indent, y4 + indent);
                         ctx.closePath();
@@ -2123,15 +2125,15 @@ CAutoshapeTrack.prototype =
                     {
                         var yCentral = (y4 + y1 - heightCorner) >> 1;
                         ctx.moveTo(x1 + indent, yCentral + indent);
-                        ctx.lineTo(x1 + 5.5, yCentral + indent);
-                        ctx.lineTo(x1 + 5.5, yCentral + heightCorner + indent);
+                        ctx.lineTo(x1 + 5.5 * roundRPR, yCentral + indent);
+                        ctx.lineTo(x1 + 5.5 * roundRPR, yCentral + heightCorner + indent);
                         ctx.lineTo(x1 + indent, yCentral + heightCorner + indent);
                         ctx.closePath();
 
-                        ctx.moveTo(x4 - 4.5, yCentral + indent);
+                        ctx.moveTo(x4 - 4.5 * roundRPR, yCentral + indent);
                         ctx.lineTo(x4 + indent, yCentral + indent);
                         ctx.lineTo(x4 + indent, yCentral + heightCorner + indent);
-                        ctx.lineTo(x4 - 4.5, yCentral + heightCorner + indent);
+                        ctx.lineTo(x4 - 4.5 * roundRPR, yCentral + heightCorner + indent);
                         ctx.closePath();
                     }
 
@@ -2179,13 +2181,14 @@ CAutoshapeTrack.prototype =
                     }
 
                     var widthCorner = _len_x >> 1;
-                    var isCentralMarkerX = widthCorner > 40 ? true : false;
-                    if (widthCorner > 17)
-                        widthCorner = 17;
+                    var isCentralMarkerX = widthCorner > Math.round(40 * rPR) ? true : false;
+                    var cropMarkerSize = Math.round(17 * rPR);
+                    if (widthCorner > cropMarkerSize)
+                        widthCorner = cropMarkerSize;
                     var heightCorner = _len_y >> 1;
-                    var isCentralMarkerY = heightCorner > 40 ? true : false;
-                    if (heightCorner > 17)
-                        heightCorner = 17;
+                    var isCentralMarkerY = heightCorner > Math.round(40 * rPR) ? true : false;
+                    if (heightCorner > cropMarkerSize)
+                        heightCorner = cropMarkerSize;
 
                     ctx.moveTo(x1, y1);
                     ctx.lineTo(x2, y2);
