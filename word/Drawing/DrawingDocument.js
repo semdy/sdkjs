@@ -1630,11 +1630,11 @@ function CPage()
 	this.DrawTableOutline = function (overlay, xDst, yDst, wDst, hDst, table_outline_dr, lastBounds)
 	{
 		var transform = table_outline_dr.TableMatrix;
-		var dPR = window.devicePixelRatio;
-		xDst *= dPR;
-		yDst *= dPR;
-		wDst *= dPR;
-		hDst *= dPR;
+		var rPR = AscCommon.AscBrowser.retinaPixelRatio;
+		xDst *= rPR;
+		yDst *= rPR;
+		wDst *= rPR;
+		hDst *= rPR;
 		if (null == transform || transform.IsIdentity2())
 		{
 			var dKoefX = wDst / this.width_mm;
@@ -3959,12 +3959,12 @@ function CDrawingDocument()
 				_page = this.m_arrPages[oPath.Page];
 				drPage = _page.drawingPage;
 
-				var dPR = window.devicePixelRatio;
-				dKoefX = (drPage.right - drPage.left) / _page.width_mm * dPR;
-				dKoefY = (drPage.bottom - drPage.top) / _page.height_mm * dPR;
+				var rPR = AscCommon.AscBrowser.retinaPixelRatio;
+				dKoefX = (drPage.right - drPage.left) / _page.width_mm * rPR;
+				dKoefY = (drPage.bottom - drPage.top) / _page.height_mm * rPR;
 
-				this.MathTrack.Draw(overlay, oPath, 0, "#939393", dKoefX, dKoefY, drPage.left * dPR, drPage.top * dPR);
-				this.MathTrack.Draw(overlay, oPath, 1, "#FFFFFF", dKoefX, dKoefY, drPage.left * dPR, drPage.top * dPR);
+				this.MathTrack.Draw(overlay, oPath, 0, "#939393", dKoefX, dKoefY, drPage.left * rPR, drPage.top * rPR);
+				this.MathTrack.Draw(overlay, oPath, 1, "#FFFFFF", dKoefX, dKoefY, drPage.left * rPR, drPage.top * rPR);
 			}
 			for (nIndex = 0, nCount = this.MathTrack.GetSelectPathsCount(); nIndex < nCount; nIndex++)
 			{
@@ -4095,18 +4095,18 @@ function CDrawingDocument()
 			var _page = this.m_arrPages[this.TableOutlineDr.CurPos.Page];
 			var drPage = _page.drawingPage;
 
-			var dPR = window.devicePixelRatio;
+			var rPR = AscCommon.AscBrowser.retinaPixelRatio;
 			var dKoefX = (drPage.right - drPage.left) / _page.width_mm;
 			var dKoefY = (drPage.bottom - drPage.top) / _page.height_mm;
-			var indent = 0.5 * Math.round(dPR);
+			var indent = 0.5 * Math.round(rPR);
 
 			if (!this.TableOutlineDr.TableMatrix || global_MatrixTransformer.IsIdentity(this.TableOutlineDr.TableMatrix))
 			{
-				var _x = ((drPage.left + dKoefX * this.TableOutlineDr.CurPos.X) * dPR >> 0) + indent;
-				var _y = ((drPage.top + dKoefY * this.TableOutlineDr.CurPos.Y) >> 0) * dPR + indent;
+				var _x = ((drPage.left + dKoefX * this.TableOutlineDr.CurPos.X) * rPR >> 0) + indent;
+				var _y = ((drPage.top + dKoefY * this.TableOutlineDr.CurPos.Y) >> 0) * rPR + indent;
 
-				var _r = _x + ((dKoefX * this.TableOutlineDr.TableOutline.W) * dPR >> 0);
-				var _b = _y + ((dKoefY * this.TableOutlineDr.TableOutline.H) * dPR >> 0);
+				var _r = _x + ((dKoefX * this.TableOutlineDr.TableOutline.W) * rPR >> 0);
+				var _b = _y + ((dKoefY * this.TableOutlineDr.TableOutline.H) * rPR >> 0);
 
 				if (this.TableOutlineDr.IsResizeTableTrack)
 				{
@@ -4115,12 +4115,12 @@ function CDrawingDocument()
 					var _lastY = this.TableOutlineDr.getFullTopPosition(_lastBounds);
 					var _lastYStart = _lastBounds.Y;
 
-					_x = ((drPage.left + dKoefX * _lastX) * dPR >> 0) + indent;
-					_y = ((drPage.top + dKoefY * _lastY) * dPR >> 0) + indent;
-					var _yStart = ((drPage.top + dKoefY * _lastYStart) * dPR >> 0) + indent;
+					_x = ((drPage.left + dKoefX * _lastX) * rPR >> 0) + indent;
+					_y = ((drPage.top + dKoefY * _lastY) * rPR >> 0) + indent;
+					var _yStart = ((drPage.top + dKoefY * _lastYStart) * rPR >> 0) + indent;
 
-					_r = _x + ((dKoefX * (_lastBounds.W + this.TableOutlineDr.AddResizeCurrentW)) * dPR >> 0);
-					_b = _yStart + ((dKoefY * (_lastBounds.H + this.TableOutlineDr.AddResizeCurrentH)) * dPR >> 0);
+					_r = _x + ((dKoefX * (_lastBounds.W + this.TableOutlineDr.AddResizeCurrentW)) * rPR >> 0);
+					_b = _yStart + ((dKoefY * (_lastBounds.H + this.TableOutlineDr.AddResizeCurrentH)) * rPR >> 0);
 				}
 				overlay.CheckPoint(_x, _y);
 				overlay.CheckPoint(_x, _b);
@@ -4132,14 +4132,14 @@ function CDrawingDocument()
 
 				ctx.beginPath();
 				ctx.rect(_x, _y, _r - _x, _b - _y);
-				ctx.lineWidth = Math.round(dPR);
+				ctx.lineWidth = Math.round(rPR);
 				ctx.stroke();
 
 				ctx.strokeStyle = "#000000";
 				ctx.beginPath();
 
 				// набиваем пунктир
-				var dot_size = 3 * Math.round(dPR);
+				var dot_size = 3 * Math.round(rPR);
 				for (var i = _x; i < _r; i += dot_size)
 				{
 					ctx.moveTo(i, _y);
@@ -4538,7 +4538,7 @@ function CDrawingDocument()
 			this.SelectionMatrix = this.TextMatrix;
 
 		this.IsTextMatrixUse = ((null != this.TextMatrix) && !global_MatrixTransformer.IsIdentity(this.TextMatrix));
-        var dPR = window.devicePixelRatio;
+        var rPR = AscCommon.AscBrowser.retinaPixelRatio;
 		var page = this.m_arrPages[pageIndex];
 		var drawPage = page.drawingPage;
 
@@ -4556,8 +4556,8 @@ function CDrawingDocument()
 			var _w = _r - _x + 1;
 			var _h = _b - _y + 1;
 
-			this.Overlay.CheckRect(dPR * _x, dPR * _y, dPR * _w, dPR * _h);
-			this.Overlay.m_oContext.rect(dPR * _x, dPR *_y, _w * dPR, _h * dPR);
+			this.Overlay.CheckRect(rPR * _x, rPR * _y, rPR * _w, rPR * _h);
+			this.Overlay.m_oContext.rect(rPR * _x, rPR *_y, _w * rPR, _h * rPR);
 			// this.Overlay.
 		}
 		else
@@ -4574,21 +4574,21 @@ function CDrawingDocument()
 			var _x4 = this.TextMatrix.TransformPointX(x, y + h);
 			var _y4 = this.TextMatrix.TransformPointY(x, y + h);
 
-			var x1 = (drawPage.left + dKoefX * _x1) * dPR;
-			var y1 = (drawPage.top + dKoefY * _y1) * dPR;
+			var x1 = (drawPage.left + dKoefX * _x1) * rPR;
+			var y1 = (drawPage.top + dKoefY * _y1) * rPR;
 
-			var x2 = (drawPage.left + dKoefX * _x2) * dPR;
-			var y2 = (drawPage.top + dKoefY * _y2) * dPR;
+			var x2 = (drawPage.left + dKoefX * _x2) * rPR;
+			var y2 = (drawPage.top + dKoefY * _y2) * rPR;
 
-			var x3 = (drawPage.left + dKoefX * _x3) * dPR;
-			var y3 = (drawPage.top + dKoefY * _y3) * dPR;
+			var x3 = (drawPage.left + dKoefX * _x3) * rPR;
+			var y3 = (drawPage.top + dKoefY * _y3) * rPR;
 
-			var x4 = (drawPage.left + dKoefX * _x4) * dPR;
-			var y4 = (drawPage.top + dKoefY * _y4) * dPR;
+			var x4 = (drawPage.left + dKoefX * _x4) * rPR;
+			var y4 = (drawPage.top + dKoefY * _y4) * rPR;
 
 			if (global_MatrixTransformer.IsIdentity2(this.TextMatrix))
 			{
-				var indent = 0.5 * Math.round(dPR);
+				var indent = 0.5 * Math.round(rPR);
 				x1 = (x1 >> 0) + indent;
 				y1 = (y1 >> 0) + indent;
 

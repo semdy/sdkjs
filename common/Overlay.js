@@ -173,7 +173,7 @@ COverlay.prototype =
 
     VertLine : function(position, bIsSimpleAdd)
     {
-        var dPR = window.devicePixelRatio;
+        var rPR = AscCommon.AscBrowser.retinaPixelRatio;
         if (bIsSimpleAdd !== true)
         {
             this.Clear();
@@ -185,7 +185,7 @@ COverlay.prototype =
                 }
             }
         }
-        position *= dPR;
+        position *= rPR;
         if (this.min_x > position)
             this.min_x = position;
         if (this.max_x < position)
@@ -196,7 +196,7 @@ COverlay.prototype =
         this.min_y = 0;
         this.max_y = this.m_oControl.HtmlElement.height;
 
-        this.m_oContext.lineWidth = Math.round(dPR);
+        this.m_oContext.lineWidth = Math.round(rPR);
         var x = ((position + 0.5 * this.m_oContext.lineWidth) >> 0) + 0.5 * this.m_oContext.lineWidth;
         var y = 0;
 
@@ -240,8 +240,8 @@ COverlay.prototype =
 
     VertLine2 : function(position)
     {
-        var dPR = window.devicePixelRatio;
-        position *= dPR;
+        var rPR = AscCommon.AscBrowser.retinaPixelRatio;
+        position *= rPR;
         if (this.min_x > position)
             this.min_x = position;
         if (this.max_x < position)
@@ -253,7 +253,7 @@ COverlay.prototype =
         this.min_y = 0;
         this.max_y = this.m_oControl.HtmlElement.height;
 
-        this.m_oContext.lineWidth = Math.round(dPR);
+        this.m_oContext.lineWidth = Math.round(rPR);
         var indent = 0.5 * this.m_oContext.lineWidth;
 
         var x = ((position + indent) >> 0) + indent;
@@ -289,7 +289,7 @@ COverlay.prototype =
 
     HorLine : function(position, bIsSimpleAdd)
     {
-        var dPR = window.devicePixelRatio;
+        var rPR = AscCommon.AscBrowser.retinaPixelRatio;
 
         if (bIsSimpleAdd !== true)
         {
@@ -306,13 +306,13 @@ COverlay.prototype =
         this.min_x = 0;
         this.max_x = this.m_oControl.HtmlElement.width;
 
-        position *= dPR;
+        position *= rPR;
         if (this.min_y > position)
             this.min_y = position;
         if (this.max_y < position)
             this.max_y = position;
 
-        this.m_oContext.lineWidth = Math.round(dPR);
+        this.m_oContext.lineWidth = Math.round(rPR);
         var y = ((position + 0.5 * this.m_oContext.lineWidth) >> 0) + 0.5 * this.m_oContext.lineWidth;
         var x = 0;
 
@@ -355,9 +355,9 @@ COverlay.prototype =
 
     HorLine2 : function(position)
     {
-        var dPR = window.devicePixelRatio;
+        var rPR = AscCommon.AscBrowser.retinaPixelRatio;
 
-        position *= dPR;
+        position *= rPR;
         if (this.min_y > position)
             this.min_y = position;
         if (this.max_y < position)
@@ -369,7 +369,7 @@ COverlay.prototype =
         this.min_x = 0;
         this.max_x = this.m_oControl.HtmlElement.width;
 
-        this.m_oContext.lineWidth = Math.round(dPR);
+        this.m_oContext.lineWidth = Math.round(rPR);
         var indent = 0.5 * this.m_oContext.lineWidth;
 
         var y = ((position + indent) >> 0) + indent;
@@ -937,11 +937,11 @@ CAutoshapeTrack.prototype =
 
         var drPage = this.CurrentPageInfo.drawingPage;
 
-        var dPR = window.devicePixelRatio;
-        var xDst = drPage.left * dPR;
-        var yDst = drPage.top * dPR;
-        var wDst = (drPage.right - drPage.left) * dPR;
-        var hDst = (drPage.bottom - drPage.top) * dPR;
+        var rPR = AscCommon.AscBrowser.retinaPixelRatio;
+        var xDst = drPage.left * rPR;
+        var yDst = drPage.top * rPR;
+        var wDst = (drPage.right - drPage.left) * rPR;
+        var hDst = (drPage.bottom - drPage.top) * rPR;
 
         var dKoefX = wDst / this.CurrentPageInfo.width_mm;
         var dKoefY = hDst / this.CurrentPageInfo.height_mm;
@@ -1091,16 +1091,16 @@ CAutoshapeTrack.prototype =
 			bIsRectsTrackY = _tmp;
 		}
 
-        ctx.lineWidth = Math.round(dPR);
+        ctx.lineWidth = Math.round(rPR);
         ctx.beginPath();
 
         var _oldGlobalAlpha = ctx.globalAlpha;
         ctx.globalAlpha = 1;
 
-        var SCALE_TRACK_RECT_SIZE = Math.round(TRACK_RECT_SIZE * dPR),
-            SCALE_TRACK_RECT_SIZE_CT =  Math.round(TRACK_RECT_SIZE_CT * dPR);
+        var SCALE_TRACK_RECT_SIZE = Math.round(TRACK_RECT_SIZE * rPR),
+            SCALE_TRACK_RECT_SIZE_CT =  Math.round(TRACK_RECT_SIZE_CT * rPR);
 
-        var indent = 0.5 * Math.round(dPR);
+        var indent = 0.5 * Math.round(rPR);
 
         switch (type)
         {
@@ -2314,12 +2314,12 @@ CAutoshapeTrack.prototype =
         this.CurrentPageInfo = overlay.m_oHtmlPage.GetDrawingPageInfo(this.PageIndex);
 
         var drPage = this.CurrentPageInfo.drawingPage;
-        var dPR = window.devicePixelRatio;
-        var xDst = drPage.left * dPR;
-        var yDst = drPage.top * dPR;
-        var wDst = (drPage.right - drPage.left) * dPR;
-        var hDst = (drPage.bottom - drPage.top) * dPR;
-        var indent = 0.5 * Math.round(dPR);
+        var rPR = AscCommon.AscBrowser.retinaPixelRatio;
+        var xDst = drPage.left * rPR;
+        var yDst = drPage.top * rPR;
+        var wDst = (drPage.right - drPage.left) * rPR;
+        var hDst = (drPage.bottom - drPage.top) * rPR;
+        var indent = 0.5 * Math.round(rPR);
 
         var dKoefX = wDst / this.CurrentPageInfo.width_mm;
         var dKoefY = hDst / this.CurrentPageInfo.height_mm;
@@ -2373,11 +2373,11 @@ CAutoshapeTrack.prototype =
     AddRectDashClever : function(ctx, x, y, r, b, w_dot, w_dist, bIsStrokeAndCanUseNative)
     {
         var _support_native_dash = (undefined !== ctx.setLineDash);
-        var dPR = window.devicePixelRatio;
-        var indent = 0.5 * Math.round(dPR);
+        var rPR = AscCommon.AscBrowser.retinaPixelRatio;
+        var indent = 0.5 * Math.round(rPR);
         // здесь расчитано на толщину линии в один пиксел!
-        w_dot *= Math.round(dPR);
-        w_dist *= Math.round(dPR);
+        w_dot *= Math.round(rPR);
+        w_dist *= Math.round(rPR);
         var _x = x + indent;
         var _y = y + indent;
         var _r = r + indent;
@@ -2571,11 +2571,11 @@ CAutoshapeTrack.prototype =
 
         var drPage = this.CurrentPageInfo.drawingPage;
 
-        var dPR = window.devicePixelRatio;
-        var xDst = drPage.left * dPR;
-        var yDst = drPage.top * dPR;
-        var wDst = (drPage.right - drPage.left) * dPR;
-        var hDst = (drPage.bottom - drPage.top) * dPR;
+        var rPR = AscCommon.AscBrowser.retinaPixelRatio;
+        var xDst = drPage.left * rPR;
+        var yDst = drPage.top * rPR;
+        var wDst = (drPage.right - drPage.left) * rPR;
+        var hDst = (drPage.bottom - drPage.top) * rPR;
 
         var dKoefX = wDst / this.CurrentPageInfo.width_mm;
         var dKoefY = hDst / this.CurrentPageInfo.height_mm;
@@ -2589,19 +2589,19 @@ CAutoshapeTrack.prototype =
 
         var ctx = overlay.m_oContext;
 
-        var dist = TRACK_ADJUSTMENT_SIZE * dPR / 2;
+        var dist = TRACK_ADJUSTMENT_SIZE * rPR / 2;
 
         if (overlay.IsCellEditor)
             dist *= AscCommon.AscBrowser.retinaPixelRatio;
 
-        ctx.lineWidth = Math.round(dPR);
+        ctx.lineWidth = Math.round(rPR);
         ctx.moveTo(cx - dist, cy);
         ctx.lineTo(cx, cy - dist);
         ctx.lineTo(cx + dist, cy);
         ctx.lineTo(cx, cy + dist);
         ctx.closePath();
 
-        overlay.CheckRect(cx - dist, cy - dist, Math.round(TRACK_ADJUSTMENT_SIZE * dPR), Math.round(TRACK_ADJUSTMENT_SIZE * dPR));
+        overlay.CheckRect(cx - dist, cy - dist, Math.round(TRACK_ADJUSTMENT_SIZE * rPR), Math.round(TRACK_ADJUSTMENT_SIZE * rPR));
 
 
         if(bTextWarp === true)
@@ -2745,12 +2745,12 @@ CAutoshapeTrack.prototype =
         this.CurrentPageInfo = overlay.m_oHtmlPage.GetDrawingPageInfo(this.PageIndex);
 
         var drPage = this.CurrentPageInfo.drawingPage;
-        var dPR = window.devicePixelRatio;
+        var rPR = AscCommon.AscBrowser.retinaPixelRatio;
 
-        var xDst = drPage.left * dPR;
-        var yDst = drPage.top * dPR;
-        var wDst = (drPage.right - drPage.left) * dPR;
-        var hDst = (drPage.bottom - drPage.top) * dPR;
+        var xDst = drPage.left * rPR;
+        var yDst = drPage.top * rPR;
+        var wDst = (drPage.right - drPage.left) * rPR;
+        var hDst = (drPage.bottom - drPage.top) * rPR;
 
         var dKoefX = wDst / this.CurrentPageInfo.width_mm;
         var dKoefY = hDst / this.CurrentPageInfo.height_mm;
@@ -2796,23 +2796,23 @@ CAutoshapeTrack.prototype =
             var _oldAlpha = ctx.globalAlpha;
             ctx.globalAlpha = 1;
 
-            ctx.lineWidth = Math.round(dPR);
+            ctx.lineWidth = Math.round(rPR);
             ctx.strokeStyle = "#000000";
-            var indent = 0.5 * Math.round(dPR);
+            var indent = 0.5 * Math.round(rPR);
 
-            for (var i = 0; i < __h; i+= 2 * Math.round(dPR))
+            for (var i = 0; i < __h; i+= 2 * Math.round(rPR))
             {
                 ctx.moveTo(__x,__y + i + indent);
-                ctx.lineTo(__x + 2 * Math.round( dPR),__y + i + indent);
+                ctx.lineTo(__x + 2 * Math.round( rPR),__y + i + indent);
             }
             ctx.stroke();
 
             ctx.beginPath();
             ctx.strokeStyle = "#FFFFFF";
-            for (var i = Math.round(dPR); i < __h; i+= 2 * Math.round(dPR))
+            for (var i = Math.round(rPR); i < __h; i+= 2 * Math.round(rPR))
             {
                 ctx.moveTo(__x,__y + i + indent);
-                ctx.lineTo(__x + 2 * Math.round(dPR),__y + i + indent);
+                ctx.lineTo(__x + 2 * Math.round(rPR),__y + i + indent);
             }
             ctx.stroke();
 
@@ -2840,7 +2840,7 @@ CAutoshapeTrack.prototype =
             var _oldAlpha = ctx.globalAlpha;
             ctx.globalAlpha = 1;
 
-            ctx.lineWidth = Math.round(2 * dPR);
+            ctx.lineWidth = Math.round(2 * rPR);
             ctx.beginPath();
             ctx.strokeStyle = "#FFFFFF";
             ctx.moveTo(_x1, _y1);
@@ -2856,7 +2856,7 @@ CAutoshapeTrack.prototype =
 
             var __x = _x1;
             var __y = _y1;
-            for (var i = 0; i < _vec_len; i += Math.round(2 * dPR))
+            for (var i = 0; i < _vec_len; i += Math.round(2 * rPR))
             {
                 ctx.moveTo(__x, __y);
 
@@ -2920,14 +2920,14 @@ CAutoshapeTrack.prototype =
 
         var drPage = this.CurrentPageInfo.drawingPage;
 
-        var dPR = window.devicePixelRatio;
-        var xDst = drPage.left * dPR;
-        var yDst = drPage.top * dPR;
+        var rPR = AscCommon.AscBrowser.retinaPixelRatio;
+        var xDst = drPage.left * rPR;
+        var yDst = drPage.top * rPR;
         var wDst = drPage.right - drPage.left;
         var hDst = drPage.bottom - drPage.top;
 
-        var dKoefX = wDst / this.CurrentPageInfo.width_mm * dPR;
-        var dKoefY = hDst / this.CurrentPageInfo.height_mm * dPR;
+        var dKoefX = wDst / this.CurrentPageInfo.width_mm * rPR;
+        var dKoefY = hDst / this.CurrentPageInfo.height_mm * rPR;
 
         var __x = (xDst + dKoefX * x) >> 0;
         var __y = (yDst + dKoefY * y) >> 0;
@@ -2945,9 +2945,9 @@ CAutoshapeTrack.prototype =
             _index += 1;
 
         var _offset = AscCommon.g_comment_image_offsets[_index];
-        overlay.CheckRect(__x, __y, dPR *_offset[2], dPR *_offset[3]);
+        overlay.CheckRect(__x, __y, rPR *_offset[2], rPR *_offset[3]);
 
-        this.m_oContext.drawImage(AscCommon.g_comment_image, _offset[0], _offset[1], _offset[2], _offset[3], __x, __y, dPR * _offset[2], dPR * _offset[3]);
+        this.m_oContext.drawImage(AscCommon.g_comment_image, _offset[0], _offset[1], _offset[2], _offset[3], __x, __y, rPR * _offset[2], rPR * _offset[3]);
 
         ctx.globalAlpha = _oldAlpha;
     },
