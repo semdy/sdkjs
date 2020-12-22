@@ -2249,7 +2249,7 @@
 		}
 
 		function drawColorScalePreview(wb, w, h, colors) {
-			if (!colors || colors.length) {
+			if (!colors || !colors.length) {
 				return null;
 			}
 
@@ -2268,13 +2268,13 @@
 			var arrColors = [];
 			for (var i = 0; i < colors.length; i++) {
 				var _stop = new AscCommonExcel.GradientStop();
-				_stop.position = 0;
+				_stop.position = (i + 1)/colors.length;
 				_stop.color = colors[i];
 				arrColors.push(_stop);
 			}
 			fill.gradientFill.asc_putGradientStops(arrColors);
 
-			AscCommonExcel.drawFillCell(ctx, graphics, fill,  new AscCommon.asc_CRect(0, 0, width, height));
+			AscCommonExcel.drawFillCell(ctx, graphics, fill,  new AscCommon.asc_CRect(0, 0, w, h));
 
 			return new AscCommon.CStyleImage(null, null, oCanvas.toDataURL("image/png"));
 		}

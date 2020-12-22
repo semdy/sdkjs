@@ -568,7 +568,17 @@
 		return res;
 	};
 	CColorScale.prototype.asc_getPreview = function (api, width, height) {
-		AscCommonExcel.drawColorScalePreview(api.wb, width, height, this.aColors);
+		return AscCommonExcel.drawColorScalePreview(api.wb, width, height, this.aColors);
+	};
+	CColorScale.prototype.asc_setCFVOs = function (val) {
+		this.aCFVOs = val;
+	};
+	CColorScale.prototype.asc_getColors = function () {
+		var res = [];
+		for (var i = 0; i < this.aColors.length; ++i) {
+			res.push(Asc.colorObjToAscColor(this.aColors[i]));
+		}
+		return res;
 	};
 
 	function CDataBar() {
@@ -970,6 +980,7 @@
 	prot = CColorScale;
 	prot['asc_getCFVOs'] = prot.asc_getCFVOs;
 	prot['asc_getColors'] = prot.asc_getColors;
+	prot['asc_getPreview'] = prot.asc_getPreview;
 
 	prot = CDataBar;
 	prot['asc_getShowValue'] = prot.asc_getShowValue;
