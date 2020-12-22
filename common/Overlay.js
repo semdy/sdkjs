@@ -2364,8 +2364,10 @@ CAutoshapeTrack.prototype =
 
     AddRect : function(ctx, x, y, r, b, bIsClever)
     {
-        if (bIsClever)
+        if (bIsClever) {
+            var indent = 0.5 * Math.round(AscCommon.AscBrowser.retinaPixelRatio);
             ctx.rect(x + indent, y + indent, r - x + 1, b - y + 1);
+        }
         else
         {
             ctx.moveTo(x,y);

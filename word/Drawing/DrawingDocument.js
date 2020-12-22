@@ -3849,10 +3849,11 @@ function CDrawingDocument()
 		var dKoefX = (drPage.right - drPage.left) / _page.width_mm;
 		var dKoefY = (drPage.bottom - drPage.top) / _page.height_mm;
 
-		var _x = (drPage.left + dKoefX * this.FrameRect.Rect.X);
-		var _y = (drPage.top + dKoefY * this.FrameRect.Rect.Y);
-		var _r = (drPage.left + dKoefX * this.FrameRect.Rect.R);
-		var _b = (drPage.top + dKoefY * this.FrameRect.Rect.B);
+		var rPR = AscCommon.AscBrowser.retinaPixelRatio;
+		var _x = (drPage.left + dKoefX * this.FrameRect.Rect.X) * rPR;
+		var _y = (drPage.top + dKoefY * this.FrameRect.Rect.Y) * rPR;
+		var _r = (drPage.left + dKoefX * this.FrameRect.Rect.R) * rPR;
+		var _b = (drPage.top + dKoefY * this.FrameRect.Rect.B) * rPR;
 
 		if (_x < overlay.min_x)
 			overlay.min_x = _x;
@@ -3866,17 +3867,17 @@ function CDrawingDocument()
 
 		var ctx = overlay.m_oContext;
 		ctx.strokeStyle = "#939393";
-		ctx.lineWidth = 1;
+		ctx.lineWidth = Math.round(rPR);
 
 		ctx.beginPath();
 		this.AutoShapesTrack.AddRectDashClever(ctx, _x >> 0, _y >> 0, _r >> 0, _b >> 0, 2, 2, true);
 		ctx.beginPath();
 
-		var _w = 4;
-		var _wc = 5;
+		var _w = Math.round(4 * rPR);
+		var _wc = Math.round(5 * rPR);
 
-		var _x1 = (_x >> 0) + 1;
-		var _y1 = (_y >> 0) + 1;
+		var _x1 = (_x >> 0) + Math.round(rPR);
+		var _y1 = (_y >> 0) + Math.round(rPR);
 
 		var _x2 = (_r >> 0) - _w;
 		var _y2 = (_b >> 0) - _w;
@@ -3906,10 +3907,10 @@ function CDrawingDocument()
 			dKoefX = (drPage.right - drPage.left) / _page.width_mm;
 			dKoefY = (drPage.bottom - drPage.top) / _page.height_mm;
 
-			var __x = (drPage.left + dKoefX * this.FrameRect.Track.L) >> 0;
-			var __y = (drPage.top + dKoefY * this.FrameRect.Track.T) >> 0;
-			var __r = (drPage.left + dKoefX * this.FrameRect.Track.R) >> 0;
-			var __b = (drPage.top + dKoefY * this.FrameRect.Track.B) >> 0;
+			var __x = (drPage.left + dKoefX * this.FrameRect.Track.L) * rPR >> 0;
+			var __y = (drPage.top + dKoefY * this.FrameRect.Track.T) * rPR >> 0;
+			var __r = (drPage.left + dKoefX * this.FrameRect.Track.R) * rPR >> 0;
+			var __b = (drPage.top + dKoefY * this.FrameRect.Track.B) * rPR >> 0;
 
 			if (__x < overlay.min_x)
 				overlay.min_x = __x;
@@ -3924,7 +3925,7 @@ function CDrawingDocument()
 			ctx.strokeStyle = "#FFFFFF";
 
 			ctx.beginPath();
-			ctx.rect(__x + 0.5, __y + 0.5, __r - __x, __b - __y);
+			ctx.rect(__x + 0.5 * Math.round(rPR), __y + 0.5 * Math.round(rPR), __r - __x, __b - __y);
 			ctx.stroke();
 
 			ctx.strokeStyle = "#000000";
