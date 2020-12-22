@@ -2248,6 +2248,37 @@
 			return new AscCommon.CStyleImage(text, null, oCanvas.toDataURL("image/png"));
 		}
 
+		function drawColorScalePreview(wb, w, h, colors) {
+			if (!colors || colors.length) {
+				return null;
+			}
+
+			if (AscCommon.AscBrowser.isRetina) {
+				w = AscCommon.AscBrowser.convertToRetinaValue(w, true);
+				h = AscCommon.AscBrowser.convertToRetinaValue(h, true);
+			}
+
+			var ctx = getContext(w, h, wb);
+			var oCanvas = ctx.getCanvas();
+			var graphics = getGraphics(ctx);
+
+			//var endColor = AscCommonExcel.getDataBarGradientColor(color);
+			var fill = new AscCommonExcel.Fill();
+			fill.gradientFill = new AscCommonExcel.GradientFill();
+			var arrColors = [];
+			for (var i = 0; i < colors.length; i++) {
+				var _stop = new AscCommonExcel.GradientStop();
+				_stop.position = 0;
+				_stop.color = colors[i];
+				arrColors.push(_stop);
+			}
+			fill.gradientFill.asc_putGradientStops(arrColors);
+
+			AscCommonExcel.drawFillCell(ctx, graphics, fill,  new AscCommon.asc_CRect(0, 0, width, height));
+
+			return new AscCommon.CStyleImage(null, null, oCanvas.toDataURL("image/png"));
+		}
+
 		//-----------------------------------------------------------------
 		// События движения мыши
 		//-----------------------------------------------------------------
@@ -3082,6 +3113,7 @@
 		window["AscCommonExcel"].generateSlicerStyles = generateSlicerStyles;
 		window["AscCommonExcel"].generateXfsStyle = generateXfsStyle;
 		window["AscCommonExcel"].getIconsForLoad = getIconsForLoad;
+		window["AscCommonExcel"].drawColorScalePreview = drawColorScalePreview;
 
 		window["AscCommonExcel"].referenceType = referenceType;
 		window["Asc"].Range = Range;

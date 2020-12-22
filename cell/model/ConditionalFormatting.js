@@ -539,19 +539,22 @@
 		return null;
 	};
 
-	function CColorScale () {
+	function CColorScale() {
 		this.aCFVOs = [];
 		this.aColors = [];
 
 		return this;
 	}
+
 	CColorScale.prototype.type = Asc.ECfType.colorScale;
-	CColorScale.prototype.clone = function() {
+	CColorScale.prototype.clone = function () {
 		var i, res = new CColorScale();
-		for (i = 0; i < this.aCFVOs.length; ++i)
+		for (i = 0; i < this.aCFVOs.length; ++i) {
 			res.aCFVOs.push(this.aCFVOs[i].clone());
-		for (i = 0; i < this.aColors.length; ++i)
+		}
+		for (i = 0; i < this.aColors.length; ++i) {
 			res.aColors.push(this.aColors[i].clone());
+		}
 		return res;
 	};
 	CColorScale.prototype.asc_getCFVOs = function () {
@@ -564,8 +567,11 @@
 		}
 		return res;
 	};
+	CColorScale.prototype.asc_getPreview = function (api, width, height) {
+		AscCommonExcel.drawColorScalePreview(api.wb, width, height, this.aColors);
+	};
 
-	function CDataBar () {
+	function CDataBar() {
 		this.MaxLength = 90;
 		this.MinLength = 10;
 		this.ShowValue = true;
@@ -583,8 +589,9 @@
 		this.AxisColor = null;
 		return this;
 	}
+
 	CDataBar.prototype.type = Asc.ECfType.dataBar;
-	CDataBar.prototype.clone = function() {
+	CDataBar.prototype.clone = function () {
 		var i, res = new CDataBar();
 		res.MaxLength = this.MaxLength;
 		res.MinLength = this.MinLength;
@@ -594,18 +601,24 @@
 		res.Direction = this.Direction;
 		res.NegativeBarColorSameAsPositive = this.NegativeBarColorSameAsPositive;
 		res.NegativeBarBorderColorSameAsPositive = this.NegativeBarBorderColorSameAsPositive;
-		for (i = 0; i < this.aCFVOs.length; ++i)
+		for (i = 0; i < this.aCFVOs.length; ++i) {
 			res.aCFVOs.push(this.aCFVOs[i].clone());
-		if (this.Color)
+		}
+		if (this.Color) {
 			res.Color = this.Color.clone();
-		if (this.NegativeColor)
+		}
+		if (this.NegativeColor) {
 			res.NegativeColor = this.NegativeColor.clone();
-		if (this.BorderColor)
+		}
+		if (this.BorderColor) {
 			res.BorderColor = this.BorderColor.clone();
-		if (this.NegativeBorderColor)
+		}
+		if (this.NegativeBorderColor) {
 			res.NegativeBorderColor = this.NegativeBorderColor.clone();
-		if (this.AxisColor)
+		}
+		if (this.AxisColor) {
 			res.AxisColor = this.AxisColor.clone();
+		}
 		return res;
 	};
 	CDataBar.prototype.asc_getShowValue = function () {
