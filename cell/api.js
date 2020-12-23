@@ -4907,11 +4907,13 @@ var editor;
 
       switch (type) {
         case Asc.ECfType.colorScale:
-            //todo преобразовать цвета
             res = AscCommonExcel.drawColorScalePreview(this.wb, w, h, props);
           break;
         case Asc.ECfType.dataBar:
-
+			var xfs = new AscCommonExcel.CellXfs();
+			xfs.fill = props[0];
+			xfs.border = props[1];
+			res = xfs.asc_getPreview(this, text, w, h);
           break;
         default:
           res = props.asc_getPreview(this, text, w, h);
