@@ -539,6 +539,78 @@
 		return null;
 	};
 
+	CConditionalFormattingRule.prototype.asc_setType = function (val) {
+		this.type = val;
+	};
+	CConditionalFormattingRule.prototype.asc_setDxf = function (val) {
+		this.dxf = val;
+	};
+	CConditionalFormattingRule.prototype.asc_setLocation = function (val) {
+		var t = this;
+		if (val) {
+			this.ranges = [];
+			val.forEach(function (item) {
+				t.ranges.push(AscCommonExcel.g_oRangeCache.getAscRange(item));
+			});
+		}
+	};
+
+	//TODO?
+	CConditionalFormattingRule.prototype.asc_setContainsText = function () {
+		/*if (null !== this.text) {
+			return this.text;
+		}
+		var ruleElement = this.aRuleElements[1];
+		return ruleElement && ruleElement.getFormula ? ruleElement.Text : null;*/
+	};
+
+	CConditionalFormattingRule.prototype.asc_setTimePeriod = function (val) {
+		this.timePeriod = val;
+	};
+	CConditionalFormattingRule.prototype.asc_setOperator = function (val) {
+		this.operator = val;
+	};
+	CConditionalFormattingRule.prototype.asc_setRank = function (val) {
+		this.rank = val;
+	};
+	CConditionalFormattingRule.prototype.asc_setBottom = function (val) {
+		this.bottom = val;
+	};
+	CConditionalFormattingRule.prototype.asc_setPercent = function (val) {
+		this.percent = val;
+	};
+	CConditionalFormattingRule.prototype.asc_setAboveAverage = function (val) {
+		this.aboveAverage = val;
+	};
+	CConditionalFormattingRule.prototype.asc_setEqualAverage = function (val) {
+		this.equalAverage = val;
+	};
+	CConditionalFormattingRule.prototype.asc_setStdDev = function (val) {
+		this.stdDev = val;
+	};
+
+	//TODO?
+	CConditionalFormattingRule.prototype.asc_setValue1 = function () {
+		/*var ruleElement = this.aRuleElements[0];
+		return ruleElement && ruleElement.getFormula ? ruleElement.Text : null;*/
+	};
+	//TODO?
+	CConditionalFormattingRule.prototype.asc_setValue2 = function () {
+		/*var ruleElement = this.aRuleElements[1];
+		return ruleElement && ruleElement.getFormula ? ruleElement.Text : null;*/
+	};
+	//TODO?
+	CConditionalFormattingRule.prototype.asc_setColorScaleOrDataBarOrIconSetRule = function () {
+		/*if ((Asc.ECfType.dataBar === this.type || Asc.ECfType.iconSet === this.type ||
+			Asc.ECfType.colorScale === this.type) && 1 === this.aRuleElements.length) {
+			var res = this.aRuleElements[0];
+			if (res && this.type === res.type) {
+				return res;
+			}
+		}
+		return null;*/
+	};
+
 	function CColorScale() {
 		this.aCFVOs = [];
 		this.aColors = [];
@@ -573,12 +645,11 @@
 	CColorScale.prototype.asc_setCFVOs = function (val) {
 		this.aCFVOs = val;
 	};
-	CColorScale.prototype.asc_getColors = function () {
-		var res = [];
-		for (var i = 0; i < this.aColors.length; ++i) {
-			res.push(Asc.colorObjToAscColor(this.aColors[i]));
+	CColorScale.prototype.asc_setColors = function (val) {
+		this.aColors = [];
+		for (var i = 0; i < val.length; ++i) {
+			this.aColors.push(AscCommonExcel.CorrectAscColor(val[i]));
 		}
-		return res;
 	};
 
 	function CDataBar() {
@@ -668,6 +739,43 @@
 		return Asc.colorObjToAscColor(this.AxisColor);
 	};
 
+	CDataBar.prototype.asc_setShowValue = function (val) {
+		this.ShowValue = val;
+	};
+	CDataBar.prototype.asc_getAxisPosition = function (val) {
+		return this.AxisPosition;
+	};
+	CDataBar.prototype.asc_getGradient = function (val) {
+		this.Gradient = val;
+	};
+	CDataBar.prototype.asc_getDirection = function (val) {
+		this.Direction = val;
+	};
+	CDataBar.prototype.asc_getNegativeBarColorSameAsPositive = function (val) {
+		this.NegativeBarColorSameAsPositive = val;
+	};
+	CDataBar.prototype.asc_getNegativeBarBorderColorSameAsPositive = function (val) {
+		this.NegativeBarBorderColorSameAsPositive = val;
+	};
+	CDataBar.prototype.asc_getCFVOs = function (val) {
+		this.aCFVOs = val;
+	};
+	CDataBar.prototype.asc_getColor = function (val) {
+		this.Color = AscCommonExcel.CorrectAscColor(val);
+	};
+	CDataBar.prototype.asc_getNegativeColor = function (val) {
+		this.NegativeColor = AscCommonExcel.CorrectAscColor(val);
+	};
+	CDataBar.prototype.asc_getBorderColor = function (val) {
+		this.BorderColor = AscCommonExcel.CorrectAscColor(val);
+	};
+	CDataBar.prototype.asc_getNegativeBorderColor = function (val) {
+		this.NegativeBorderColor = AscCommonExcel.CorrectAscColor(val);
+	};
+	CDataBar.prototype.asc_getAxisColor = function (val) {
+		this.AxisColor = AscCommonExcel.CorrectAscColor(val);
+	};
+
 	function CFormulaCF () {
 		this.Text = null;
 		this._f = null;
@@ -742,6 +850,22 @@
 		return this.aIconSets;
 	};
 
+	CIconSet.prototype.asc_setIconSet = function (val) {
+		this.IconSet = val;
+	};
+	CIconSet.prototype.asc_setReverse = function (val) {
+		 this.Reverse = val;
+	};
+	CIconSet.prototype.asc_setShowValue = function (val) {
+		 this.ShowValue = val;
+	};
+	CIconSet.prototype.asc_setCFVOs = function (val) {
+		 this.aCFVOs = val;
+	};
+	CIconSet.prototype.asc_setIconSets = function (val) {
+		 this.aIconSets = val;
+	};
+
 	function CConditionalFormatValueObject () {
 		this.Gte = true;
 		this.Type = null;
@@ -768,6 +892,15 @@
 	};
 	CConditionalFormatValueObject.prototype.asc_getVal = function () {
 		return this.Val;
+	};
+	CConditionalFormatValueObject.prototype.asc_setGte = function (val) {
+		this.Gte = val;
+	};
+	CConditionalFormatValueObject.prototype.asc_setType = function (val) {
+		this.Type = val;
+	};
+	CConditionalFormatValueObject.prototype.asc_setVal = function (val) {
+		this.Val = val;
 	};
 
 	function CConditionalFormatIconSet () {
@@ -976,11 +1109,29 @@
 	prot['asc_getValue1'] = prot.asc_getValue1;
 	prot['asc_getValue2'] = prot.asc_getValue2;
 	prot['asc_getColorScaleOrDataBarOrIconSetRule'] = prot.asc_getColorScaleOrDataBarOrIconSetRule;
+	prot['asc_setDxf'] = prot.asc_setDxf;
+	prot['asc_setType'] = prot.asc_setType;
+	prot['asc_setLocation'] = prot.asc_setLocation;
+	//prot['asc_setContainsText'] = prot.asc_getContainsText;
+	prot['asc_setTimePeriod'] = prot.asc_setTimePeriod;
+	prot['asc_setOperator'] = prot.asc_setOperator;
+	prot['asc_setRank'] = prot.asc_setRank;
+	prot['asc_setBottom'] = prot.asc_setBottom;
+	prot['asc_setPercent'] = prot.asc_setPercent;
+	prot['asc_setAboveAverage'] = prot.asc_setAboveAverage;
+	prot['asc_setEqualAverage'] = prot.asc_setEqualAverage;
+	prot['asc_setStdDev'] = prot.asc_setStdDev;
+	//prot['asc_setValue1'] = prot.asc_setValue1;
+	//prot['asc_setValue2'] = prot.asc_setValue2;
+	//prot['asc_setColorScaleOrDataBarOrIconSetRule'] = prot.asc_setColorScaleOrDataBarOrIconSetRule;
+
 
 	prot = CColorScale;
 	prot['asc_getCFVOs'] = prot.asc_getCFVOs;
 	prot['asc_getColors'] = prot.asc_getColors;
 	prot['asc_getPreview'] = prot.asc_getPreview;
+	prot['asc_setCFVOs'] = prot.asc_setCFVOs;
+	prot['asc_setColors'] = prot.asc_setColors;
 
 	prot = CDataBar;
 	prot['asc_getShowValue'] = prot.asc_getShowValue;
@@ -995,6 +1146,18 @@
 	prot['asc_getBorderColor'] = prot.asc_getBorderColor;
 	prot['asc_getNegativeBorderColor'] = prot.asc_getNegativeBorderColor;
 	prot['asc_getAxisColor'] = prot.asc_getAxisColor;
+	prot['asc_setShowValue'] = prot.asc_setShowValue;
+	prot['asc_setAxisPosition'] = prot.asc_setAxisPosition;
+	prot['asc_setGradient'] = prot.asc_setGradient;
+	prot['asc_setDirection'] = prot.asc_setDirection;
+	prot['asc_setNegativeBarColorSameAsPositive'] = prot.asc_setNegativeBarColorSameAsPositive;
+	prot['asc_setNegativeBarBorderColorSameAsPositive'] = prot.asc_setNegativeBarBorderColorSameAsPositive;
+	prot['asc_setCFVOs'] = prot.asc_setCFVOs;
+	prot['asc_setColor'] = prot.asc_setColor;
+	prot['asc_setNegativeColor'] = prot.asc_setNegativeColor;
+	prot['asc_setBorderColor'] = prot.asc_setBorderColor;
+	prot['asc_setNegativeBorderColor'] = prot.asc_setNegativeBorderColor;
+	prot['asc_setAxisColor'] = prot.asc_setAxisColor;
 
 	prot = CIconSet;
 	prot['asc_getIconSet'] = prot.asc_getIconSet;
@@ -1002,9 +1165,17 @@
 	prot['asc_getShowValue'] = prot.asc_getShowValue;
 	prot['asc_getCFVOs'] = prot.asc_getCFVOs;
 	prot['asc_getIconSets'] = prot.asc_getIconSets;
+	prot['asc_setIconSet'] = prot.asc_setIconSet;
+	prot['asc_setReverse'] = prot.asc_setReverse;
+	prot['asc_setShowValue'] = prot.asc_setShowValue;
+	prot['asc_setCFVOs'] = prot.asc_setCFVOs;
+	prot['asc_setIconSets'] = prot.asc_setIconSets;
 
 	prot = CConditionalFormatValueObject;
 	prot['asc_getGte'] = prot.asc_getGte;
 	prot['asc_getType'] = prot.asc_getType;
 	prot['asc_getVal'] = prot.asc_getVal;
+	prot['asc_setGte'] = prot.asc_setGte;
+	prot['asc_setType'] = prot.asc_setType;
+	prot['asc_setVal'] = prot.asc_setVal;
 })(window);
