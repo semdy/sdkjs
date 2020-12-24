@@ -2975,8 +2975,6 @@ var g_oBorderProperties = {
 	CellXfs.prototype.asc_getPreview = function (api, text, width, height) {
 		return AscCommonExcel.generateXfsStyle(width, height, api.wb, this, text);
 	};
-
-
 	CellXfs.prototype.asc_setFillColor = function (val) {
 		//var color = AscCommonExcel.CorrectAscColor(val);
 		//this.getFill2().bg() = color;

@@ -145,8 +145,10 @@
 		writer.WriteBool(this.bottom);
 
 		if (null != this.dxf) {
+			var dxf = this.dxf;
 			writer.WriteBool(true);
-			this.dxf.Write_ToBinary2(writer);
+			var oBinaryStylesTableWriter = new AscCommonExcel.BinaryStylesTableWriter(writer);
+			oBinaryStylesTableWriter.bs.WriteItem(0, function(){oBinaryStylesTableWriter.WriteDxf(dxf);});
 		} else {
 			writer.WriteBool(false);
 		}
@@ -239,11 +241,19 @@
 		this.activePresent = reader.GetBool();
 		this.bottom = reader.GetBool();
 
-		var obj, length, i;
+		var length, i;
 		if (reader.GetBool()) {
-			obj = new AscCommonExcel.CellXfs();
-			obj.Read_FromBinary2(reader);
-			this.dxf = obj;
+			var api_sheet = Asc['editor'];
+			var wb = api_sheet.wbModel;
+			var bsr = new AscCommonExcel.Binary_StylesTableReader(reader, wb);
+			var bcr = new AscCommon.Binary_CommonReader(reader);
+			var oDxf = new AscCommonExcel.CellXfs();
+			reader.GetUChar();
+			length = reader.GetULongLE();
+			bcr.Read1(length, function (t, l) {
+				return bsr.ReadDxf(t, l, oDxf);
+			});
+			this.dxf = oDxf;
 		}
 
 		this.equalAverage = reader.GetBool();
