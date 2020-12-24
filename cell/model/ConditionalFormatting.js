@@ -811,6 +811,59 @@
 		}
 		return res;
 	};
+	CColorScale.prototype.Write_ToBinary2 = function (writer) {
+		//CConditionalFormatValueObject
+		var i;
+		if (null != this.aCFVOs) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.aCFVOs.length);
+			for (i = 0; i < this.aCFVOs.length; i++) {
+				this.aCFVOs[i].Write_ToBinary2(writer);
+			}
+		} else {
+			writer.WriteBool(false);
+		}
+		//rgbcolor,...
+		if (null != this.aColors) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.aColors.length);
+			for (i = 0; i < this.aColors.length; i++) {
+				writer.WriteLong(this.aColors[i].asc_getType());
+				this.aColors[i].Write_ToBinary2(writer);
+			}
+		} else {
+			writer.WriteBool(false);
+		}
+	};
+	CColorScale.prototype.Read_FromBinary2 = function (reader) {
+		var i, length, elem;
+		if (reader.GetBool()) {
+			length = reader.GetULong();
+			for (i = 0; i < length; ++i) {
+				if (!this.aCFVOs) {
+					this.aCFVOs = [];
+				}
+				elem = new CConditionalFormatValueObject();
+				this.aCFVOs.push(elem.Read_FromBinary2(reader));
+			}
+		}
+
+		if (reader.GetBool()) {
+			length = reader.GetULong();
+			for (i = 0; i < length; ++i) {
+				if (!this.aColors) {
+					this.aColors = [];
+				}
+				//TODO colors!!!
+				var type = reader.GetLong();
+				switch (type) {
+					case Asc.ECfType.colorScale:
+						break;
+				}
+				this.aColors.push(elem.Read_FromBinary2(reader));
+			}
+		}
+	};
 	CColorScale.prototype.asc_getCFVOs = function () {
 		return this.aCFVOs;
 	};
@@ -883,6 +936,202 @@
 			res.AxisColor = this.AxisColor.clone();
 		}
 		return res;
+	};
+	CDataBar.prototype.Write_ToBinary2 = function (writer) {
+		if (null != this.MaxLength) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.MaxLength);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.MinLength) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.MinLength);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.ShowValue) {
+			writer.WriteBool(true);
+			writer.WriteBool(this.ShowValue);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.AxisPosition) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.AxisPosition);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.Gradient) {
+			writer.WriteBool(true);
+			writer.WriteBool(this.Gradient);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.Direction) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.Direction);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.NegativeBarColorSameAsPositive) {
+			writer.WriteBool(true);
+			writer.WriteBool(this.NegativeBarColorSameAsPositive);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.NegativeBarBorderColorSameAsPositive) {
+			writer.WriteBool(true);
+			writer.WriteBool(this.NegativeBarBorderColorSameAsPositive);
+		} else {
+			writer.WriteBool(false);
+		}
+
+		//CConditionalFormatValueObject
+		if (null != this.aCFVOs) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.aCFVOs.length);
+			for (var i = 0; i < this.aCFVOs.length; i++) {
+				this.aCFVOs[i].Write_ToBinary2(writer);
+			}
+		} else {
+			writer.WriteBool(false);
+		}
+
+		if (null != this.Color) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.Color.asc_getType());
+			this.Color.Write_ToBinary2(writer);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.NegativeColor) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.NegativeColor.asc_getType());
+			this.NegativeColor.Write_ToBinary2(writer);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.BorderColor) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.Color.asc_getType());
+			this.BorderColor.Write_ToBinary2(writer);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.NegativeBorderColor) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.NegativeBorderColor.asc_getType());
+			this.NegativeBorderColor.Write_ToBinary2(writer);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.AxisColor) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.AxisColor.asc_getType());
+			this.AxisColor.Write_ToBinary2(writer);
+		} else {
+			writer.WriteBool(false);
+		}
+	};
+	CDataBar.prototype.Read_FromBinary2 = function (reader) {
+		if (reader.GetBool()) {
+			this.MaxLength = reader.GetLong();
+		}
+		if (reader.GetBool()) {
+			this.MinLength = reader.GetLong();
+		}
+		if (reader.GetBool()) {
+			this.ShowValue = reader.GetBool();
+		}
+		if (reader.GetBool()) {
+			this.AxisPosition = reader.GetLong();
+		}
+		if (reader.GetBool()) {
+			this.Gradient = reader.GetBool();
+		}
+		if (reader.GetBool()) {
+			this.Direction = reader.GetLong();
+		}
+		if (reader.GetBool()) {
+			this.NegativeBarColorSameAsPositive = reader.GetBool();
+		}
+		if (reader.GetBool()) {
+			this.NegativeBarBorderColorSameAsPositive = reader.GetLong();
+		}
+
+		var i, length, type, elem;
+		if (reader.GetBool()) {
+			length = reader.GetULong();
+			for (i = 0; i < length; ++i) {
+				if (!this.aCFVOs) {
+					this.aCFVOs = [];
+				}
+				elem = new CConditionalFormatValueObject();
+				this.aCFVOs.push(elem.Read_FromBinary2(reader));
+			}
+		}
+
+		if (reader.GetBool()) {
+			//TODO colors!!!
+			type = reader.GetLong();
+			switch (type) {
+				case Asc.ECfType.colorScale:
+					elem = null;
+					break;
+			}
+			this.Color = elem.Read_FromBinary2(reader);
+		}
+		if (reader.GetBool()) {
+			//TODO colors!!!
+			type = reader.GetLong();
+			switch (type) {
+				case Asc.ECfType.colorScale:
+					elem = null;
+					break;
+			}
+			this.Color = elem.Read_FromBinary2(reader);
+		}
+		if (reader.GetBool()) {
+			//TODO colors!!!
+			type = reader.GetLong();
+			switch (type) {
+				case Asc.ECfType.colorScale:
+					elem = null;
+					break;
+			}
+			this.NegativeColor = elem.Read_FromBinary2(reader);
+		}
+		if (reader.GetBool()) {
+			//TODO colors!!!
+			type = reader.GetLong();
+			switch (type) {
+				case Asc.ECfType.colorScale:
+					elem = null;
+					break;
+			}
+			this.BorderColor = elem.Read_FromBinary2(reader);
+		}
+		if (reader.GetBool()) {
+			//TODO colors!!!
+			type = reader.GetLong();
+			switch (type) {
+				case Asc.ECfType.colorScale:
+					elem = null;
+					break;
+			}
+			this.NegativeBorderColor = elem.Read_FromBinary2(reader);
+		}
+		if (reader.GetBool()) {
+			//TODO colors!!!
+			type = reader.GetLong();
+			switch (type) {
+				case Asc.ECfType.colorScale:
+					elem = null;
+					break;
+			}
+			this.AxisColor = elem.Read_FromBinary2(reader);
+		}
 	};
 	CDataBar.prototype.asc_getShowValue = function () {
 		return this.ShowValue;
@@ -1015,6 +1264,93 @@
 		for (i = 0; i < this.aIconSets.length; ++i)
 			res.aIconSets.push(this.aIconSets[i].clone());
 		return res;
+	};
+	CIconSet.prototype.Write_ToBinary2 = function (writer) {
+		if (null != this.IconSet) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.IconSet);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.Percent) {
+			writer.WriteBool(true);
+			writer.WriteBool(this.Percent);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.Reverse) {
+			writer.WriteBool(true);
+			writer.WriteBool(this.Reverse);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.ShowValue) {
+			writer.WriteBool(true);
+			writer.WriteBool(this.ShowValue);
+		} else {
+			writer.WriteBool(false);
+		}
+
+		//CConditionalFormatValueObject
+		var i;
+		if (null != this.aCFVOs) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.aCFVOs.length);
+			for (i = 0; i < this.aCFVOs.length; i++) {
+				this.aCFVOs[i].Write_ToBinary2(writer);
+			}
+		} else {
+			writer.WriteBool(false);
+		}
+
+		//new AscCommonExcel.CConditionalFormatIconSet()
+		if (null != this.aIconSets) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.aIconSets.length);
+			for (i = 0; i < this.aIconSets.length; i++) {
+				this.aIconSets[i].Write_ToBinary2(writer);
+			}
+		} else {
+			writer.WriteBool(false);
+		}
+	};
+	CDataBar.prototype.Read_FromBinary2 = function (reader) {
+		if (reader.GetBool()) {
+			this.IconSet = reader.GetLong();
+		}
+		if (reader.GetBool()) {
+			this.Percent = reader.GetBool();
+		}
+		if (reader.GetBool()) {
+			this.Reverse = reader.GetBool();
+		}
+		if (reader.GetBool()) {
+			this.ShowValue = reader.GetBool();
+		}
+
+
+		var i, length, elem;
+		if (reader.GetBool()) {
+			length = reader.GetULong();
+			for (i = 0; i < length; ++i) {
+				if (!this.aCFVOs) {
+					this.aCFVOs = [];
+				}
+				elem = new CConditionalFormatValueObject();
+				this.aCFVOs.push(elem.Read_FromBinary2(reader));
+			}
+		}
+
+		if (reader.GetBool()) {
+			length = reader.GetULong();
+			for (i = 0; i < length; ++i) {
+				if (!this.aIconSets) {
+					this.aIconSets = [];
+				}
+				elem = new CConditionalFormatIconSet();
+				this.aIconSets.push(elem.Read_FromBinary2(reader));
+			}
+		}
 	};
 	CIconSet.prototype.asc_getIconSet = function () {
 		return this.IconSet;
