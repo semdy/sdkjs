@@ -139,6 +139,188 @@
 		}
 		return res;
 	};
+	CConditionalFormattingRule.prototype.Write_ToBinary2 = function (writer) {
+		writer.WriteBool(this.aboveAverage);
+		writer.WriteBool(this.activePresent);
+		writer.WriteBool(this.bottom);
+
+		if (null != this.dxf) {
+			writer.WriteBool(true);
+			this.dxf.Write_ToBinary2(writer);
+		} else {
+			writer.WriteBool(false);
+		}
+
+		writer.WriteBool(this.equalAverage);
+
+		if (null != this.operator) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.operator);
+		} else {
+			writer.WriteBool(false);
+		}
+
+		writer.WriteBool(this.percent);
+
+		if (null != this.priority) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.priority);
+		} else {
+			writer.WriteBool(false);
+		}
+
+		if (null != this.rank) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.rank);
+		} else {
+			writer.WriteBool(false);
+		}
+
+		if (null != this.stdDev) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.stdDev);
+		} else {
+			writer.WriteBool(false);
+		}
+
+		writer.WriteBool(this.stopIfTrue);
+
+		if (null != this.text) {
+			writer.WriteBool(true);
+			writer.WriteString2(this.text);
+		} else {
+			writer.WriteBool(false);
+		}
+
+		if (null != this.timePeriod) {
+			writer.WriteBool(true);
+			writer.WriteString2(this.timePeriod);
+		} else {
+			writer.WriteBool(false);
+		}
+
+		if (null != this.type) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.type);
+		} else {
+			writer.WriteBool(false);
+		}
+
+		var i;
+		if (null != this.aRuleElements) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.aRuleElements.length);
+			for (i = 0; i < this.aRuleElements.length; i++) {
+				writer.WriteLong(this.aRuleElements[i].type);
+				this.aRuleElements[i].Write_ToBinary2(writer);
+			}
+		} else {
+			writer.WriteBool(false);
+		}
+
+		writer.WriteBool(this.pivot);
+
+		if (null != this.ranges) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.ranges.length);
+			for (i = 0; i < this.ranges.length; i++) {
+				writer.WriteLong(this.ranges[i].r1);
+				writer.WriteLong(this.ranges[i].c1);
+				writer.WriteLong(this.ranges[i].r2);
+				writer.WriteLong(this.ranges[i].c2);
+			}
+		} else {
+			writer.WriteBool(false);
+		}
+	};
+
+	CConditionalFormattingRule.prototype.Read_FromBinary2 = function (reader) {
+		this.aboveAverage = reader.GetBool();
+		this.activePresent = reader.GetBool();
+		this.bottom = reader.GetBool();
+
+		var obj, length, i;
+		if (reader.GetBool()) {
+			obj = new AscCommonExcel.CellXfs();
+			obj.Read_FromBinary2(reader);
+			this.dxf = obj;
+		}
+
+		this.equalAverage = reader.GetBool();
+
+		if (reader.GetBool()) {
+			this.operator = reader.GetLong();
+		}
+
+		this.percent = reader.GetBool();
+
+		if (reader.GetBool()) {
+			this.priority = reader.GetLong();
+		}
+
+		if (reader.GetBool()) {
+			this.rank = reader.GetLong();
+		}
+
+		if (reader.GetBool()) {
+			this.stdDev = reader.GetLong();
+		}
+
+		this.stopIfTrue = reader.GetBool();
+
+		if (reader.GetBool()) {
+			this.text = reader.GetString2();
+		}
+
+		if (reader.GetBool()) {
+			this.timePeriod = reader.GetString2();
+		}
+
+		if (reader.GetBool()) {
+			this.type = reader.GetLong();
+		}
+
+		if (reader.GetBool()) {
+			length = reader.GetULong();
+			for (i = 0; i < length; ++i) {
+				if (!this.aRuleElements) {
+					this.aRuleElements = [];
+				}
+				var type = reader.GetLong();
+				var elem;
+				switch (type) {
+					case Asc.ECfType.colorScale:
+						elem = new CColorScale();
+						break;
+					case Asc.ECfType.dataBar:
+						elem = new CDataBar();
+						break;
+					case Asc.ECfType.iconSet:
+						elem = new CIconSet();
+						break;
+						//TODO ?CFormulaCF
+				}
+				this.aRuleElements.push(elem.Read_FromBinary2(reader));
+			}
+		}
+
+		this.pivot = reader.GetBool();
+
+		if (reader.GetBool()) {
+			length = reader.GetULong();
+			for (i = 0; i < length; ++i) {
+				if (!this.ranges) {
+					this.ranges = [];
+				}
+				var r1 = reader.GetLong();
+				var c1 = reader.GetLong();
+				var r2 = reader.GetLong();
+				var c2 = reader.GetLong();
+				this.ranges.push(new Asc.Range(c1, r1, c2, r2));
+			}
+		}
+	};
+
 	CConditionalFormattingRule.prototype.getTimePeriod = function () {
 		var start, end;
 		var now = new Asc.cDate();
