@@ -1314,7 +1314,7 @@
 			writer.WriteBool(false);
 		}
 	};
-	CDataBar.prototype.Read_FromBinary2 = function (reader) {
+	CIconSet.prototype.Read_FromBinary2 = function (reader) {
 		if (reader.GetBool()) {
 			this.IconSet = reader.GetLong();
 		}
@@ -1402,6 +1402,77 @@
 		res.formula = this.formula ? this.formula.clone() : null;
 		return res;
 	};
+	CConditionalFormatValueObject.prototype.Write_ToBinary2 = function (writer) {
+		if (null != this.Gte) {
+			writer.WriteBool(true);
+			writer.WriteBool(this.IconSet);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.Type) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.Type);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.Val) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.Val);
+		} else {
+			writer.WriteBool(false);
+		}
+
+		//not format
+		/*if (null != this.formulaParent) {
+			writer.WriteBool(true);
+			//writer.WriteLong(this.Color.asc_getType());
+			this.formulaParent.Write_ToBinary2(writer);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.formula) {
+			writer.WriteBool(true);
+			//writer.WriteLong(this.Color.asc_getType());
+			this.formula.Write_ToBinary2(writer);
+		} else {
+			writer.WriteBool(false);
+		}*/
+	};
+	CConditionalFormatValueObject.prototype.Read_FromBinary2 = function (reader) {
+		if (reader.GetBool()) {
+			this.Gte = reader.GetBool();
+		}
+		if (reader.GetBool()) {
+			this.Type = reader.GetLong();
+		}
+		if (reader.GetBool()) {
+			this.Val = reader.GetBool();
+		}
+
+		//not format
+		/*var i, length, elem;
+		if (reader.GetBool()) {
+			length = reader.GetULong();
+			for (i = 0; i < length; ++i) {
+				if (!this.aCFVOs) {
+					this.aCFVOs = [];
+				}
+				elem = new CConditionalFormatValueObject();
+				this.aCFVOs.push(elem.Read_FromBinary2(reader));
+			}
+		}
+
+		if (reader.GetBool()) {
+			length = reader.GetULong();
+			for (i = 0; i < length; ++i) {
+				if (!this.aIconSets) {
+					this.aIconSets = [];
+				}
+				elem = new CConditionalFormatIconSet();
+				this.aIconSets.push(elem.Read_FromBinary2(reader));
+			}
+		}*/
+	};
 	CConditionalFormatValueObject.prototype.asc_getGte = function () {
 		return this.Gte;
 	};
@@ -1432,6 +1503,28 @@
 		res.IconSet = this.IconSet;
 		res.IconId = this.IconId;
 		return res;
+	};
+	CConditionalFormatIconSet.prototype.Write_ToBinary2 = function (writer) {
+		if (null != this.IconSet) {
+			writer.WriteBool(true);
+			writer.WriteBool(this.IconSet);
+		} else {
+			writer.WriteBool(false);
+		}
+		if (null != this.IconId) {
+			writer.WriteBool(true);
+			writer.WriteLong(this.IconId);
+		} else {
+			writer.WriteBool(false);
+		}
+	};
+	CConditionalFormatIconSet.prototype.Read_FromBinary2 = function (reader) {
+		if (reader.GetBool()) {
+			this.IconSet = reader.GetBool();
+		}
+		if (reader.GetBool()) {
+			this.IconId = reader.GetLong();
+		}
 	};
 
 	function CGradient (c1, c2) {
