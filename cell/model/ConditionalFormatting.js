@@ -331,6 +331,41 @@
 		}
 	};
 
+	CConditionalFormattingRule.prototype.set = function (val) {
+
+		this.aboveAverage = this.checkProperty(this.aboveAverage, val.aboveAverage, AscCH.historyitem_Slicer_SetCaption);
+		this.activePresent = this.checkProperty(this.activePresent, val.activePresent, AscCH.historyitem_Slicer_SetCaption);
+		this.bottom = this.checkProperty(this.bottom, val.bottom, AscCH.historyitem_Slicer_SetCaption);
+
+		this.equalAverage = this.checkProperty(this.bottom, val.bottom, AscCH.historyitem_Slicer_SetCaption);
+
+		this.operator = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
+		this.percent = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
+		this.priority = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
+		this.rank = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
+		this.stdDev = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
+		this.stopIfTrue = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
+		this.text = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
+		this.timePeriod = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
+		this.type = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
+		this.pivot = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
+
+		//this.id = null;
+
+		//this.aRuleElements = [];
+		//this.dxf = null;
+		//this.ranges = null;
+	};
+
+	CConditionalFormattingRule.prototype.checkProperty = function (propOld, propNew, type) {
+		if (propOld !== propNew) {
+			History.Add(AscCommonExcel.g_oUndoRedoSlicer, type,
+				this.ws.getId(), null, new AscCommonExcel.UndoRedoData_Slicer(this.name, propOld, propNew));
+			return propNew;
+		}
+		return propOld;
+	};
+
 	CConditionalFormattingRule.prototype.getTimePeriod = function () {
 		var start, end;
 		var now = new Asc.cDate();
