@@ -1740,7 +1740,6 @@ function (window, undefined) {
 				}
 
 				return tablePart;
-				break;
 			}
 			case this.Properties.nCol:
 				return this.nCol;

@@ -337,18 +337,18 @@
 		this.activePresent = this.checkProperty(this.activePresent, val.activePresent, AscCH.historyitem_Slicer_SetCaption);
 		this.bottom = this.checkProperty(this.bottom, val.bottom, AscCH.historyitem_Slicer_SetCaption);
 
-		this.equalAverage = this.checkProperty(this.bottom, val.bottom, AscCH.historyitem_Slicer_SetCaption);
+		this.equalAverage = this.checkProperty(this.equalAverage, val.equalAverage, AscCH.historyitem_Slicer_SetCaption);
 
 		this.operator = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
-		this.percent = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
-		this.priority = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
-		this.rank = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
-		this.stdDev = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
-		this.stopIfTrue = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
-		this.text = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
-		this.timePeriod = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
-		this.type = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
-		this.pivot = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
+		this.percent = this.checkProperty(this.percent, val.percent, AscCH.historyitem_Slicer_SetCaption);
+		this.priority = this.checkProperty(this.priority, val.priority, AscCH.historyitem_Slicer_SetCaption);
+		this.rank = this.checkProperty(this.rank, val.rank, AscCH.historyitem_Slicer_SetCaption);
+		this.stdDev = this.checkProperty(this.stdDev, val.stdDev, AscCH.historyitem_Slicer_SetCaption);
+		this.stopIfTrue = this.checkProperty(this.stopIfTrue, val.stopIfTrue, AscCH.historyitem_Slicer_SetCaption);
+		this.text = this.checkProperty(this.text, val.text, AscCH.historyitem_Slicer_SetCaption);
+		this.timePeriod = this.checkProperty(this.timePeriod, val.timePeriod, AscCH.historyitem_Slicer_SetCaption);
+		this.type = this.checkProperty(this.type, val.type, AscCH.historyitem_Slicer_SetCaption);
+		this.pivot = this.checkProperty(this.pivot, val.pivot, AscCH.historyitem_Slicer_SetCaption);
 
 		//this.id = null;
 
