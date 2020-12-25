@@ -4899,28 +4899,34 @@ var editor;
     };
 
   spreadsheet_api.prototype.asc_getPreviewCF = function (type, props, text, w, h) {
-      var res;
+    var res;
 
-      if (!props) {
-        return null;
-      }
+    if (!props) {
+      return null;
+    }
 
-      switch (type) {
-        case Asc.ECfType.colorScale:
-            res = AscCommonExcel.drawColorScalePreview(this.wb, w, h, props);
-          break;
-        case Asc.ECfType.dataBar:
-			var xfs = new AscCommonExcel.CellXfs();
-			xfs.fill = props[0];
-			xfs.border = props[1];
-			res = xfs.asc_getPreview(this, text, w, h);
-          break;
-        default:
-          res = props.asc_getPreview(this, text, w, h);
-      }
+    switch (type) {
+      case Asc.ECfType.colorScale:
+        res = AscCommonExcel.drawColorScalePreview(this.wb, w, h, props);
+        break;
+      case Asc.ECfType.dataBar:
+        var xfs = new AscCommonExcel.CellXfs();
+        xfs.fill = props[0];
+        xfs.border = props[1];
+        res = xfs.asc_getPreview(this, text, w, h);
+        break;
+      default:
+        res = props.asc_getPreview(this, text, w, h);
+    }
 
-      return res;
+    return res;
   };
+
+  spreadsheet_api.prototype.asc_setCF = function (arr) {
+    var ws = this.wb.getWorksheet();
+    ws.setCF(arr);
+  };
+
   spreadsheet_api.prototype.asc_beforeInsertSlicer = function () {
     //пока возвращаю только данные о ф/т
     return this.wb.beforeInsertSlicer();

@@ -20833,10 +20833,34 @@
 			t.model.setDataValidationProps(props);
 
 			History.EndTransaction();
-		}
+		};
 		
 		//TODO необходимо расширить диапазон лока ещё диапазонами, data validate которых изменяется
 		//TODO необходимо ли лочить каждый объект data validate?
+		this._isLockedCells(_selection, /*subType*/null, callback);
+	};
+
+	WorksheetView.prototype.setCF = function (arr) {
+		var t = this;
+
+		var callback = function (success) {
+			if (!success) {
+				return;
+			}
+			History.Create_NewPoint();
+			History.StartTransaction();
+
+			for (var i = 0; i < arr.length; i++) {
+				t.model.setCF(arr[i]);
+			}
+
+			History.EndTransaction();
+		};
+
+		var _selection = [];
+		for (var i = 0; i < arr.length; i++) {
+			_selection = _selection.concat(arr[i].ranges);
+		}
 		this._isLockedCells(_selection, /*subType*/null, callback);
 	};
 

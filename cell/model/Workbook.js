@@ -9045,6 +9045,30 @@
 		}
 	};
 
+	Worksheet.prototype.setCF = function (val) {
+		var t = this;
+
+		var callback = function (success) {
+			if (!success) {
+				return;
+			}
+			History.Create_NewPoint();
+			History.StartTransaction();
+
+			for (var i = 0; i < arr.length; i++) {
+				t.model.setCF(arr[i]);
+			}
+
+			History.EndTransaction();
+		};
+
+		var _selection = [];
+		for (var i = 0; i < arr.length; i++) {
+			_selection = _selection.concat(arr[i].ranges);
+		}
+		this._isLockedCells(_selection, /*subType*/null, callback);
+	};
+
 //-------------------------------------------------------------------------------------------------
 	var g_nCellOffsetFlag = 0;
 	var g_nCellOffsetXf = g_nCellOffsetFlag + 1;
