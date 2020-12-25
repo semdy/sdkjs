@@ -1252,12 +1252,13 @@
             var _x, _y, _r, _b;
             var _koefX = (_pages[_pageStart].drawingPage.right - _pages[_pageStart].drawingPage.left) / _pages[_pageStart].width_mm;
             var _koefY = (_pages[_pageStart].drawingPage.bottom - _pages[_pageStart].drawingPage.top) / _pages[_pageStart].height_mm;
+            var rPR = AscCommon.AscBrowser.retinaPixelRatio;
 
             for (var nIndexContentControl = 0; nIndexContentControl < this.ContentControlObjects.length; nIndexContentControl++)
             {
                 _object = this.ContentControlObjects[nIndexContentControl];
                 _object.SetColor(ctx);
-                ctx.lineWidth = 1;
+                ctx.lineWidth = Math.round(rPR);
 
                 if (!_object.transform)
                 {
@@ -1274,13 +1275,13 @@
 
                             ctx.beginPath();
 
-                            _x = (_drawingPage.left + _koefX * (_geom.X + _object.OffsetX));
-                            _y = (_drawingPage.top  + _koefY * (_geom.Y + _object.OffsetY));
-                            _r = (_drawingPage.left + _koefX * (_geom.R + _object.OffsetX));
-                            _b = (_drawingPage.top  + _koefY * (_geom.B + _object.OffsetY));
+                            _x = (_drawingPage.left + _koefX * (_geom.X + _object.OffsetX)) * rPR ;
+                            _y = (_drawingPage.top  + _koefY * (_geom.Y + _object.OffsetY)) * rPR;
+                            _r = (_drawingPage.left + _koefX * (_geom.R + _object.OffsetX)) * rPR;
+                            _b = (_drawingPage.top  + _koefY * (_geom.B + _object.OffsetY)) * rPR;
 
                             overlay.CheckRect(_x, _y, _r - _x, _b - _y);
-                            ctx.rect((_x >> 0) + 0.5, (_y >> 0) + 0.5, (_r - _x) >> 0, (_b - _y) >> 0);
+                            ctx.rect((_x >> 0) + 0.5 * Math.round(rPR), (_y >> 0) + 0.5 * Math.round(rPR), (_r - _x) >> 0, (_b - _y) >> 0);
 
                             if (_object.state == AscCommon.ContentControlTrack.Hover)
                                 ctx.fill();
@@ -1303,13 +1304,13 @@
 
                             for (var pointIndex = 0, pointCount = _geom.Points.length; pointIndex < pointCount; pointIndex++)
                             {
-                                _x = (_drawingPage.left + _koefX * (_geom.Points[pointIndex].X + _object.OffsetX));
-                                _y = (_drawingPage.top  + _koefY * (_geom.Points[pointIndex].Y + _object.OffsetY));
+                                _x = (_drawingPage.left + _koefX * (_geom.Points[pointIndex].X + _object.OffsetX)) * rPR;
+                                _y = (_drawingPage.top  + _koefY * (_geom.Points[pointIndex].Y + _object.OffsetY)) * rPR;
 
                                 overlay.CheckPoint(_x, _y);
 
-                                _x = (_x >> 0) + 0.5;
-                                _y = (_y >> 0) + 0.5;
+                                _x = (_x >> 0) + 0.5 * Math.round(rPR);
+                                _y = (_y >> 0) + 0.5 * Math.round(rPR);
 
                                 if (0 == pointCount)
                                     ctx.moveTo(_x, _y);
@@ -1349,15 +1350,15 @@
                             var x4 = _object.transform.TransformPointX(_geom.X, _geom.B);
                             var y4 = _object.transform.TransformPointY(_geom.X, _geom.B);
 
-                            x1 = _drawingPage.left + _koefX * x1;
-                            x2 = _drawingPage.left + _koefX * x2;
-                            x3 = _drawingPage.left + _koefX * x3;
-                            x4 = _drawingPage.left + _koefX * x4;
+                            x1 = (_drawingPage.left + _koefX * x1) * rPR;
+                            x2 = (_drawingPage.left + _koefX * x2) * rPR;
+                            x3 = (_drawingPage.left + _koefX * x3) * rPR;
+                            x4 = (_drawingPage.left + _koefX * x4) * rPR;
 
-                            y1 = _drawingPage.top + _koefY * y1;
-                            y2 = _drawingPage.top + _koefY * y2;
-                            y3 = _drawingPage.top + _koefY * y3;
-                            y4 = _drawingPage.top + _koefY * y4;
+                            y1 = (_drawingPage.top + _koefY * y1) * rPR;
+                            y2 = (_drawingPage.top + _koefY * y2) * rPR;
+                            y3 = (_drawingPage.top + _koefY * y3) * rPR;
+                            y4 = (_drawingPage.top + _koefY * y4) * rPR;
 
                             ctx.beginPath();
 
@@ -1396,8 +1397,8 @@
                                 _x = _object.transform.TransformPointX(_geom.Points[pointIndex].X, _geom.Points[pointIndex].Y);
                                 _y = _object.transform.TransformPointY(_geom.Points[pointIndex].X, _geom.Points[pointIndex].Y);
 
-                                _x = (_drawingPage.left + _koefX * _x);
-                                _y = (_drawingPage.top + _koefY * _y);
+                                _x = (_drawingPage.left + _koefX * _x) * rPR;
+                                _y = (_drawingPage.top + _koefY * _y) * rPR;
 
                                 overlay.CheckPoint(_x, _y);
 
@@ -1426,43 +1427,43 @@
                         _drawingPage = _pages[_object.Pos.Page].drawingPage;
                         if (!_object.transform)
                         {
-                            _x = ((_drawingPage.left + _koefX * (_object.Pos.X + _object.OffsetX)) >> 0) + 0.5;
-                            _y = ((_drawingPage.top + _koefY * (_object.Pos.Y + _object.OffsetY)) >> 0) + 0.5;
+                            _x = (((_drawingPage.left + _koefX * (_object.Pos.X + _object.OffsetX)) * rPR) >> 0) + 0.5 * Math.round(rPR);
+                            _y = (((_drawingPage.top + _koefY * (_object.Pos.Y + _object.OffsetY)) * rPR) >> 0) + 0.5 * Math.round(rPR);
 
                             if (_object.Name != "" || 0 != _object.Buttons.length)
-                                _y -= 20;
+                                _y -= Math.round(20 * rPR);
                             else
-                                _x -= 15;
+                                _x -= Math.round(15 * rPR);
 
                             var widthName = 0;
                             if (_object.Name != "")
-                                widthName = (_object.CalculateNameRect(_koefX, _koefY).W * _koefX) >> 0;
+                                widthName = ((_object.CalculateNameRect(_koefX, _koefY).W * _koefX) * rPR) >> 0;
 
-                            var widthHeader = widthName + 20 * _object.Buttons.length;
+                            var widthHeader = (widthName + 20 * _object.Buttons.length * rPR) >> 0 ;
                             var xText = _x;
 
                             if (!_object.IsNoButtons)
                             {
-                                widthHeader += 15;
-                                xText += 15;
+                                widthHeader += Math.round(15 * rPR);
+                                xText += Math.round(15 * rPR);
                             }
 
                             if (0 == widthHeader)
                                 continue;
 
                             // сразу чекаем весь хедер
-                            overlay.CheckRect(_x, _y, widthHeader, 20);
+                            overlay.CheckRect(_x, _y, widthHeader, Math.round(20 * rPR) );
 
                             // рисуем подложку
                             ctx.fillStyle = AscCommonWord.GlobalSkin.ContentControlsBack;
-                            ctx.rect(_x, _y, widthHeader, 20);
+                            ctx.rect(_x, _y, widthHeader, Math.round(20 * rPR));
                             ctx.fill();
                             ctx.beginPath();
 
                             // draw mover in header
                             if (!_object.IsNoButtons)
                             {
-                                ctx.rect(_x, _y, 15, 20);
+                                ctx.rect(_x, _y, Math.round(15 * rPR), Math.round(20 * rPR));
                                 ctx.fillStyle = (1 == this.ContentControlObjectState) ? AscCommonWord.GlobalSkin.ContentControlsAnchorActive : AscCommonWord.GlobalSkin.ContentControlsBack;
                                 ctx.fill();
                                 ctx.beginPath();
@@ -1470,13 +1471,13 @@
                                 if (1 == this.ContentControlObjectState)
                                 {
                                     ctx.fillStyle = AscCommonWord.GlobalSkin.ContentControlsAnchorActive;
-                                    ctx.rect(_x, _y, 15, 20);
+                                    ctx.rect(_x, _y, Math.round(15 * rPR), Math.round(20 * rPR));
                                     ctx.fill();
                                     ctx.beginPath();
                                 }
 
-                                var cx = _x - 0.5 + 4;
-                                var cy = _y - 0.5 + 4;
+                                var cx = _x - 0.5 * Math.round(rPR) + Math.round(4 * rPR);
+                                var cy = _y - 0.5 * Math.round(rPR) + Math.round(4 * rPR);
 
                                 var _color1 = "#ADADAD";
                                 var _color2 = "#D4D4D4";
@@ -1487,42 +1488,42 @@
                                     _color2 = "#9D9D9D";
                                 }
 
-                                overlay.AddRect(cx, cy, 3, 3);
-                                overlay.AddRect(cx + 5, cy, 3, 3);
-                                overlay.AddRect(cx, cy + 5, 3, 3);
-                                overlay.AddRect(cx + 5, cy + 5, 3, 3);
-                                overlay.AddRect(cx, cy + 10, 3, 3);
-                                overlay.AddRect(cx + 5, cy + 10, 3, 3);
+                                overlay.AddRect(cx, cy, Math.round(3 * rPR), Math.round(3 * rPR));
+                                overlay.AddRect(cx + Math.round(5 * rPR), cy, Math.round(3 * rPR), Math.round(3 * rPR));
+                                overlay.AddRect(cx, cy + Math.round(5 * rPR), Math.round(3 * rPR), Math.round(3 * rPR));
+                                overlay.AddRect(cx + Math.round(5 * rPR), cy + Math.round(5 * rPR), Math.round(3 * rPR), Math.round(3 * rPR));
+                                overlay.AddRect(cx, cy + Math.round(10 * rPR), Math.round(3 * rPR), Math.round(3 * rPR));
+                                overlay.AddRect(cx + Math.round(5 * rPR), cy + Math.round(10 * rPR), Math.round(3 * rPR), Math.round(3 * rPR));
 
                                 ctx.fillStyle = _color2;
                                 ctx.fill();
                                 ctx.beginPath();
 
-                                ctx.moveTo(cx + 1.5, cy);
-                                ctx.lineTo(cx + 1.5, cy + 3);
-                                ctx.moveTo(cx + 6.5, cy);
-                                ctx.lineTo(cx + 6.5, cy + 3);
-                                ctx.moveTo(cx + 1.5, cy + 5);
-                                ctx.lineTo(cx + 1.5, cy + 8);
-                                ctx.moveTo(cx + 6.5, cy + 5);
-                                ctx.lineTo(cx + 6.5, cy + 8);
-                                ctx.moveTo(cx + 1.5, cy + 10);
-                                ctx.lineTo(cx + 1.5, cy + 13);
-                                ctx.moveTo(cx + 6.5, cy + 10);
-                                ctx.lineTo(cx + 6.5, cy + 13);
+                                ctx.moveTo(cx + Math.round(1 * rPR) + 0.5 * Math.round(rPR), cy);
+                                ctx.lineTo(cx + Math.round(1 * rPR) + 0.5 * Math.round(rPR), cy + Math.round(3 * rPR));
+                                ctx.moveTo(cx + Math.round(6 * rPR) + 0.5 * Math.round(rPR), cy);
+                                ctx.lineTo(cx + Math.round(6 * rPR) + 0.5 * Math.round(rPR), cy + Math.round(3 * rPR));
+                                ctx.moveTo(cx + Math.round(1 * rPR) + 0.5 * Math.round(rPR), cy + Math.round(5 * rPR));
+                                ctx.lineTo(cx + Math.round(1 * rPR) + 0.5 * Math.round(rPR), cy + Math.round(8 * rPR));
+                                ctx.moveTo(cx + Math.round(6 * rPR) + 0.5 * Math.round(rPR), cy + Math.round(5 * rPR));
+                                ctx.lineTo(cx + Math.round(6 * rPR) + 0.5 * Math.round(rPR), cy + Math.round(8 * rPR));
+                                ctx.moveTo(cx + Math.round(1 * rPR) + 0.5 * Math.round(rPR), cy + Math.round(10 * rPR));
+                                ctx.lineTo(cx + Math.round(1 * rPR) + 0.5 * Math.round(rPR), cy + Math.round(13 * rPR));
+                                ctx.moveTo(cx + Math.round(6 * rPR) + 0.5 * Math.round(rPR), cy + Math.round(10 * rPR));
+                                ctx.lineTo(cx + Math.round(6 * rPR) + 0.5 * Math.round(rPR), cy + Math.round(13 * rPR));
 
-                                ctx.moveTo(cx, cy + 1.5);
-                                ctx.lineTo(cx + 3, cy + 1.5);
-                                ctx.moveTo(cx + 5, cy + 1.5);
-                                ctx.lineTo(cx + 8, cy + 1.5);
-                                ctx.moveTo(cx, cy + 6.5);
-                                ctx.lineTo(cx + 3, cy + 6.5);
-                                ctx.moveTo(cx + 5, cy + 6.5);
-                                ctx.lineTo(cx + 8, cy + 6.5);
-                                ctx.moveTo(cx, cy + 11.5);
-                                ctx.lineTo(cx + 3, cy + 11.5);
-                                ctx.moveTo(cx + 5, cy + 11.5);
-                                ctx.lineTo(cx + 8, cy + 11.5);
+                                ctx.moveTo(cx, cy + Math.round(1 * rPR) + 0.5 * Math.round(rPR));
+                                ctx.lineTo(cx + Math.round(3 * rPR), cy + Math.round(1 * rPR) + 0.5 * Math.round(rPR));
+                                ctx.moveTo(cx + Math.round(5 * rPR), cy + Math.round(1 * rPR) + 0.5 * Math.round(rPR));
+                                ctx.lineTo(cx + Math.round(8 * rPR), cy + Math.round(1 * rPR) + 0.5 * Math.round(rPR));
+                                ctx.moveTo(cx, cy + Math.round(6.5 * rPR));
+                                ctx.lineTo(cx + Math.round(3 * rPR), cy + Math.round(6 * rPR) + 0.5 * Math.round(rPR));
+                                ctx.moveTo(cx + Math.round(5 * rPR), cy + Math.round(6 * rPR) + 0.5 * Math.round(rPR));
+                                ctx.lineTo(cx + Math.round(8 * rPR), cy + Math.round(6 * rPR) + 0.5 * Math.round(rPR));
+                                ctx.moveTo(cx, cy + Math.round(11 * rPR) + 0.5 * Math.round(rPR));
+                                ctx.lineTo(cx + Math.round(3 * rPR), cy + Math.round(11 * rPR) + 0.5 * Math.round(rPR));
+                                ctx.moveTo(cx + Math.round(5 * rPR), cy + Math.round(11 * rPR) + 0.5 * Math.round(rPR));
+                                ctx.lineTo(cx + Math.round(8 * rPR), cy + Math.round(11 * rPR) + 0.5 * Math.round(rPR));
 
                                 ctx.strokeStyle = _color1;
                                 ctx.stroke();
@@ -1539,28 +1540,28 @@
                                 else
                                     ctx.fillStyle = AscCommonWord.GlobalSkin.ContentControlsBack;
 
-                                ctx.rect(xText, _y, widthName, 20);
+                                ctx.rect(xText, _y, widthName, Math.round(20 * rPR));
                                 ctx.fill();
                                 ctx.beginPath();
 
                                 ctx.fillStyle = (_object.ActiveButtonIndex == -1) ? AscCommonWord.GlobalSkin.ContentControlsTextActive : AscCommonWord.GlobalSkin.ContentControlsText;
-                                ctx.font = this.getFont();
-                                ctx.fillText(_object.Name, xText + 3, _y + 20 - 6);
+                                ctx.font = Math.round(11 * rPR) + "px Helvetica, Arial, sans-serif";
+                                ctx.fillText(_object.Name, xText + Math.round(3 * rPR), _y + Math.round(20 * rPR) - Math.round(6 * rPR));
 
                                 if (_object.IsNameAdvanced() && !_object.IsNoButtons)
                                 {
-                                    var nY = _y - 0.5;
-                                    nY += 10;
-                                    nY -= 1;
+                                    var nY = _y - 0.5 * Math.round(rPR);
+                                    nY += Math.round(10 * rPR);
+                                    nY -= Math.round(rPR);
 
-                                    var plus = AscCommon.AscBrowser.isCustomScalingAbove2() ? 0.5 : 1;
+                                    var plus = AscCommon.AscBrowser.isCustomScalingAbove2() ? 0.5 * (rPR >> 0): (rPR >> 0);
+                                    ctx.lineWidth = Math.round(rPR);
+                                    var nX = (xText + widthName - (7 * rPR >> 0)) >> 0;
+                                    for (var i = 0; i <=  (2 * rPR >> 0); i+=plus)
+                                        ctx.rect(nX + i, nY + i, Math.round(rPR), Math.round(rPR));
 
-                                    var nX = (xText + widthName - 7) >> 0;
-                                    for (var i = 0; i <= 2; i+=plus)
-                                        ctx.rect(nX + i, nY + i, 1, 1);
-
-                                    for (var i = 0; i <= 2; i+=plus)
-                                        ctx.rect(nX + 4 - i, nY + i, 1, 1);
+                                    for (var i = 0; i <=  (2 * rPR >> 0); i+=plus)
+                                        ctx.rect(nX + Math.round(4 * rPR) - i, nY + i, Math.round(rPR), Math.round(rPR));
 
                                     ctx.fill();
                                     ctx.beginPath();
@@ -1584,34 +1585,34 @@
 
                                 if (isFill)
                                 {
-                                    ctx.rect(xText + widthName + 20 * nIndexB, _y, 20, 20);
+                                    ctx.rect(xText + widthName + 20 * nIndexB, _y, Math.round(20 * rPR), Math.round(20 * rPR));
                                     ctx.fill();
                                     ctx.beginPath();
                                 }
 
                                 var image = this.icons.getImage(_object.Buttons[nIndexB], nIndexB == _object.ActiveButtonIndex);
                                 if (image)
-                                    ctx.drawImage(image, (xText + widthName + 20 * nIndexB) >> 0, _y >> 0, 20, 20);
+                                    ctx.drawImage(image, (xText + widthName + rPR * 20 * nIndexB) >> 0, _y >> 0, Math.round(20 * rPR), Math.round(20 * rPR));
                             }
 
                             // рисуем единую обводку
                             _object.SetColor(ctx);
                             ctx.beginPath();
-                            ctx.rect(_x, _y, widthHeader, 20);
+                            ctx.rect(_x, _y, widthHeader, Math.round(20 * rPR));
                             ctx.stroke();
                             ctx.beginPath();
 
                             // есть ли комбо-кнопка?
                             if (_object.ComboRect)
                             {
-                                _x = ((_drawingPage.left + _koefX * (_object.ComboRect.X + _object.OffsetX)) >> 0) + 0.5;
-                                _y = ((_drawingPage.top + _koefY * (_object.ComboRect.Y + _object.OffsetY)) >> 0) + 0.5;
-                                _b = ((_drawingPage.top + _koefY * (_object.ComboRect.B + _object.OffsetY)) >> 0) + 0.5;
+                                _x = (((_drawingPage.left + _koefX * (_object.ComboRect.X + _object.OffsetX)) * rPR) >> 0) + 0.5 * Math.round(rPR);
+                                _y = (((_drawingPage.top + _koefY * (_object.ComboRect.Y + _object.OffsetY)) >> 0)) * rPR + 0.5 * Math.round(rPR);
+                                _b = (((_drawingPage.top + _koefY * (_object.ComboRect.B + _object.OffsetY))) * rPR >> 0) + 0.5 * Math.round(rPR);
                                 var nIndexB = _object.Buttons.length;
 
                                 ctx.beginPath();
-                                ctx.rect(_x, _y, 20, _b - _y);
-                                overlay.CheckRect(_x, _y, 20, _b - _y);
+                                ctx.rect(_x, _y, Math.round(20 * rPR), _b - _y);
+                                overlay.CheckRect(_x, _y, Math.round(20 * rPR), _b - _y);
                                 if (_object.ActiveButtonIndex == nIndexB)
                                     ctx.fillStyle = AscCommonWord.GlobalSkin.ContentControlsActive;
                                 else if (_object.HoverButtonIndex == nIndexB)
@@ -1624,8 +1625,8 @@
                                 ctx.beginPath();
 
                                 var image = this.icons.getImage(AscCommon.CCButtonType.Combo, _object.Buttons.length == _object.ActiveButtonIndex);
-                                if (image && 7 < (_b - _y))
-                                    ctx.drawImage(image, _x, _y + ((_b - _y - 20) >> 1) + 0.5, 20, 20);
+                                if (image && Math.round(7 * rPR) < (_b - _y))
+                                    ctx.drawImage(image, _x, _y + ((_b - _y - Math.round(20 * rPR)) >> 1) + 0.5 * Math.round(rPR), Math.round(20 * rPR), Math.round(20 * rPR));
                             }
                         }
                         else
