@@ -2976,6 +2976,18 @@ function (window, undefined) {
 			} else {
 				ws.deleteDataValidationById(Data.id);
 			}
+		} else if (AscCH.historyitem_Worksheet_CFRuleAdd === Type) {
+			if (bUndo) {
+				ws.deleteCFRule(Data.Id, true);
+			} else {
+				ws.addCFRule(Data.getData());
+			}
+		} else if (AscCH.historyitem_Worksheet_CFRuleDelete === Type) {
+			if (bUndo) {
+				ws.addCFRule(Data.getData());
+			} else {
+				ws.deleteCFRule(Data.Id, true);
+			}
 		}
 	};
 	UndoRedoWoorksheet.prototype.forwardTransformationIsAffect = function (Type) {

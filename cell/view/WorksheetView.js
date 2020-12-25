@@ -20851,7 +20851,7 @@
 			History.StartTransaction();
 
 			for (var i = 0; i < arr.length; i++) {
-				t.model.setCF(arr[i]);
+				t.model.setCFRule(arr[i]);
 			}
 
 			History.EndTransaction();

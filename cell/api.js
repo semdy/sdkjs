@@ -5390,6 +5390,7 @@ var editor;
   prot["asc_setRemoveDuplicates"] = prot.asc_setRemoveDuplicates;
 
   prot["asc_getCF"]        = prot.asc_getCF;
+  prot["asc_setCF"]        = prot.asc_setCF;
   prot["asc_getPreviewCF"] = prot.asc_getPreviewCF;
 
   prot["asc_beforeInsertSlicer"] = prot.asc_beforeInsertSlicer;

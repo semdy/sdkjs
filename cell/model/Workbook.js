@@ -9045,28 +9045,57 @@
 		}
 	};
 
-	Worksheet.prototype.setCF = function (val) {
-		var t = this;
-
-		var callback = function (success) {
-			if (!success) {
-				return;
-			}
-			History.Create_NewPoint();
-			History.StartTransaction();
-
-			for (var i = 0; i < arr.length; i++) {
-				t.model.setCF(arr[i]);
-			}
-
-			History.EndTransaction();
-		};
-
-		var _selection = [];
-		for (var i = 0; i < arr.length; i++) {
-			_selection = _selection.concat(arr[i].ranges);
+	Worksheet.prototype.setCFRule = function (val) {
+		if (!val) {
+			return;
 		}
-		this._isLockedCells(_selection, /*subType*/null, callback);
+		var changedRule = this.getCFRuleById(val.Id);
+		if (changedRule) {
+			this.changeCFRule(changedRule.val, val, true);
+		} else {
+			this.addCFRule(val, true);
+		}
+	};
+
+	Worksheet.prototype.getCFRuleById = function (id) {
+		if (this.aConditionalFormattingRules) {
+			for (var i = 0; i < this.aConditionalFormattingRules.length; i++) {
+				if (this.aConditionalFormattingRules[i].Id === id) {
+					return {val: this.aConditionalFormattingRules[i], index: i};
+				}
+			}
+		}
+		return null;
+	};
+
+	Worksheet.prototype.changeCFRule = function (from, to, addToHistory) {
+		if (!val) {
+			return;
+		}
+		from.set(to, addToHistory);
+	};
+
+	Worksheet.prototype.addCFRule = function (val, addToHistory) {
+		if (!val) {
+			return;
+		}
+		this.aConditionalFormattingRules.push(val);
+		if (addToHistory) {
+			History.Add(AscCommonExcel.g_oUndoRedoWorksheet, AscCH.historyitem_Worksheet_CFRuleAdd, this.getId(), null,
+				new AscCommonExcel.UndoRedoData_BinaryWrapper(val));
+		}
+	};
+
+	Worksheet.prototype.deleteCFRule = function (id, addToHistory) {
+		var oRule = this.getCFRuleById(id);
+		if (oRule) {
+			this.aConditionalFormattingRules.splice(oRule.index, 1);
+			if (addToHistory) {
+				//todo объект нужен только для undo
+				History.Add(AscCommonExcel.g_oUndoRedoWorksheet, AscCH.historyitem_Worksheet_CFRuleDelete, this.getId(), null,
+					new AscCommonExcel.UndoRedoData_BinaryWrapper(oRule.val));
+			}
+		}
 	};
 
 //-------------------------------------------------------------------------------------------------
