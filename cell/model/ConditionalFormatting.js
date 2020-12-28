@@ -352,8 +352,15 @@
 
 		//this.id = null;
 
+
+
 		//this.aRuleElements = [];
-		//this.dxf = null;
+
+		if (!(this.dxf && val.dxf && this.dxf.isEqual(val.dxf))) {
+			History.Add(AscCommonExcel.g_oUndoRedoSlicer, type,
+				this.ws.getId(), null, new AscCommonExcel.UndoRedoData_Slicer(this.name, this.dxf, val.dxf));
+			this.xfs = val.dxf;
+		}
 		//this.ranges = null;
 	};
 

@@ -2833,6 +2833,24 @@ var g_oBorderProperties = {
                 break;
         }
     };
+	CellXfs.prototype.Write_ToBinary2 = function (writer) {
+		var dxf = this.dxf;
+		var oBinaryStylesTableWriter = new AscCommonExcel.BinaryStylesTableWriter(writer);
+		oBinaryStylesTableWriter.bs.WriteItem(0, function(){oBinaryStylesTableWriter.WriteDxf(dxf);});
+	};
+	CellXfs.prototype.Read_FromBinary2 = function (reader) {
+		var api_sheet = Asc['editor'];
+		var wb = api_sheet.wbModel;
+		var bsr = new AscCommonExcel.Binary_StylesTableReader(reader, wb);
+		var bcr = new AscCommon.Binary_CommonReader(reader);
+		var oDxf = new AscCommonExcel.CellXfs();
+		reader.GetUChar();
+		length = reader.GetULongLE();
+		bcr.Read1(length, function (t, l) {
+			return bsr.ReadDxf(t, l, oDxf);
+		});
+		return oDxf;
+	};
     CellXfs.prototype.getBorder = function () {
         return this.border;
     };
