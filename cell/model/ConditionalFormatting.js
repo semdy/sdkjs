@@ -333,41 +333,50 @@
 
 	CConditionalFormattingRule.prototype.set = function (val) {
 
-		this.aboveAverage = this.checkProperty(this.aboveAverage, val.aboveAverage, AscCH.historyitem_Slicer_SetCaption);
-		this.activePresent = this.checkProperty(this.activePresent, val.activePresent, AscCH.historyitem_Slicer_SetCaption);
-		this.bottom = this.checkProperty(this.bottom, val.bottom, AscCH.historyitem_Slicer_SetCaption);
+		this.aboveAverage = this.checkProperty(this.aboveAverage, val.aboveAverage, AscCH.historyitem_CFRule_SetAboveAverage);
+		this.activePresent = this.checkProperty(this.activePresent, val.activePresent, AscCH.historyitem_CFRule_SetActivePresent);
+		this.bottom = this.checkProperty(this.bottom, val.bottom, AscCH.historyitem_CFRule_SetBottom);
 
-		this.equalAverage = this.checkProperty(this.equalAverage, val.equalAverage, AscCH.historyitem_Slicer_SetCaption);
+		this.equalAverage = this.checkProperty(this.equalAverage, val.equalAverage, AscCH.historyitem_CFRule_SetEqualAverage);
 
-		this.operator = this.checkProperty(this.operator, val.operator, AscCH.historyitem_Slicer_SetCaption);
-		this.percent = this.checkProperty(this.percent, val.percent, AscCH.historyitem_Slicer_SetCaption);
-		this.priority = this.checkProperty(this.priority, val.priority, AscCH.historyitem_Slicer_SetCaption);
-		this.rank = this.checkProperty(this.rank, val.rank, AscCH.historyitem_Slicer_SetCaption);
-		this.stdDev = this.checkProperty(this.stdDev, val.stdDev, AscCH.historyitem_Slicer_SetCaption);
-		this.stopIfTrue = this.checkProperty(this.stopIfTrue, val.stopIfTrue, AscCH.historyitem_Slicer_SetCaption);
-		this.text = this.checkProperty(this.text, val.text, AscCH.historyitem_Slicer_SetCaption);
-		this.timePeriod = this.checkProperty(this.timePeriod, val.timePeriod, AscCH.historyitem_Slicer_SetCaption);
-		this.type = this.checkProperty(this.type, val.type, AscCH.historyitem_Slicer_SetCaption);
-		this.pivot = this.checkProperty(this.pivot, val.pivot, AscCH.historyitem_Slicer_SetCaption);
+		this.operator = this.checkProperty(this.operator, val.operator, AscCH.historyitem_CFRule_SetOperator);
+		this.percent = this.checkProperty(this.percent, val.percent, AscCH.historyitem_CFRule_SetPercent);
+		this.priority = this.checkProperty(this.priority, val.priority, AscCH.historyitem_CFRule_SetPriority);
+		this.rank = this.checkProperty(this.rank, val.rank, AscCH.historyitem_CFRule_SetRank);
+		this.stdDev = this.checkProperty(this.stdDev, val.stdDev, AscCH.historyitem_CFRule_SetStdDev);
+		this.stopIfTrue = this.checkProperty(this.stopIfTrue, val.stopIfTrue, AscCH.historyitem_CFRule_SetStopIfTrue);
+		this.text = this.checkProperty(this.text, val.text, AscCH.historyitem_CFRule_SetText);
+		this.timePeriod = this.checkProperty(this.timePeriod, val.timePeriod, AscCH.historyitem_CFRule_SetTimePeriod);
+		this.type = this.checkProperty(this.type, val.type, AscCH.historyitem_CFRule_SetType);
+		this.pivot = this.checkProperty(this.pivot, val.pivot, AscCH.historyitem_CFRule_SetPivot);
 
 		//this.id = null;
 
-
-
 		//this.aRuleElements = [];
+		if (this.aRuleElements !== val.aRuleElements) {
+			History.Add(AscCommonExcel.g_oUndoRedoCF, AscCH.AscCH.historyitem_CFRule_SetPivot,
+				this.ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, this.dxf, val.dxf));
+			this.aRuleElements = val.aRuleElements;
+		}
 
 		if (!(this.dxf && val.dxf && this.dxf.isEqual(val.dxf))) {
-			History.Add(AscCommonExcel.g_oUndoRedoSlicer, type,
-				this.ws.getId(), null, new AscCommonExcel.UndoRedoData_Slicer(this.name, this.dxf, val.dxf));
+			History.Add(AscCommonExcel.g_oUndoRedoCF, AscCH.historyitem_CFRule_SetDxf,
+				this.ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, this.dxf, val.dxf));
 			this.xfs = val.dxf;
 		}
-		//this.ranges = null;
+
+		//TODO ranges - проверить запись в историю
+		if (this.ranges !== val.ranges) {
+			History.Add(AscCommonExcel.g_oUndoRedoCF, AscCH.historyitem_CFRule_SetRanges,
+				this.ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, this.ranges, val.ranges));
+			this.aRuleElements = val.aRuleElements;
+		}
 	};
 
 	CConditionalFormattingRule.prototype.checkProperty = function (propOld, propNew, type) {
 		if (propOld !== propNew) {
-			History.Add(AscCommonExcel.g_oUndoRedoSlicer, type,
-				this.ws.getId(), null, new AscCommonExcel.UndoRedoData_Slicer(this.name, propOld, propNew));
+			History.Add(AscCommonExcel.g_oUndoRedoCF, type,
+				this.ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, propOld, propNew));
 			return propNew;
 		}
 		return propOld;

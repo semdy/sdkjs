@@ -436,6 +436,8 @@ function (window, undefined) {
 
 		this.DataValidation = 140;
 
+		this.CFData = 150;
+
 		this.Create = function (nType) {
 			switch (nType) {
 				case this.ValueMultiTextElem:
@@ -615,6 +617,8 @@ function (window, undefined) {
 					break;
 				case this.DataValidation:
 					return new window['AscCommonExcel'].UndoRedoData_DataValidation();
+				case this.CFData:
+					return new AscCommonExcel.UndoRedoData_CF();
 			}
 			return null;
 		};
@@ -2091,6 +2095,50 @@ function (window, undefined) {
 				break;
 		}
 	};
+
+	function UndoRedoData_CF(id, from, to) {
+		this.id = id;
+		this.from = from;
+		this.to = to;
+	}
+
+	UndoRedoData_CF.prototype.Properties = {
+		id: 0, to: 2
+	};
+	UndoRedoData_CF.prototype.getType = function () {
+		return UndoRedoDataTypes.CFData;
+	};
+	UndoRedoData_CF.prototype.getProperties = function () {
+		return this.Properties;
+	};
+	UndoRedoData_CF.prototype.getProperty = function (nType) {
+		switch (nType) {
+			case this.Properties.id:
+				return this.id;
+				break;
+			case this.Properties.from:
+				return this.from;
+				break;
+			case this.Properties.to:
+				return this.to;
+				break;
+		}
+		return null;
+	};
+	UndoRedoData_CF.prototype.setProperty = function (nType, value) {
+		switch (nType) {
+			case this.Properties.name:
+				this.id = value;
+				break;
+			case this.Properties.from:
+				this.from = value;
+				break;
+			case this.Properties.to:
+				this.to = value;
+				break;
+		}
+	};
+
 
 	//для применения изменений
 	var UndoRedoClassTypes = new function () {
@@ -3967,6 +4015,38 @@ function (window, undefined) {
 		}
 	};
 
+	function UndoRedoCF(wb) {
+		this.wb = wb;
+		this.nType = UndoRedoClassTypes.Add(function () {
+			return AscCommonExcel.g_oUndoRedoCF;
+		});
+	}
+
+	UndoRedoCF.prototype.getClassType = function () {
+		return this.nType;
+	};
+	UndoRedoCF.prototype.Undo = function (Type, Data, nSheetId) {
+		this.UndoRedo(Type, Data, nSheetId, true);
+	};
+	UndoRedoCF.prototype.Redo = function (Type, Data, nSheetId) {
+		this.UndoRedo(Type, Data, nSheetId, false);
+	};
+	UndoRedoCF.prototype.UndoRedo = function (Type, Data, nSheetId, bUndo) {
+		var oModel = (null == nSheetId) ? this.wb : this.wb.getWorksheetById(nSheetId);
+		var api = window["Asc"]["editor"];
+		if (!api.wb || !oModel) {
+			return;
+		}
+
+		switch (Type) {
+			case AscCH.historyitem_CFRule_SetAboveAverage: {
+
+				break;
+			}
+		}
+	};
+
+
 	//----------------------------------------------------------export----------------------------------------------------
 	window['AscCommonExcel'] = window['AscCommonExcel'] || {};
 	window['AscCommonExcel'].UndoRedoItemSerializable = UndoRedoItemSerializable;
@@ -3997,6 +4077,7 @@ function (window, undefined) {
 	window['AscCommonExcel'].UndoRedoData_SortState = UndoRedoData_SortState;
 	window['AscCommonExcel'].UndoRedoData_Slicer = UndoRedoData_Slicer;
 	window['AscCommonExcel'].UndoRedoData_DataValidation = UndoRedoData_DataValidation;
+	window['AscCommonExcel'].UndoRedoData_CF = UndoRedoData_CF;
 	window['AscCommonExcel'].UndoRedoWorkbook = UndoRedoWorkbook;
 	window['AscCommonExcel'].UndoRedoCell = UndoRedoCell;
 	window['AscCommonExcel'].UndoRedoWoorksheet = UndoRedoWoorksheet;
@@ -4014,6 +4095,7 @@ function (window, undefined) {
 	window['AscCommonExcel'].UndoRedoPivotTables = UndoRedoPivotTables;
 	window['AscCommonExcel'].UndoRedoPivotFields = UndoRedoPivotFields;
 	window['AscCommonExcel'].UndoRedoSlicer = UndoRedoSlicer;
+	window['AscCommonExcel'].UndoRedoCF = UndoRedoCF;
 
 	window['AscCommonExcel'].g_oUndoRedoWorkbook = null;
 	window['AscCommonExcel'].g_oUndoRedoCell = null;
@@ -4031,4 +4113,5 @@ function (window, undefined) {
 	window['AscCommonExcel'].g_oUndoRedoHeaderFooter = null;
 	window['AscCommonExcel'].g_oUndoRedoSlicer = null;
 	window['AscCommonExcel'].g_oUndoRedoNamedSheetViews = null;
+	window['AscCommonExcel'].g_oUndoRedoCF = null;
 })(window);
