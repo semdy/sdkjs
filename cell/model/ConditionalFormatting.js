@@ -772,9 +772,6 @@
 	CConditionalFormattingRule.prototype.asc_getText = function () {
 		return this.text;
 	};
-	this.text = null;
-	this.timePeriod = null;
-	this.type = null;
 	CConditionalFormattingRule.prototype.asc_getValue1 = function () {
 		var ruleElement = this.aRuleElements[0];
 		return ruleElement && ruleElement.getFormula ? ruleElement.Text : null;
