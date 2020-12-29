@@ -4043,6 +4043,70 @@ function (window, undefined) {
 
 				break;
 			}
+			case AscCH.historyitem_CFRule_SetActivePresent: {
+
+				break;
+			}
+			case AscCH.historyitem_CFRule_SetBottom: {
+
+				break;
+			}
+			case AscCH.historyitem_CFRule_SetEqualAverage: {
+
+				break;
+			}
+			case AscCH.historyitem_CFRule_SetOperator: {
+
+				break;
+			}
+			case AscCH.historyitem_CFRule_SetOperator: {
+
+				break;
+			}
+			case AscCH.historyitem_CFRule_SetPriority: {
+
+				break;
+			}
+			case AscCH.historyitem_CFRule_SetRank: {
+
+				break;
+			}
+			case AscCH.historyitem_CFRule_SetStdDev: {
+
+				break;
+			}
+			case AscCH.historyitem_CFRule_SetStopIfTrue: {
+
+				break;
+			}
+			case AscCH.historyitem_CFRule_SetText: {
+
+				break;
+			}
+			case AscCH.historyitem_CFRule_SetTimePeriod: {
+
+				break;
+			}
+			case AscCH.historyitem_CFRule_SetType: {
+
+				break;
+			}
+			case AscCH.historyitem_CFRule_SetPivot: {
+
+				break;
+			}
+			case AscCH.historyitem_CFRule_SetDxf: {
+
+				break;
+			}
+			case AscCH.historyitem_CFRule_SetPivot: {
+
+				break;
+			}
+			case AscCH.historyitem_CFRule_SetRanges: {
+
+				break;
+			}
 		}
 	};
 
