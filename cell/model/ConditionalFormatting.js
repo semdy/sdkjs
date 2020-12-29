@@ -847,16 +847,21 @@
 		this.stopIfTrue = val;
 	};
 
-	//TODO?
-	CConditionalFormattingRule.prototype.asc_setValue1 = function () {
-		/*var ruleElement = this.aRuleElements[0];
-		return ruleElement && ruleElement.getFormula ? ruleElement.Text : null;*/
+	CConditionalFormattingRule.prototype.asc_setValue1 = function (val) {
+		if (!this.aRuleElements) {
+			this.aRuleElements = [];
+		}
+		this.aRuleElements[0] = new CFormulaCF();
+		this.aRuleElements[0].Text = val;
 	};
-	//TODO?
-	CConditionalFormattingRule.prototype.asc_setValue2 = function () {
-		/*var ruleElement = this.aRuleElements[1];
-		return ruleElement && ruleElement.getFormula ? ruleElement.Text : null;*/
+	CConditionalFormattingRule.prototype.asc_setValue2 = function (val) {
+		if (!this.aRuleElements) {
+			this.aRuleElements = [];
+		}
+		this.aRuleElements[1] = new CFormulaCF();
+		this.aRuleElements[1].Text = val;
 	};
+
 	//TODO?
 	CConditionalFormattingRule.prototype.asc_setColorScaleOrDataBarOrIconSetRule = function () {
 		/*if ((Asc.ECfType.dataBar === this.type || Asc.ECfType.iconSet === this.type ||
@@ -1808,8 +1813,8 @@
 	prot['asc_setAboveAverage'] = prot.asc_setAboveAverage;
 	prot['asc_setEqualAverage'] = prot.asc_setEqualAverage;
 	prot['asc_setStdDev'] = prot.asc_setStdDev;
-	//prot['asc_setValue1'] = prot.asc_setValue1;
-	//prot['asc_setValue2'] = prot.asc_setValue2;
+	prot['asc_setValue1'] = prot.asc_setValue1;
+	prot['asc_setValue2'] = prot.asc_setValue2;
 	//prot['asc_setColorScaleOrDataBarOrIconSetRule'] = prot.asc_setColorScaleOrDataBarOrIconSetRule;
 
 
