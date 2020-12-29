@@ -745,6 +745,9 @@
 	CConditionalFormattingRule.prototype.asc_getOperator = function () {
 		return this.operator;
 	};
+	CConditionalFormattingRule.prototype.asc_getPriority = function () {
+		return this.priority;
+	};
 	CConditionalFormattingRule.prototype.asc_getRank = function () {
 		return this.rank;
 	};
@@ -763,6 +766,15 @@
 	CConditionalFormattingRule.prototype.asc_getStdDev = function () {
 		return this.stdDev;
 	};
+	CConditionalFormattingRule.prototype.asc_getStopIfTrue = function () {
+		return this.stopIfTrue;
+	};
+	CConditionalFormattingRule.prototype.asc_getText = function () {
+		return this.text;
+	};
+	this.text = null;
+	this.timePeriod = null;
+	this.type = null;
 	CConditionalFormattingRule.prototype.asc_getValue1 = function () {
 		var ruleElement = this.aRuleElements[0];
 		return ruleElement && ruleElement.getFormula ? ruleElement.Text : null;
@@ -813,6 +825,9 @@
 	CConditionalFormattingRule.prototype.asc_setOperator = function (val) {
 		this.operator = val;
 	};
+	CConditionalFormattingRule.prototype.asc_setPriority = function (val) {
+		this.priority = val;
+	};
 	CConditionalFormattingRule.prototype.asc_setRank = function (val) {
 		this.rank = val;
 	};
@@ -830,6 +845,9 @@
 	};
 	CConditionalFormattingRule.prototype.asc_setStdDev = function (val) {
 		this.stdDev = val;
+	};
+	CConditionalFormattingRule.prototype.asc_setStopIfTrue = function (val) {
+		this.stopIfTrue = val;
 	};
 
 	//TODO?
