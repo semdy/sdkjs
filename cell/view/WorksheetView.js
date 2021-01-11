@@ -20161,6 +20161,13 @@
 		var selection = t.model.selectionRange.getLast();
 		var activeCell = t.model.selectionRange.activeCell.clone();
 
+		/*var temp = this.model.aConditionalFormattingRules[0].clone();
+		temp.id = this.model.aConditionalFormattingRules[0].id;
+		temp.activePresent = true;
+
+		this.setCF([temp]);
+		return;*/
+
 		var revertSelection = function() {
 			t.cleanSelection();
 			t.model.selectionRange.getLast().assign2(props.selection.clone());
@@ -20822,7 +20829,7 @@
 	WorksheetView.prototype.setDataValidationProps = function (props) {
 		var t = this;
 		var _selection = this.model.getSelection();
-
+		
 		var callback = function (success) {
 			if (!success) {
 				return;

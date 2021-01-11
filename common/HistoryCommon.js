@@ -1437,6 +1437,7 @@
 	window['AscDFH'].historyitem_type_PivotWorksheetSource   = 1138 << 16;
 	window['AscDFH'].historyitem_type_NamedSheetView         = 1139 << 16;
 	window['AscDFH'].historyitem_type_DataValidation         = 1140 << 16;
+	window['AscDFH'].historyitem_type_CFRule                 = 1141 << 16;
 
 
 	window['AscDFH'].historyitem_type_DocumentMacros         = 2000 << 16;

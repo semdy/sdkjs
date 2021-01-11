@@ -9049,7 +9049,7 @@
 		if (!val) {
 			return;
 		}
-		var changedRule = this.getCFRuleById(val.Id);
+		var changedRule = this.getCFRuleById(val.id);
 		if (changedRule) {
 			this.changeCFRule(changedRule.val, val, true);
 		} else {
@@ -9060,7 +9060,7 @@
 	Worksheet.prototype.getCFRuleById = function (id) {
 		if (this.aConditionalFormattingRules) {
 			for (var i = 0; i < this.aConditionalFormattingRules.length; i++) {
-				if (this.aConditionalFormattingRules[i].Id === id) {
+				if (this.aConditionalFormattingRules[i].id === id) {
 					return {val: this.aConditionalFormattingRules[i], index: i};
 				}
 			}
@@ -9069,10 +9069,10 @@
 	};
 
 	Worksheet.prototype.changeCFRule = function (from, to, addToHistory) {
-		if (!val) {
+		if (!from) {
 			return;
 		}
-		from.set(to, addToHistory);
+		from.set(to, addToHistory, this);
 	};
 
 	Worksheet.prototype.addCFRule = function (val, addToHistory) {

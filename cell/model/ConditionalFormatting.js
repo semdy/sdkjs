@@ -92,7 +92,7 @@
 		this.bottom = false;
 		this.dxf = null;
 		this.equalAverage = false;
-		this.id = null;
+		this.id = AscCommon.g_oIdCounter.Get_NewId();
 		this.operator = null;
 		this.percent = false;
 		this.priority = null;
@@ -114,6 +114,14 @@
 		return this;
 	}
 
+	CConditionalFormattingRule.prototype.Get_Id = function () {
+		return this.id;
+	};
+
+	CConditionalFormattingRule.prototype.getObjectType = function () {
+		return AscDFH.historyitem_type_CFRule;
+	};
+	
 	CConditionalFormattingRule.prototype.clone = function () {
 		var i, res = new CConditionalFormattingRule();
 		res.aboveAverage = this.aboveAverage;
@@ -140,6 +148,9 @@
 		return res;
 	};
 	CConditionalFormattingRule.prototype.Write_ToBinary2 = function (writer) {
+		//for wrapper
+		writer.WriteLong(this.getObjectType());
+
 		writer.WriteBool(this.aboveAverage);
 		writer.WriteBool(this.activePresent);
 		writer.WriteBool(this.bottom);
@@ -308,6 +319,9 @@
 					case Asc.ECfType.iconSet:
 						elem = new CIconSet();
 						break;
+					default:
+						elem = new CFormulaCF();
+						break;
 						//TODO ?CFormulaCF
 				}
 				this.aRuleElements.push(elem.Read_FromBinary2(reader));
@@ -331,52 +345,63 @@
 		}
 	};
 
-	CConditionalFormattingRule.prototype.set = function (val) {
+	CConditionalFormattingRule.prototype.set = function (val, addToHistory, ws) {
 
-		this.aboveAverage = this.checkProperty(this.aboveAverage, val.aboveAverage, AscCH.historyitem_CFRule_SetAboveAverage);
-		this.activePresent = this.checkProperty(this.activePresent, val.activePresent, AscCH.historyitem_CFRule_SetActivePresent);
-		this.bottom = this.checkProperty(this.bottom, val.bottom, AscCH.historyitem_CFRule_SetBottom);
+		this.aboveAverage = this.checkProperty(this.aboveAverage, val.aboveAverage, AscCH.historyitem_CFRule_SetAboveAverage, ws, addToHistory);
+		this.activePresent = this.checkProperty(this.activePresent, val.activePresent, AscCH.historyitem_CFRule_SetActivePresent, ws, addToHistory);
+		this.bottom = this.checkProperty(this.bottom, val.bottom, AscCH.historyitem_CFRule_SetBottom, ws, addToHistory);
 
-		this.equalAverage = this.checkProperty(this.equalAverage, val.equalAverage, AscCH.historyitem_CFRule_SetEqualAverage);
+		this.equalAverage = this.checkProperty(this.equalAverage, val.equalAverage, AscCH.historyitem_CFRule_SetEqualAverage, ws, addToHistory);
 
-		this.operator = this.checkProperty(this.operator, val.operator, AscCH.historyitem_CFRule_SetOperator);
-		this.percent = this.checkProperty(this.percent, val.percent, AscCH.historyitem_CFRule_SetPercent);
-		this.priority = this.checkProperty(this.priority, val.priority, AscCH.historyitem_CFRule_SetPriority);
-		this.rank = this.checkProperty(this.rank, val.rank, AscCH.historyitem_CFRule_SetRank);
-		this.stdDev = this.checkProperty(this.stdDev, val.stdDev, AscCH.historyitem_CFRule_SetStdDev);
-		this.stopIfTrue = this.checkProperty(this.stopIfTrue, val.stopIfTrue, AscCH.historyitem_CFRule_SetStopIfTrue);
-		this.text = this.checkProperty(this.text, val.text, AscCH.historyitem_CFRule_SetText);
-		this.timePeriod = this.checkProperty(this.timePeriod, val.timePeriod, AscCH.historyitem_CFRule_SetTimePeriod);
-		this.type = this.checkProperty(this.type, val.type, AscCH.historyitem_CFRule_SetType);
-		this.pivot = this.checkProperty(this.pivot, val.pivot, AscCH.historyitem_CFRule_SetPivot);
+		this.operator = this.checkProperty(this.operator, val.operator, AscCH.historyitem_CFRule_SetOperator, ws, addToHistory);
+		this.percent = this.checkProperty(this.percent, val.percent, AscCH.historyitem_CFRule_SetPercent, ws, addToHistory);
+		this.priority = this.checkProperty(this.priority, val.priority, AscCH.historyitem_CFRule_SetPriority, ws, addToHistory);
+		this.rank = this.checkProperty(this.rank, val.rank, AscCH.historyitem_CFRule_SetRank, ws, addToHistory);
+		this.stdDev = this.checkProperty(this.stdDev, val.stdDev, AscCH.historyitem_CFRule_SetStdDev, ws, addToHistory);
+		this.stopIfTrue = this.checkProperty(this.stopIfTrue, val.stopIfTrue, AscCH.historyitem_CFRule_SetStopIfTrue, ws, addToHistory);
+		this.text = this.checkProperty(this.text, val.text, AscCH.historyitem_CFRule_SetText, ws, addToHistory);
+		this.timePeriod = this.checkProperty(this.timePeriod, val.timePeriod, AscCH.historyitem_CFRule_SetTimePeriod, ws, addToHistory);
+		this.type = this.checkProperty(this.type, val.type, AscCH.historyitem_CFRule_SetType, ws, addToHistory);
+		this.pivot = this.checkProperty(this.pivot, val.pivot, AscCH.historyitem_CFRule_SetPivot, ws, addToHistory);
 
 		//this.id = null;
 
 		//this.aRuleElements = [];
 		if (this.aRuleElements !== val.aRuleElements) {
-			History.Add(AscCommonExcel.g_oUndoRedoCF, AscCH.AscCH.historyitem_CFRule_SetPivot,
-				this.ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, this.dxf, val.dxf));
+			if (addToHistory) {
+				History.Add(AscCommonExcel.g_oUndoRedoCF, AscCH.historyitem_CFRule_SetPivot,
+					ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, this.dxf, val.dxf));
+			}
+
 			this.aRuleElements = val.aRuleElements;
 		}
 
 		if (!(this.dxf && val.dxf && this.dxf.isEqual(val.dxf))) {
-			History.Add(AscCommonExcel.g_oUndoRedoCF, AscCH.historyitem_CFRule_SetDxf,
-				this.ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, this.dxf, val.dxf));
+			if (addToHistory) {
+				History.Add(AscCommonExcel.g_oUndoRedoCF, AscCH.historyitem_CFRule_SetDxf,
+					ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, this.dxf, val.dxf));
+			}
+
 			this.xfs = val.dxf;
 		}
 
 		//TODO ranges - проверить запись в историю
 		if (this.ranges !== val.ranges) {
-			History.Add(AscCommonExcel.g_oUndoRedoCF, AscCH.historyitem_CFRule_SetRanges,
-				this.ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, this.ranges, val.ranges));
+			if (addToHistory) {
+				History.Add(AscCommonExcel.g_oUndoRedoCF, AscCH.historyitem_CFRule_SetRanges,
+					ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, this.ranges, val.ranges));
+			}
+
 			this.aRuleElements = val.aRuleElements;
 		}
 	};
 
-	CConditionalFormattingRule.prototype.checkProperty = function (propOld, propNew, type) {
+	CConditionalFormattingRule.prototype.checkProperty = function (propOld, propNew, type, ws, addToHistory) {
 		if (propOld !== propNew) {
-			History.Add(AscCommonExcel.g_oUndoRedoCF, type,
-				this.ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, propOld, propNew));
+			if (addToHistory) {
+				History.Add(AscCommonExcel.g_oUndoRedoCF, type,
+					ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, propOld, propNew));
+			}
 			return propNew;
 		}
 		return propOld;
@@ -1306,6 +1331,19 @@
 		var res = new CFormulaCF();
 		res.Text = this.Text;
 		return res;
+	};
+	CFormulaCF.prototype.Write_ToBinary2 = function(writer) {
+		if (null != this.Text) {
+			writer.WriteBool(true);
+			writer.WriteString2(this.Text);
+		} else {
+			writer.WriteBool(false);
+		}
+	};
+	CFormulaCF.prototype.Read_FromBinary2 = function(reader) {
+		if (reader.GetBool()) {
+			this.Text = reader.GetString2();
+		}
 	};
 	CFormulaCF.prototype.init = function(ws, opt_parent) {
 		if (!this._f) {
