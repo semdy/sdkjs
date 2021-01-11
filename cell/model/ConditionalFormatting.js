@@ -364,13 +364,24 @@
 		this.type = this.checkProperty(this.type, val.type, AscCH.historyitem_CFRule_SetType, ws, addToHistory);
 		this.pivot = this.checkProperty(this.pivot, val.pivot, AscCH.historyitem_CFRule_SetPivot, ws, addToHistory);
 
-		//this.id = null;
+		var compareRuleElements = function (_elem1, _elem2) {
+			if (_elem1.length === _elem2.length) {
+				for (var i = 0; i < _elem1.length; i++) {
+					if (!_elem1[i].isEqual(_elem2[i])) {
+						return false;
+					}
+				}
 
-		//this.aRuleElements = [];
-		if (this.aRuleElements !== val.aRuleElements) {
+				return true;
+			}
+
+			return false;
+		};
+
+		if (!compareRuleElements(this.aRuleElements, val.aRuleElements)) {
 			if (addToHistory) {
-				History.Add(AscCommonExcel.g_oUndoRedoCF, AscCH.historyitem_CFRule_SetPivot,
-					ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, this.dxf, val.dxf));
+				History.Add(AscCommonExcel.g_oUndoRedoCF, AscCH.historyitem_CFRule_SetRuleElements,
+					ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, this.aRuleElements, val.aRuleElements));
 			}
 
 			this.aRuleElements = val.aRuleElements;
@@ -1344,6 +1355,9 @@
 		if (reader.GetBool()) {
 			this.Text = reader.GetString2();
 		}
+	};
+	CFormulaCF.prototype.isEqual = function(val) {
+		return val.Text === this.Text;
 	};
 	CFormulaCF.prototype.init = function(ws, opt_parent) {
 		if (!this._f) {

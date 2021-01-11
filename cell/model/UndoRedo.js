@@ -4039,66 +4039,70 @@ function (window, undefined) {
 		}
 
 		var cfRule = oModel.getCFRuleById(Data.id);
-		var value = bUndo ? Data.from : Data.to;
-		switch (Type) {
-			case AscCH.historyitem_CFRule_SetAboveAverage: {
-				cfRule.asc_setAboveAverage(value);
-				break;
-			}
-			case AscCH.historyitem_CFRule_SetActivePresent: {
-				cfRule.activePresent = value;
-				break;
-			}
-			case AscCH.historyitem_CFRule_SetBottom: {
-				cfRule.asc_setBottom(value);
-				break;
-			}
-			case AscCH.historyitem_CFRule_SetEqualAverage: {
-				cfRule.asc_setEqualAverage(value);
-				break;
-			}
-			case AscCH.historyitem_CFRule_SetOperator: {
-				cfRule.asc_setOperator(value);
-				break;
-			}
-			case AscCH.historyitem_CFRule_SetPriority: {
-				cfRule.asc_setPriority(value);
-				break;
-			}
-			case AscCH.historyitem_CFRule_SetRank: {
-				cfRule.asc_setRank(value);
-				break;
-			}
-			case AscCH.historyitem_CFRule_SetStdDev: {
-				cfRule.asc_setStdDev(value);
-				break;
-			}
-			case AscCH.historyitem_CFRule_SetStopIfTrue: {
-				cfRule.asc_setStopIfTrue(value);
-				break;
-			}
-			case AscCH.historyitem_CFRule_SetText: {
-				break;
-			}
-			case AscCH.historyitem_CFRule_SetTimePeriod: {
+		if (cfRule && cfRule.val) {
+			var value = bUndo ? Data.from : Data.to;
+			cfRule = cfRule.val;
+			
+			switch (Type) {
+				case AscCH.historyitem_CFRule_SetAboveAverage: {
+					cfRule.asc_setAboveAverage(value);
+					break;
+				}
+				case AscCH.historyitem_CFRule_SetActivePresent: {
+					cfRule.activePresent = value;
+					break;
+				}
+				case AscCH.historyitem_CFRule_SetBottom: {
+					cfRule.asc_setBottom(value);
+					break;
+				}
+				case AscCH.historyitem_CFRule_SetEqualAverage: {
+					cfRule.asc_setEqualAverage(value);
+					break;
+				}
+				case AscCH.historyitem_CFRule_SetOperator: {
+					cfRule.asc_setOperator(value);
+					break;
+				}
+				case AscCH.historyitem_CFRule_SetPriority: {
+					cfRule.asc_setPriority(value);
+					break;
+				}
+				case AscCH.historyitem_CFRule_SetRank: {
+					cfRule.asc_setRank(value);
+					break;
+				}
+				case AscCH.historyitem_CFRule_SetStdDev: {
+					cfRule.asc_setStdDev(value);
+					break;
+				}
+				case AscCH.historyitem_CFRule_SetStopIfTrue: {
+					cfRule.asc_setStopIfTrue(value);
+					break;
+				}
+				case AscCH.historyitem_CFRule_SetText: {
+					break;
+				}
+				case AscCH.historyitem_CFRule_SetTimePeriod: {
 
-				break;
-			}
-			case AscCH.historyitem_CFRule_SetType: {
+					break;
+				}
+				case AscCH.historyitem_CFRule_SetType: {
 
-				break;
-			}
-			case AscCH.historyitem_CFRule_SetPivot: {
+					break;
+				}
+				case AscCH.historyitem_CFRule_SetPivot: {
 
-				break;
-			}
-			case AscCH.historyitem_CFRule_SetDxf: {
+					break;
+				}
+				case AscCH.historyitem_CFRule_SetDxf: {
 
-				break;
-			}
-			case AscCH.historyitem_CFRule_SetRanges: {
+					break;
+				}
+				case AscCH.historyitem_CFRule_SetRanges: {
 
-				break;
+					break;
+				}
 			}
 		}
 	};
