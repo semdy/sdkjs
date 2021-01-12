@@ -1127,7 +1127,7 @@ CAutoshapeTrack.prototype =
                         if (!bIsUseImageRotateTrack)
                         {
                             ctx.beginPath();
-                            overlay.AddEllipse(xC, y1 - TRACK_DISTANCE_ROTATE, TRACK_CIRCLE_RADIUS);
+                            overlay.AddEllipse(xC, y1 - Math.round(TRACK_DISTANCE_ROTATE * rPR), Math.round(TRACK_CIRCLE_RADIUS * rPR));
 
                             ctx.fillStyle = _style_green;
                             ctx.fill();
@@ -1138,9 +1138,9 @@ CAutoshapeTrack.prototype =
                             var _image_track_rotate = overlay.GetImageTrackRotationImage();
                             if (_image_track_rotate.asc_complete)
                             {
-                                var _w = IMAGE_ROTATE_TRACK_W;
+                                var _w = Math.round(IMAGE_ROTATE_TRACK_W * rPR);
                                 var _xI = (xC + indent - _w / 2) >> 0;
-                                var _yI = y1 - TRACK_DISTANCE_ROTATE - (_w >> 1);
+                                var _yI = y1 - Math.round(TRACK_DISTANCE_ROTATE * rPR) - (_w >> 1);
 
                                 overlay.CheckRect(_xI, _yI, _w, _w);
                                 ctx.drawImage(_image_track_rotate, _xI, _yI, _w, _w);
@@ -1149,7 +1149,7 @@ CAutoshapeTrack.prototype =
 
                         ctx.beginPath();
                         ctx.moveTo(xC + indent, y1);
-                        ctx.lineTo(xC + indent, y1 - TRACK_DISTANCE_ROTATE2);
+                        ctx.lineTo(xC + indent, y1 - Math.round(TRACK_DISTANCE_ROTATE2 * rPR));
                         ctx.stroke();
 
                         ctx.beginPath();
@@ -1164,13 +1164,13 @@ CAutoshapeTrack.prototype =
 
                     if (bIsEllipceCorner)
                     {
-                        overlay.AddEllipse(x1, y1, TRACK_CIRCLE_RADIUS);
+                        overlay.AddEllipse(x1, y1, Math.round(TRACK_CIRCLE_RADIUS * rPR));
                         if (!isLine)
                         {
-                            overlay.AddEllipse(x2, y2, TRACK_CIRCLE_RADIUS);
-                            overlay.AddEllipse(x3, y3, TRACK_CIRCLE_RADIUS);
+                            overlay.AddEllipse(x2, y2, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+                            overlay.AddEllipse(x3, y3, Math.round(TRACK_CIRCLE_RADIUS * rPR));
                         }
-                        overlay.AddEllipse(x4, y4, TRACK_CIRCLE_RADIUS);
+                        overlay.AddEllipse(x4, y4, Math.round(TRACK_CIRCLE_RADIUS * rPR));
                     }
                     else
                     {
@@ -1324,7 +1324,7 @@ CAutoshapeTrack.prototype =
                         if (!bIsUseImageRotateTrack)
                         {
                             ctx.beginPath();
-                            overlay.AddEllipse(xc1 + ex2 * TRACK_DISTANCE_ROTATE, yc1 + ey2 * TRACK_DISTANCE_ROTATE, TRACK_CIRCLE_RADIUS);
+                            overlay.AddEllipse(xc1 + ex2 * TRACK_DISTANCE_ROTATE * rPR, yc1 + ey2 * TRACK_DISTANCE_ROTATE * rPR, Math.round(TRACK_CIRCLE_RADIUS * rPR));
 
                             ctx.fillStyle = _style_green;
                             ctx.fill();
@@ -1335,10 +1335,10 @@ CAutoshapeTrack.prototype =
                             var _image_track_rotate = overlay.GetImageTrackRotationImage();
                             if (_image_track_rotate.asc_complete)
                             {
-                                var _xI = xc1 + ex2 * TRACK_DISTANCE_ROTATE;
-                                var _yI = yc1 + ey2 * TRACK_DISTANCE_ROTATE;
-                                var _w = IMAGE_ROTATE_TRACK_W;
-                                var _w2 = IMAGE_ROTATE_TRACK_W / 2;
+                                var _xI = xc1 + ex2 * TRACK_DISTANCE_ROTATE * rPR;
+                                var _yI = yc1 + ey2 * TRACK_DISTANCE_ROTATE * rPR;
+                                var _w = Math.round(IMAGE_ROTATE_TRACK_W * rPR);
+                                var _w2 = Math.round(IMAGE_ROTATE_TRACK_W / 2 * rPR);
 
 								if (nIsCleverWithTransform)
 								{
@@ -1376,12 +1376,12 @@ CAutoshapeTrack.prototype =
 						if (!nIsCleverWithTransform)
 						{
 							ctx.moveTo(xc1, yc1);
-							ctx.lineTo(xc1 + ex2 * TRACK_DISTANCE_ROTATE2, yc1 + ey2 * TRACK_DISTANCE_ROTATE2);
+							ctx.lineTo(xc1 + ex2 * TRACK_DISTANCE_ROTATE2 * rPR, yc1 + ey2 * TRACK_DISTANCE_ROTATE2 * rPR);
 						}
 						else
 						{
 							ctx.moveTo((xc1 >> 0) + indent, (yc1 >> 0) + indent);
-							ctx.lineTo(((xc1 + ex2 * TRACK_DISTANCE_ROTATE2) >> 0) + indent, ((yc1 + ey2 * TRACK_DISTANCE_ROTATE2) >> 0) + indent);
+							ctx.lineTo(((xc1 + ex2 * TRACK_DISTANCE_ROTATE2 * rPR) >> 0) + indent, ((yc1 + ey2 * TRACK_DISTANCE_ROTATE2 * rPR) >> 0) + indent);
 						}
 
                         ctx.stroke();
@@ -1398,13 +1398,13 @@ CAutoshapeTrack.prototype =
 					{
 						if (bIsEllipceCorner)
 						{
-							overlay.AddEllipse(x1, y1, TRACK_CIRCLE_RADIUS);
+							overlay.AddEllipse(x1, y1, Math.round(TRACK_CIRCLE_RADIUS * rPR));
 							if (!isLine)
 							{
-								overlay.AddEllipse(x2, y2, TRACK_CIRCLE_RADIUS);
-								overlay.AddEllipse(x3, y3, TRACK_CIRCLE_RADIUS);
+								overlay.AddEllipse(x2, y2, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+								overlay.AddEllipse(x3, y3, Math.round(TRACK_CIRCLE_RADIUS * rPR));
 							}
-							overlay.AddEllipse(x4, y4, TRACK_CIRCLE_RADIUS);
+							overlay.AddEllipse(x4, y4, Math.round(TRACK_CIRCLE_RADIUS * rPR));
 						}
 						else
 						{
@@ -1421,13 +1421,13 @@ CAutoshapeTrack.prototype =
 					{
 						if (bIsEllipceCorner)
 						{
-							overlay.AddEllipse(_x1, _y1, TRACK_CIRCLE_RADIUS);
+							overlay.AddEllipse(_x1, _y1, Math.round(TRACK_CIRCLE_RADIUS * rPR));
 							if (!isLine)
 							{
-								overlay.AddEllipse(_x2, _y2, TRACK_CIRCLE_RADIUS);
-								overlay.AddEllipse(_x3, _y3, TRACK_CIRCLE_RADIUS);
+								overlay.AddEllipse(_x2, _y2, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+								overlay.AddEllipse(_x3, _y3, Math.round(TRACK_CIRCLE_RADIUS * rPR));
 							}
-							overlay.AddEllipse(_x4, _y4, TRACK_CIRCLE_RADIUS);
+							overlay.AddEllipse(_x4, _y4, Math.round(TRACK_CIRCLE_RADIUS * rPR));
 						}
 						else
 						{
@@ -1510,7 +1510,7 @@ CAutoshapeTrack.prototype =
                         if (!bIsUseImageRotateTrack)
                         {
                             ctx.beginPath();
-                            overlay.AddEllipse(xC, y1 - TRACK_DISTANCE_ROTATE, TRACK_CIRCLE_RADIUS);
+                            overlay.AddEllipse(xC, y1 - Math.round(TRACK_DISTANCE_ROTATE * rPR), Math.round(TRACK_CIRCLE_RADIUS * rPR));
 
                             ctx.fillStyle = _style_green;
                             ctx.fill();
@@ -1521,9 +1521,9 @@ CAutoshapeTrack.prototype =
                             var _image_track_rotate = overlay.GetImageTrackRotationImage();
                             if (_image_track_rotate.asc_complete)
                             {
-                                var _w = IMAGE_ROTATE_TRACK_W;
+                                var _w = Math.round(IMAGE_ROTATE_TRACK_W * rPR);
                                 var _xI = (xC + indent - _w / 2) >> 0;
-                                var _yI = y1 - TRACK_DISTANCE_ROTATE - (_w >> 1);
+                                var _yI = y1 - Math.round(TRACK_DISTANCE_ROTATE * rPR) - (_w >> 1);
 
                                 overlay.CheckRect(_xI, _yI, _w, _w);
                                 ctx.drawImage(_image_track_rotate, _xI, _yI, _w, _w);
@@ -1533,7 +1533,7 @@ CAutoshapeTrack.prototype =
                         ctx.beginPath();
 
                         ctx.moveTo(xC + indent, y1);
-                        ctx.lineTo(xC + indent, y1 - TRACK_DISTANCE_ROTATE2);
+                        ctx.lineTo(xC + indent, y1 - Math.round(TRACK_DISTANCE_ROTATE2 * rPR));
                         ctx.stroke();
 
                         ctx.beginPath();
@@ -1543,10 +1543,10 @@ CAutoshapeTrack.prototype =
 
                     if (bIsEllipceCorner)
                     {
-                        overlay.AddEllipse(x1, y1, TRACK_CIRCLE_RADIUS);
-                        overlay.AddEllipse(x2, y2, TRACK_CIRCLE_RADIUS);
-                        overlay.AddEllipse(x3, y3, TRACK_CIRCLE_RADIUS);
-                        overlay.AddEllipse(x4, y4, TRACK_CIRCLE_RADIUS);
+                        overlay.AddEllipse(x1, y1, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+                        overlay.AddEllipse(x2, y2, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+                        overlay.AddEllipse(x3, y3, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+                        overlay.AddEllipse(x4, y4, Math.round(TRACK_CIRCLE_RADIUS * rPR));
                     }
                     else
                     {
@@ -1685,7 +1685,7 @@ CAutoshapeTrack.prototype =
                         if (!bIsUseImageRotateTrack)
                         {
                             ctx.beginPath();
-                            overlay.AddEllipse(xc1 + ex2 * TRACK_DISTANCE_ROTATE, yc1 + ey2 * TRACK_DISTANCE_ROTATE, TRACK_CIRCLE_RADIUS);
+                            overlay.AddEllipse(xc1 + ex2 * TRACK_DISTANCE_ROTATE * rPR, yc1 + ey2 * TRACK_DISTANCE_ROTATE * rPR, Math.round(TRACK_CIRCLE_RADIUS * rPR));
 
                             ctx.fillStyle = _style_green;
                             ctx.fill();
@@ -1696,10 +1696,10 @@ CAutoshapeTrack.prototype =
                             var _image_track_rotate = overlay.GetImageTrackRotationImage();
                             if (_image_track_rotate.asc_complete)
                             {
-                                var _xI = xc1 + ex2 * TRACK_DISTANCE_ROTATE;
-                                var _yI = yc1 + ey2 * TRACK_DISTANCE_ROTATE;
-                                var _w = IMAGE_ROTATE_TRACK_W;
-                                var _w2 = IMAGE_ROTATE_TRACK_W / 2;
+                                var _xI = xc1 + ex2 * TRACK_DISTANCE_ROTATE * rPR;
+                                var _yI = yc1 + ey2 * TRACK_DISTANCE_ROTATE * rPR;
+                                var _w = Math.round(IMAGE_ROTATE_TRACK_W * rPR);
+                                var _w2 = Math.round(IMAGE_ROTATE_TRACK_W / 2 * rPR);
 
 								if (nIsCleverWithTransform)
 								{
@@ -1737,12 +1737,12 @@ CAutoshapeTrack.prototype =
 						if (!nIsCleverWithTransform)
 						{
 							ctx.moveTo(xc1, yc1);
-							ctx.lineTo(xc1 + ex2 * TRACK_DISTANCE_ROTATE2, yc1 + ey2 * TRACK_DISTANCE_ROTATE2);
+							ctx.lineTo(xc1 + ex2 * TRACK_DISTANCE_ROTATE2 * rPR, yc1 + ey2 * TRACK_DISTANCE_ROTATE2 * rPR);
 						}
 						else
 						{
 							ctx.moveTo((xc1 >> 0) + indent, (yc1 >> 0) + indent);
-							ctx.lineTo(((xc1 + ex2 * TRACK_DISTANCE_ROTATE2) >> 0) + indent, ((yc1 + ey2 * TRACK_DISTANCE_ROTATE2) >> 0) + indent);
+							ctx.lineTo(((xc1 + ex2 * TRACK_DISTANCE_ROTATE2 * rPR) >> 0) + indent, ((yc1 + ey2 * TRACK_DISTANCE_ROTATE2 * rPR) >> 0) + indent);
 						}
 
                         ctx.stroke();
@@ -1757,10 +1757,10 @@ CAutoshapeTrack.prototype =
 					{
 						if (bIsEllipceCorner)
 						{
-							overlay.AddEllipse(x1, y1, TRACK_CIRCLE_RADIUS);
-							overlay.AddEllipse(x2, y2, TRACK_CIRCLE_RADIUS);
-							overlay.AddEllipse(x3, y3, TRACK_CIRCLE_RADIUS);
-							overlay.AddEllipse(x4, y4, TRACK_CIRCLE_RADIUS);
+							overlay.AddEllipse(x1, y1, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+							overlay.AddEllipse(x2, y2, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+							overlay.AddEllipse(x3, y3, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+							overlay.AddEllipse(x4, y4, Math.round(TRACK_CIRCLE_RADIUS * rPR));
 						}
 						else
 						{
@@ -1774,10 +1774,10 @@ CAutoshapeTrack.prototype =
 					{
 						if (bIsEllipceCorner)
 						{
-							overlay.AddEllipse(x1, y1, TRACK_CIRCLE_RADIUS);
-							overlay.AddEllipse(x2, y2, TRACK_CIRCLE_RADIUS);
-							overlay.AddEllipse(x3, y3, TRACK_CIRCLE_RADIUS);
-							overlay.AddEllipse(x4, y4, TRACK_CIRCLE_RADIUS);
+							overlay.AddEllipse(x1, y1, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+							overlay.AddEllipse(x2, y2, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+							overlay.AddEllipse(x3, y3, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+							overlay.AddEllipse(x4, y4, Math.round(TRACK_CIRCLE_RADIUS * rPR));
 						}
 						else
 						{
@@ -1853,7 +1853,7 @@ CAutoshapeTrack.prototype =
                     if (!bIsUseImageRotateTrack)
                     {
                         ctx.beginPath();
-                        overlay.AddEllipse(xC, y1 - TRACK_DISTANCE_ROTATE);
+                        overlay.AddEllipse(xC, y1 - Math.round(TRACK_DISTANCE_ROTATE * rPR));
 
                         ctx.fillStyle = _style_green;
                         ctx.fill();
@@ -1864,9 +1864,9 @@ CAutoshapeTrack.prototype =
                         var _image_track_rotate = overlay.GetImageTrackRotationImage();
                         if (_image_track_rotate.asc_complete)
                         {
-                            var _w = IMAGE_ROTATE_TRACK_W;
+                            var _w = Math.round(IMAGE_ROTATE_TRACK_W * rPR);
                             var _xI = (xC + indent - _w / 2) >> 0;
-                            var _yI = y1 - TRACK_DISTANCE_ROTATE - (_w >> 1);
+                            var _yI = y1 - Math.round(TRACK_DISTANCE_ROTATE * rPR) - (_w >> 1);
 
                             overlay.CheckRect(_xI, _yI, _w, _w);
                             ctx.drawImage(_image_track_rotate, _xI, _yI, _w, _w);
@@ -1875,7 +1875,7 @@ CAutoshapeTrack.prototype =
 
                     ctx.beginPath();
                     ctx.moveTo(xC + indent, y1);
-                    ctx.lineTo(xC + indent, y1 - TRACK_DISTANCE_ROTATE2);
+                    ctx.lineTo(xC + indent, y1 - Math.round(TRACK_DISTANCE_ROTATE2 * rPR));
                     ctx.stroke();
 
                     ctx.beginPath();
@@ -1884,10 +1884,10 @@ CAutoshapeTrack.prototype =
 
                     if (bIsEllipceCorner)
                     {
-                        overlay.AddEllipse(x1, y1, TRACK_CIRCLE_RADIUS);
-                        overlay.AddEllipse(x2, y2, TRACK_CIRCLE_RADIUS);
-                        overlay.AddEllipse(x3, y3, TRACK_CIRCLE_RADIUS);
-                        overlay.AddEllipse(x4, y4, TRACK_CIRCLE_RADIUS);
+                        overlay.AddEllipse(x1, y1, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+                        overlay.AddEllipse(x2, y2, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+                        overlay.AddEllipse(x3, y3, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+                        overlay.AddEllipse(x4, y4, Math.round(TRACK_CIRCLE_RADIUS * rPR));
                     }
                     else
                     {
@@ -1980,7 +1980,7 @@ CAutoshapeTrack.prototype =
                     if (!bIsUseImageRotateTrack)
                     {
                         ctx.beginPath();
-                        overlay.AddEllipse(xc1 + ex2 * TRACK_DISTANCE_ROTATE, yc1 + ey2 * TRACK_DISTANCE_ROTATE, TRACK_DISTANCE_ROTATE);
+                        overlay.AddEllipse(xc1 + ex2 * TRACK_DISTANCE_ROTATE * rPR, yc1 + ey2 * TRACK_DISTANCE_ROTATE * rPR, Math.round(TRACK_DISTANCE_ROTATE * rPR));
 
                         ctx.fillStyle = _style_green;
                         ctx.fill();
@@ -1991,10 +1991,10 @@ CAutoshapeTrack.prototype =
                         var _image_track_rotate = overlay.GetImageTrackRotationImage();
                         if (_image_track_rotate.asc_complete)
                         {
-                            var _xI = xc1 + ex2 * TRACK_DISTANCE_ROTATE;
-                            var _yI = yc1 + ey2 * TRACK_DISTANCE_ROTATE;
-                            var _w = IMAGE_ROTATE_TRACK_W;
-                            var _w2 = IMAGE_ROTATE_TRACK_W / 2;
+                            var _xI = xc1 + ex2 * TRACK_DISTANCE_ROTATE * rPR;
+                            var _yI = yc1 + ey2 * TRACK_DISTANCE_ROTATE * rPR;
+                            var _w = Math.round(IMAGE_ROTATE_TRACK_W * rPR);
+                            var _w2 = Math.round(IMAGE_ROTATE_TRACK_W / 2 * rPR);
 
                             ctx.save();
 
@@ -2010,7 +2010,7 @@ CAutoshapeTrack.prototype =
 
                     ctx.beginPath();
                     ctx.moveTo(xc1, yc1);
-                    ctx.lineTo(xc1 + ex2 * TRACK_DISTANCE_ROTATE2, yc1 + ey2 * TRACK_DISTANCE_ROTATE2);
+                    ctx.lineTo(xc1 + ex2 * TRACK_DISTANCE_ROTATE2 * rPR, yc1 + ey2 * TRACK_DISTANCE_ROTATE2 * rPR);
                     ctx.stroke();
 
                     ctx.beginPath();
@@ -2019,10 +2019,10 @@ CAutoshapeTrack.prototype =
 
                     if (bIsEllipceCorner)
                     {
-                        overlay.AddEllipse(x1, y1, TRACK_CIRCLE_RADIUS);
-                        overlay.AddEllipse(x2, y2, TRACK_CIRCLE_RADIUS);
-                        overlay.AddEllipse(x3, y3, TRACK_CIRCLE_RADIUS);
-                        overlay.AddEllipse(x4, y4, TRACK_CIRCLE_RADIUS);
+                        overlay.AddEllipse(x1, y1, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+                        overlay.AddEllipse(x2, y2, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+                        overlay.AddEllipse(x3, y3, Math.round(TRACK_CIRCLE_RADIUS * rPR));
+                        overlay.AddEllipse(x4, y4, Math.round(TRACK_CIRCLE_RADIUS * rPR));
                     }
                     else
                     {
