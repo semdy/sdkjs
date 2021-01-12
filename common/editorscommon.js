@@ -5731,10 +5731,13 @@
 	CMathTrack.prototype.Draw = function (overlay, oPath, shift, color, dKoefX, dKoefY, left, top)
 	{
 		var ctx = overlay.m_oContext;
+		var rPR = AscCommon.AscBrowser.retinaPixelRatio;
 		ctx.strokeStyle = color;
 		ctx.lineWidth = Math.round(window.devicePixelRatio);
 		ctx.beginPath();
 
+        left *= rPR;
+        top *= rPR;
 		var Points = oPath.Points;
 
 		var nCount = Points.length;
@@ -5867,26 +5870,27 @@
 		var Points = oPath.Points;
 		var nPointIndex;
 		var _x, _y, x, y, p;
+		var rPR = AscCommon.AscBrowser.retinaPixelRatio;
 		for (nPointIndex = 0; nPointIndex < Points.length - 1; nPointIndex++)
 		{
 			p = Points[nPointIndex];
 			if(!m)
 			{
-				_x = left + dKoefX * p.X;
-				_y = top + dKoefY * p.Y;
+				_x = (left + dKoefX * p.X) * rPR;
+				_y = (top + dKoefY * p.Y) * rPR;
 			}
 			else
 			{
 				x = p.X;
 				y = p.Y;
-				_x = left + dKoefX * m.TransformPointX(x, y);
-				_y = top + dKoefY * m.TransformPointY(x, y);
+				_x = (left + dKoefX * m.TransformPointX(x, y)) * rPR;
+				_y = (top + dKoefY * m.TransformPointY(x, y)) * rPR;
 			}
 			overlay.CheckPoint(_x, _y);
 			if (0 == nPointIndex)
-				ctx.moveTo((_x >> 0) + 0.5, (_y >> 0) + 0.5);
+				ctx.moveTo((_x >> 0) + 0.5 * Math.round(rPR), (_y >> 0) + 0.5 * Math.round(rPR));
 			else
-				ctx.lineTo((_x >> 0) + 0.5, (_y >> 0) + 0.5);
+				ctx.lineTo((_x >> 0) + 0.5 * Math.round(rPR), (_y >> 0) + 0.5 * Math.round(rPR));
 		}
 		ctx.globalAlpha = 0.2;
 		ctx.fill();

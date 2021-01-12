@@ -3964,8 +3964,8 @@ function CDrawingDocument()
 				dKoefX = (drPage.right - drPage.left) / _page.width_mm * rPR;
 				dKoefY = (drPage.bottom - drPage.top) / _page.height_mm * rPR;
 
-				this.MathTrack.Draw(overlay, oPath, 0, "#939393", dKoefX, dKoefY, drPage.left * rPR, drPage.top * rPR);
-				this.MathTrack.Draw(overlay, oPath, 1, "#FFFFFF", dKoefX, dKoefY, drPage.left * rPR, drPage.top * rPR);
+				this.MathTrack.Draw(overlay, oPath, 0, "#939393", dKoefX, dKoefY, drPage.left, drPage.top);
+				this.MathTrack.Draw(overlay, oPath, 1, "#FFFFFF", dKoefX, dKoefY, drPage.left, drPage.top);
 			}
 			for (nIndex = 0, nCount = this.MathTrack.GetSelectPathsCount(); nIndex < nCount; nIndex++)
 			{
