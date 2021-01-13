@@ -2634,14 +2634,16 @@ CAutoshapeTrack.prototype =
         overlay.SetBaseTransform();
         var ctx = overlay.m_oContext;
 
+        var rPR = AscCommon.AscBrowser.retinaPixelRatio;
+        var indent = 0.5 * Math.round(rPR);
         this.CurrentPageInfo = overlay.m_oHtmlPage.GetDrawingPageInfo(this.PageIndex);
 
         var drPage = this.CurrentPageInfo.drawingPage;
 
-        var xDst = drPage.left;
-        var yDst = drPage.top;
-        var wDst = drPage.right - drPage.left;
-        var hDst = drPage.bottom - drPage.top;
+        var xDst = drPage.left * rPR;
+        var yDst = drPage.top * rPR;
+        var wDst = (drPage.right - drPage.left)  * rPR;
+        var hDst = (drPage.bottom - drPage.top) * rPR;
 
         var dKoefX = wDst / this.CurrentPageInfo.width_mm;
         var dKoefY = hDst / this.CurrentPageInfo.height_mm;
@@ -2666,14 +2668,14 @@ CAutoshapeTrack.prototype =
         }
 
         ctx.closePath();
-        ctx.lineWidth = 1;
+        ctx.lineWidth = Math.round(rPR);
         ctx.strokeStyle = "#FF0000";
         ctx.stroke();
 
         ctx.beginPath();
         for (var i = 0; i < _len; i++)
         {
-            overlay.AddRect2(_tr_points_x[i] + indent, _tr_points_y[i] + indent, TRACK_WRAPPOINTS_SIZE);
+            overlay.AddRect2(_tr_points_x[i] + indent, _tr_points_y[i] + indent, Math.round(TRACK_WRAPPOINTS_SIZE * rPR));
         }
         ctx.strokeStyle = "#FFFFFF";
         ctx.fillStyle = "#000000";
@@ -2696,11 +2698,12 @@ CAutoshapeTrack.prototype =
         this.CurrentPageInfo = overlay.m_oHtmlPage.GetDrawingPageInfo(this.PageIndex);
 
         var drPage = this.CurrentPageInfo.drawingPage;
+        var rPR = AscCommon.AscBrowser.retinaPixelRatio;
 
-        var xDst = drPage.left;
-        var yDst = drPage.top;
-        var wDst = drPage.right - drPage.left;
-        var hDst = drPage.bottom - drPage.top;
+        var xDst = drPage.left * rPR;
+        var yDst = drPage.top * rPR;
+        var wDst = (drPage.right - drPage.left) * rPR;
+        var hDst = (drPage.bottom - drPage.top) * rPR;
 
         var dKoefX = wDst / this.CurrentPageInfo.width_mm;
         var dKoefY = hDst / this.CurrentPageInfo.height_mm;
@@ -2735,7 +2738,7 @@ CAutoshapeTrack.prototype =
         {
             this.AddLineDash(ctx, _tr_points_x[i-1], _tr_points_y[i-1], _tr_points_x[i], _tr_points_y[i], 4, 4);
         }
-        ctx.lineWidth = 1;
+        ctx.lineWidth = Math.round(rPR);
         ctx.strokeStyle = "#000000";
         ctx.stroke();
 
@@ -2890,10 +2893,11 @@ CAutoshapeTrack.prototype =
 
         var drPage = this.CurrentPageInfo.drawingPage;
 
-        var xDst = drPage.left;
-        var yDst = drPage.top;
-        var wDst = drPage.right - drPage.left;
-        var hDst = drPage.bottom - drPage.top;
+        var rPR = AscCommon.AscBrowser.retinaPixelRatio;
+        var xDst = drPage.left * rPR;
+        var yDst = drPage.top * rPR;
+        var wDst = (drPage.right - drPage.left) * rPR;
+        var hDst = (drPage.bottom - drPage.top) * rPR;
 
         var dKoefX = wDst / this.CurrentPageInfo.width_mm;
         var dKoefY = hDst / this.CurrentPageInfo.height_mm;
@@ -2901,9 +2905,9 @@ CAutoshapeTrack.prototype =
         var __x = (xDst + dKoefX * x) >> 0;
         var __y = (yDst + dKoefY * y) >> 0;
 
-        __x -= 8;
+        __x -= Math.round(8 * rPR);
 
-        overlay.CheckRect(__x,__y,13,15);
+        overlay.CheckRect(__x,__y, Math.round(13 * rPR), Math.round(15 * rPR));
 
         var ctx = overlay.m_oContext;
         var _oldAlpha = ctx.globalAlpha;
@@ -2911,7 +2915,7 @@ CAutoshapeTrack.prototype =
 
         overlay.SetBaseTransform();
 
-        ctx.drawImage(_flow_anchor, __x, __y, 13, 15);
+        ctx.drawImage(_flow_anchor, __x, __y, Math.round(13 * rPR), Math.round(15 * rPR));
         ctx.globalAlpha = _oldAlpha;
     },
 
@@ -2928,11 +2932,11 @@ CAutoshapeTrack.prototype =
         var rPR = AscCommon.AscBrowser.retinaPixelRatio;
         var xDst = drPage.left * rPR;
         var yDst = drPage.top * rPR;
-        var wDst = drPage.right - drPage.left;
-        var hDst = drPage.bottom - drPage.top;
+        var wDst = (drPage.right - drPage.left) * rPR;
+        var hDst = (drPage.bottom - drPage.top) * rPR;
 
-        var dKoefX = wDst / this.CurrentPageInfo.width_mm * rPR;
-        var dKoefY = hDst / this.CurrentPageInfo.height_mm * rPR;
+        var dKoefX = wDst / this.CurrentPageInfo.width_mm;
+        var dKoefY = hDst / this.CurrentPageInfo.height_mm;
 
         var __x = (xDst + dKoefX * x) >> 0;
         var __y = (yDst + dKoefY * y) >> 0;
