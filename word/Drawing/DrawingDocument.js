@@ -1652,7 +1652,7 @@ function CPage()
 					case 1:
 					{
 						_x = (xDst + dKoefX * (table_outline_dr.TableOutline.X + table_outline_dr.TableOutline.W + _offX)) >> 0;
-						_y = ((yDst + dKoefY * (table_outline_dr.TableOutline.Y + _offY)) >> 0) - 13;
+						_y = ((yDst + dKoefY * (table_outline_dr.TableOutline.Y + _offY)) >> 0) - Math.round(13 * rPR);
 						break;
 					}
 					case 2:
@@ -1663,21 +1663,21 @@ function CPage()
 					}
 					case 3:
 					{
-						_x = ((xDst + dKoefX * (table_outline_dr.TableOutline.X + _offX)) >> 0) - 13;
+						_x = ((xDst + dKoefX * (table_outline_dr.TableOutline.X + _offX)) >> 0) - Math.round(13 * rPR);
 						_y = (yDst + dKoefY * (table_outline_dr.TableOutline.Y + table_outline_dr.TableOutline.H + _offY)) >> 0;
 						break;
 					}
 					case 0:
 					default:
 					{
-						_x = ((xDst + dKoefX * (table_outline_dr.TableOutline.X + _offX)) >> 0) - 13;
-						_y = ((yDst + dKoefY * (table_outline_dr.TableOutline.Y + _offY)) >> 0) - 13;
+						_x = ((xDst + dKoefX * (table_outline_dr.TableOutline.X + _offX)) >> 0) - Math.round(13 * rPR);
+						_y = ((yDst + dKoefY * (table_outline_dr.TableOutline.Y + _offY)) >> 0) - Math.round(13 * rPR);
 						break;
 					}
 				}
 
-				var _w = 13;
-				var _h = 13;
+				var _w = Math.round(13 * rPR);
+				var _h = Math.round(13 * rPR);
 
 				if (_x < overlay.min_x)
 					overlay.min_x = _x;
@@ -1691,19 +1691,19 @@ function CPage()
 
 				var tmp_image = AscCommon.AscBrowser.isCustomScalingAbove2() ? table_outline_dr.image2 : table_outline_dr.image;
 				if (tmp_image.asc_complete)
-					overlay.m_oContext.drawImage(tmp_image, _x, _y, 13, 13);
+					overlay.m_oContext.drawImage(tmp_image, _x, _y, Math.round(13 * rPR), Math.round(13 * rPR));
 			}
 			else
 			{
-				var _xLast = (xDst + dKoefX * (lastBounds.X + lastBounds.W + _offX) + 0.5) >> 0;
-				var _yLast = (yDst + dKoefY * (lastBounds.Y + lastBounds.H + _offY) + 0.5) >> 0;
+				var _xLast = (xDst + dKoefX * (lastBounds.X + lastBounds.W + _offX) + 0.5 * Math.round(rPR)) >> 0;
+				var _yLast = (yDst + dKoefY * (lastBounds.Y + lastBounds.H + _offY) + 0.5 * Math.round(rPR)) >> 0;
 
 				var ctx = overlay.m_oContext;
 				ctx.strokeStyle = "rgb(140, 140, 140)";
-				ctx.lineWidth = 1;
+				ctx.lineWidth = Math.round(rPR);
 				ctx.beginPath();
 
-				overlay.AddRect(_xLast - 0.5, _yLast - 0.5, 6, 6);
+				overlay.AddRect(_xLast - 0.5 * Math.round(rPR), _yLast - 0.5 * Math.round(rPR), Math.round(6 * rPR), Math.round(6 * rPR));
 
 				ctx.stroke();
 				ctx.beginPath();

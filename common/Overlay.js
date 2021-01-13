@@ -2834,11 +2834,11 @@ CAutoshapeTrack.prototype =
             var _x2 = matrix.TransformPointX(x, y + h);
             var _y2 = matrix.TransformPointY(x, y + h);
 
-            _x1 = xDst + dKoefX * _x1;
-            _y1 = yDst + dKoefY * _y1;
+            _x1 = (xDst + dKoefX * _x1) >> 0;
+            _y1 = (yDst + dKoefY * _y1) >> 0;
 
-            _x2 = xDst + dKoefX * _x2;
-            _y2 = yDst + dKoefY * _y2;
+            _x2 = (xDst + dKoefX * _x2) >> 0;
+            _y2 = (yDst + dKoefY * _y2) >> 0;
 
             overlay.CheckPoint(_x1, _y1);
             overlay.CheckPoint(_x2, _y2);
@@ -2848,7 +2848,7 @@ CAutoshapeTrack.prototype =
             var _oldAlpha = ctx.globalAlpha;
             ctx.globalAlpha = 1;
 
-            ctx.lineWidth = Math.round(2 * rPR);
+            ctx.lineWidth = 2 * Math.round(rPR);
             ctx.beginPath();
             ctx.strokeStyle = "#FFFFFF";
             ctx.moveTo(_x1, _y1);
@@ -2859,12 +2859,12 @@ CAutoshapeTrack.prototype =
             ctx.strokeStyle = "#000000";
 
             var _vec_len = Math.sqrt((_x2 - _x1)*(_x2 - _x1) + (_y2 - _y1)*(_y2 - _y1));
-            var _dx = (_x2 - _x1) / _vec_len;
-            var _dy = (_y2 - _y1) / _vec_len;
+            var _dx = Math.round((_x2 - _x1) / _vec_len * rPR);
+            var _dy = Math.round((_y2 - _y1) / _vec_len * rPR);
 
             var __x = _x1;
             var __y = _y1;
-            for (var i = 0; i < _vec_len; i += Math.round(2 * rPR))
+            for (var i = 0; i < _vec_len; i += 2 * Math.round(rPR))
             {
                 ctx.moveTo(__x, __y);
 
