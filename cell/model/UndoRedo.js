@@ -2130,7 +2130,7 @@ function (window, undefined) {
 	};
 	UndoRedoData_CF.prototype.setProperty = function (nType, value) {
 		switch (nType) {
-			case this.Properties.name:
+			case this.Properties.id:
 				this.id = value;
 				break;
 			case this.Properties.from:
@@ -4103,7 +4103,17 @@ function (window, undefined) {
 					break;
 				}
 				case AscCH.historyitem_CFRule_SetRanges: {
+					var toAscRanges = function (_ranges) {
+						var ascRanges = [];
 
+						for (var i = 0; i < _ranges.length; i++) {
+							ascRanges.push(new Asc.Range(_ranges[i].c1, _ranges[i].r1, _ranges[i].c2, _ranges[i].r2));
+						}
+
+						return ascRanges;
+					};
+
+					cfRule.ranges = toAscRanges(value);
 					break;
 				}
 			}

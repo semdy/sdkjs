@@ -403,7 +403,7 @@
 				var getUndoRedoRange = function (_ranges) {
 					var needRanges = [];
 					for (var i = 0; i < _ranges.length; i++) {
-						needRanges.push(AscCommonExcel.UndoRedoData_BBox(_ranges[i]));
+						needRanges.push(new AscCommonExcel.UndoRedoData_BBox(_ranges[i]));
 					}
 					return needRanges;
 				};
