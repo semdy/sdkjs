@@ -4231,7 +4231,16 @@
 
 		return arrApiRanges;
 	};
-
+	/**
+	 * Determines if a selection is used.
+	 * @memberof ApiDocument
+	 * @typeofeditors ["CDE"]
+	 * @returns {bool}  
+	 */
+	ApiDocument.prototype.IsSelectionUse = function()
+	{
+		return this.Document.IsSelectionUse();
+	}
 	/**
 	 * Insert watermark on each page of document
 	 * @memberof ApiDocument
@@ -12269,6 +12278,7 @@
 	ApiDocument.prototype["GetAllImages"]            = ApiDocument.prototype.GetAllImages;
 	ApiDocument.prototype["GetAllCharts"]            = ApiDocument.prototype.GetAllCharts;
 	ApiDocument.prototype["Search"]                  = ApiDocument.prototype.Search;
+	ApiDocument.prototype["IsSelectionUse"]          = ApiDocument.prototype.IsSelectionUse;
 
 	ApiParagraph.prototype["GetClassType"]           = ApiParagraph.prototype.GetClassType;
 	ApiParagraph.prototype["AddText"]                = ApiParagraph.prototype.AddText;
