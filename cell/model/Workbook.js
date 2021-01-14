@@ -9081,8 +9081,7 @@
 		}
 		this.aConditionalFormattingRules.push(val);
 		if (addToHistory) {
-			History.Add(AscCommonExcel.g_oUndoRedoWorksheet, AscCH.historyitem_Worksheet_CFRuleAdd, this.getId(), null,
-				new AscCommonExcel.UndoRedoData_BinaryWrapper(val));
+			History.Add(AscCommonExcel.g_oUndoRedoWorksheet, AscCH.historyitem_Worksheet_CFRuleAdd, this.getId(), null, new AscCommonExcel.UndoRedoData_CF(val.id, null, val));
 		}
 	};
 
@@ -9093,7 +9092,7 @@
 			if (addToHistory) {
 				//todo объект нужен только для undo
 				History.Add(AscCommonExcel.g_oUndoRedoWorksheet, AscCH.historyitem_Worksheet_CFRuleDelete, this.getId(), null,
-					new AscCommonExcel.UndoRedoData_BinaryWrapper(oRule.val));
+					new AscCommonExcel.UndoRedoData_CF(id, oRule.val));
 			}
 		}
 	};

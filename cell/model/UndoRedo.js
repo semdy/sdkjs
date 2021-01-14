@@ -3025,15 +3025,15 @@ function (window, undefined) {
 			}
 		} else if (AscCH.historyitem_Worksheet_CFRuleAdd === Type) {
 			if (bUndo) {
-				ws.deleteCFRule(Data.Id, true);
+				ws.deleteCFRule(Data.id);
 			} else {
-				ws.addCFRule(Data.getData());
+				ws.addCFRule(Data.to);
 			}
 		} else if (AscCH.historyitem_Worksheet_CFRuleDelete === Type) {
 			if (bUndo) {
-				ws.addCFRule(Data.getData());
+				ws.addCFRule(Data.from);
 			} else {
-				ws.deleteCFRule(Data.Id, true);
+				ws.deleteCFRule(Data.id);
 			}
 		}
 	};

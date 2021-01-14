@@ -149,7 +149,7 @@
 	};
 	CConditionalFormattingRule.prototype.Write_ToBinary2 = function (writer) {
 		//for wrapper
-		writer.WriteLong(this.getObjectType());
+		//writer.WriteLong(this.getObjectType());
 
 		writer.WriteBool(this.aboveAverage);
 		writer.WriteBool(this.activePresent);
