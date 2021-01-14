@@ -118,8 +118,8 @@
 		return this.id;
 	};
 
-	CConditionalFormattingRule.prototype.getObjectType = function () {
-		return AscDFH.historyitem_type_CFRule;
+	CConditionalFormattingRule.prototype.getType = function () {
+		return AscCommonExcel.UndoRedoDataTypes.CFDataInner;
 	};
 	
 	CConditionalFormattingRule.prototype.clone = function () {
@@ -364,7 +364,7 @@
 		this.type = this.checkProperty(this.type, val.type, AscCH.historyitem_CFRule_SetType, ws, addToHistory);
 		this.pivot = this.checkProperty(this.pivot, val.pivot, AscCH.historyitem_CFRule_SetPivot, ws, addToHistory);
 
-		var compareRuleElements = function (_elem1, _elem2) {
+		var compareElements = function (_elem1, _elem2) {
 			if (_elem1.length === _elem2.length) {
 				for (var i = 0; i < _elem1.length; i++) {
 					if (!_elem1[i].isEqual(_elem2[i])) {
@@ -378,7 +378,8 @@
 			return false;
 		};
 
-		if (!compareRuleElements(this.aRuleElements, val.aRuleElements)) {
+
+		if (!compareElements(this.aRuleElements, val.aRuleElements)) {
 			if (addToHistory) {
 				History.Add(AscCommonExcel.g_oUndoRedoCF, AscCH.historyitem_CFRule_SetRuleElements,
 					ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, this.aRuleElements, val.aRuleElements));
@@ -397,13 +398,20 @@
 		}
 
 		//TODO ranges - проверить запись в историю
-		if (this.ranges !== val.ranges) {
+		if (this.ranges && val.ranges && !compareElements(this.ranges, val.ranges)) {
 			if (addToHistory) {
-				History.Add(AscCommonExcel.g_oUndoRedoCF, AscCH.historyitem_CFRule_SetRanges,
-					ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, this.ranges, val.ranges));
-			}
+				var getUndoRedoRange = function (_ranges) {
+					var needRanges = [];
+					for (var i = 0; i < _ranges.length; i++) {
+						needRanges.push(AscCommonExcel.UndoRedoData_BBox(_ranges[i]));
+					}
+					return needRanges;
+				};
 
-			this.aRuleElements = val.aRuleElements;
+				History.Add(AscCommonExcel.g_oUndoRedoCF, AscCH.historyitem_CFRule_SetRanges,
+					ws.getId(), null, new AscCommonExcel.UndoRedoData_CF(this.id, getUndoRedoRange(this.ranges), getUndoRedoRange(val.ranges)));
+			}
+			this.ranges = val.ranges;
 		}
 	};
 

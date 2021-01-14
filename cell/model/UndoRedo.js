@@ -437,6 +437,7 @@ function (window, undefined) {
 		this.DataValidation = 140;
 
 		this.CFData = 150;
+		this.CFDataInner = 151;
 
 		this.Create = function (nType) {
 			switch (nType) {
@@ -619,6 +620,8 @@ function (window, undefined) {
 					return new window['AscCommonExcel'].UndoRedoData_DataValidation();
 				case this.CFData:
 					return new AscCommonExcel.UndoRedoData_CF();
+				case this.CFDataInner:
+					return new AscCommonExcel.CConditionalFormattingRule();
 			}
 			return null;
 		};

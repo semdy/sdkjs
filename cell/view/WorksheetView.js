@@ -20161,12 +20161,12 @@
 		var selection = t.model.selectionRange.getLast();
 		var activeCell = t.model.selectionRange.activeCell.clone();
 
-		var temp = this.model.aConditionalFormattingRules[0].clone();
-		//temp.id = this.model.aConditionalFormattingRules[0].id;
-		temp.activePresent = true;
+		/*var temp = this.model.aConditionalFormattingRules[0].clone();
+		temp.id = this.model.aConditionalFormattingRules[0].id;
+		temp.ranges.push(Asc.Range(1,1,1,1));
 
 		this.setCF([temp]);
-		return;
+		return;*/
 
 		var revertSelection = function() {
 			t.cleanSelection();
