@@ -40,6 +40,7 @@
 	var FT_Common = AscFonts.FT_Common;
 	var CellValueType = AscCommon.CellValueType;
 	var EIconSetType = Asc.EIconSetType;
+
 	/**
 	 * Отвечает за условное форматирование
 	 * -----------------------------------------------------------------------------
@@ -121,7 +122,7 @@
 	CConditionalFormattingRule.prototype.getType = function () {
 		return AscCommonExcel.UndoRedoDataTypes.CFDataInner;
 	};
-	
+
 	CConditionalFormattingRule.prototype.clone = function () {
 		var i, res = new CConditionalFormattingRule();
 		res.aboveAverage = this.aboveAverage;
@@ -159,7 +160,9 @@
 			var dxf = this.dxf;
 			writer.WriteBool(true);
 			var oBinaryStylesTableWriter = new AscCommonExcel.BinaryStylesTableWriter(writer);
-			oBinaryStylesTableWriter.bs.WriteItem(0, function(){oBinaryStylesTableWriter.WriteDxf(dxf);});
+			oBinaryStylesTableWriter.bs.WriteItem(0, function () {
+				oBinaryStylesTableWriter.WriteDxf(dxf);
+			});
 		} else {
 			writer.WriteBool(false);
 		}
@@ -322,7 +325,7 @@
 					default:
 						elem = new CFormulaCF();
 						break;
-						//TODO ?CFormulaCF
+					//TODO ?CFormulaCF
 				}
 				this.aRuleElements.push(elem.Read_FromBinary2(reader));
 			}
@@ -371,10 +374,8 @@
 						return false;
 					}
 				}
-
 				return true;
 			}
-
 			return false;
 		};
 
@@ -397,7 +398,6 @@
 			this.xfs = val.dxf;
 		}
 
-		//TODO ranges - проверить запись в историю
 		if (this.ranges && val.ranges && !compareElements(this.ranges, val.ranges)) {
 			if (addToHistory) {
 				var getUndoRedoRange = function (_ranges) {
@@ -890,7 +890,9 @@
 	CConditionalFormattingRule.prototype.asc_setStopIfTrue = function (val) {
 		this.stopIfTrue = val;
 	};
-
+	CConditionalFormattingRule.prototype.asc_setText = function (val) {
+		this.text = val;
+	};
 	CConditionalFormattingRule.prototype.asc_setValue1 = function (val) {
 		if (!this.aRuleElements) {
 			this.aRuleElements = [];
@@ -1340,18 +1342,19 @@
 		this.AxisColor = AscCommonExcel.CorrectAscColor(val);
 	};
 
-	function CFormulaCF () {
+	function CFormulaCF() {
 		this.Text = null;
 		this._f = null;
 
 		return this;
 	}
-	CFormulaCF.prototype.clone = function() {
+
+	CFormulaCF.prototype.clone = function () {
 		var res = new CFormulaCF();
 		res.Text = this.Text;
 		return res;
 	};
-	CFormulaCF.prototype.Write_ToBinary2 = function(writer) {
+	CFormulaCF.prototype.Write_ToBinary2 = function (writer) {
 		if (null != this.Text) {
 			writer.WriteBool(true);
 			writer.WriteString2(this.Text);
@@ -1359,15 +1362,15 @@
 			writer.WriteBool(false);
 		}
 	};
-	CFormulaCF.prototype.Read_FromBinary2 = function(reader) {
+	CFormulaCF.prototype.Read_FromBinary2 = function (reader) {
 		if (reader.GetBool()) {
 			this.Text = reader.GetString2();
 		}
 	};
-	CFormulaCF.prototype.isEqual = function(val) {
+	CFormulaCF.prototype.isEqual = function (val) {
 		return val.Text === this.Text;
 	};
-	CFormulaCF.prototype.init = function(ws, opt_parent) {
+	CFormulaCF.prototype.init = function (ws, opt_parent) {
 		if (!this._f) {
 			this._f = new AscCommonExcel.parserFormula(this.Text, opt_parent, ws);
 			this._f.parse();
@@ -1377,11 +1380,11 @@
 			}
 		}
 	};
-	CFormulaCF.prototype.getFormula = function(ws, opt_parent) {
+	CFormulaCF.prototype.getFormula = function (ws, opt_parent) {
 		this.init(ws, opt_parent);
 		return this._f;
 	};
-	CFormulaCF.prototype.getValue = function(ws, opt_parent, opt_bbox, opt_offset, opt_returnRaw) {
+	CFormulaCF.prototype.getValue = function (ws, opt_parent, opt_bbox, opt_offset, opt_returnRaw) {
 		this.init(ws, opt_parent);
 		var res = this._f.calculate(null, opt_bbox, opt_offset);
 		if (!opt_returnRaw) {
@@ -1390,7 +1393,7 @@
 		return res;
 	};
 
-	function CIconSet () {
+	function CIconSet() {
 		this.IconSet = EIconSetType.Traffic3Lights1;
 		this.Percent = true;
 		this.Reverse = false;
@@ -1401,8 +1404,9 @@
 
 		return this;
 	}
+
 	CIconSet.prototype.type = Asc.ECfType.iconSet;
-	CIconSet.prototype.clone = function() {
+	CIconSet.prototype.clone = function () {
 		var i, res = new CIconSet();
 		res.IconSet = this.IconSet;
 		res.Percent = this.Percent;
@@ -1521,19 +1525,19 @@
 		this.IconSet = val;
 	};
 	CIconSet.prototype.asc_setReverse = function (val) {
-		 this.Reverse = val;
+		this.Reverse = val;
 	};
 	CIconSet.prototype.asc_setShowValue = function (val) {
-		 this.ShowValue = val;
+		this.ShowValue = val;
 	};
 	CIconSet.prototype.asc_setCFVOs = function (val) {
-		 this.aCFVOs = val;
+		this.aCFVOs = val;
 	};
 	CIconSet.prototype.asc_setIconSets = function (val) {
-		 this.aIconSets = val;
+		this.aIconSets = val;
 	};
 
-	function CConditionalFormatValueObject () {
+	function CConditionalFormatValueObject() {
 		this.Gte = true;
 		this.Type = null;
 		this.Val = null;
@@ -1542,7 +1546,8 @@
 
 		return this;
 	}
-	CConditionalFormatValueObject.prototype.clone = function() {
+
+	CConditionalFormatValueObject.prototype.clone = function () {
 		var res = new CConditionalFormatValueObject();
 		res.Gte = this.Gte;
 		res.Type = this.Type;
@@ -1641,13 +1646,14 @@
 		this.Val = val;
 	};
 
-	function CConditionalFormatIconSet () {
+	function CConditionalFormatIconSet() {
 		this.IconSet = null;
 		this.IconId = null;
 
 		return this;
 	}
-	CConditionalFormatIconSet.prototype.clone = function() {
+
+	CConditionalFormatIconSet.prototype.clone = function () {
 		var res = new CConditionalFormatIconSet();
 		res.IconSet = this.IconSet;
 		res.IconId = this.IconId;
@@ -1676,7 +1682,7 @@
 		}
 	};
 
-	function CGradient (c1, c2) {
+	function CGradient(c1, c2) {
 		this.MaxColorIndex = 512;
 		this.base_shift = 8;
 
@@ -1824,9 +1830,9 @@
 		}
 		var RGB = {R: 0xFF, G: 0xFF, B: 0xFF};
 		var bCoeff = 0.828;
-		RGB.R = Math.min(255,(color.getR() + bCoeff*(0xFF - color.getR()) + 0.5) >> 0);
-		RGB.G = Math.min(255,(color.getG() + bCoeff*(0xFF - color.getG()) + 0.5) >> 0);
-		RGB.B = Math.min(255,(color.getB() + bCoeff*(0xFF - color.getB()) + 0.5) >> 0);
+		RGB.R = Math.min(255, (color.getR() + bCoeff * (0xFF - color.getR()) + 0.5) >> 0);
+		RGB.G = Math.min(255, (color.getG() + bCoeff * (0xFF - color.getG()) + 0.5) >> 0);
+		RGB.B = Math.min(255, (color.getB() + bCoeff * (0xFF - color.getB()) + 0.5) >> 0);
 		return AscCommonExcel.createRgbColor(RGB.R, RGB.G, RGB.B);
 	}
 

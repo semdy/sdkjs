@@ -4084,22 +4084,23 @@ function (window, undefined) {
 					break;
 				}
 				case AscCH.historyitem_CFRule_SetText: {
+					cfRule.asc_setText(value);
 					break;
 				}
 				case AscCH.historyitem_CFRule_SetTimePeriod: {
-
+					cfRule.asc_setTimePeriod(value);
 					break;
 				}
 				case AscCH.historyitem_CFRule_SetType: {
-
+					cfRule.asc_setType(value);
 					break;
 				}
 				case AscCH.historyitem_CFRule_SetPivot: {
-
+					cfRule.pivot = value;
 					break;
 				}
 				case AscCH.historyitem_CFRule_SetDxf: {
-
+					cfRule.asc_setDxf(value);
 					break;
 				}
 				case AscCH.historyitem_CFRule_SetRanges: {

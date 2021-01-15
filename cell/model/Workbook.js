@@ -9090,7 +9090,6 @@
 		if (oRule) {
 			this.aConditionalFormattingRules.splice(oRule.index, 1);
 			if (addToHistory) {
-				//todo объект нужен только для undo
 				History.Add(AscCommonExcel.g_oUndoRedoWorksheet, AscCH.historyitem_Worksheet_CFRuleDelete, this.getId(), null,
 					new AscCommonExcel.UndoRedoData_CF(id, oRule.val));
 			}
