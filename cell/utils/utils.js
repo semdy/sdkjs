@@ -1926,8 +1926,8 @@
 		function generateCellStyles(w, h, wb) {
 			var result = [];
 
-			var widthWithRetina = AscCommon.AscBrowser.convertToRetinaValue(width, true);
-			var heightWithRetina = AscCommon.AscBrowser.convertToRetinaValue(height, true);
+			var widthWithRetina = AscCommon.AscBrowser.convertToRetinaValue(w, true);
+			var heightWithRetina = AscCommon.AscBrowser.convertToRetinaValue(h, true);
 
 			var ctx = getContext(w, h, wb);
 			var oCanvas = ctx.getCanvas();
