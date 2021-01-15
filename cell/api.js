@@ -4923,9 +4923,9 @@ var editor;
     return res;
   };
 
-  spreadsheet_api.prototype.asc_setCF = function (arr) {
+  spreadsheet_api.prototype.asc_setCF = function (arr, deleteIdArr) {
     var ws = this.wb.getWorksheet();
-    ws.setCF(arr);
+    ws.setCF(arr, deleteIdArr);
   };
 
   spreadsheet_api.prototype.asc_beforeInsertSlicer = function () {

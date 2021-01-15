@@ -20161,12 +20161,12 @@
 		var selection = t.model.selectionRange.getLast();
 		var activeCell = t.model.selectionRange.activeCell.clone();
 
-		var temp = this.model.aConditionalFormattingRules[0].clone();
+		/*var temp = this.model.aConditionalFormattingRules[0].clone();
 		temp.id = this.model.aConditionalFormattingRules[0].id;
 		//temp.ranges.push(Asc.Range(1,1,1,1));
 
 		this.deleteCF([temp]);
-		return;
+		return;*/
 
 		var revertSelection = function() {
 			t.cleanSelection();
@@ -20847,7 +20847,7 @@
 		this._isLockedCells(_selection, /*subType*/null, callback);
 	};
 
-	WorksheetView.prototype.setCF = function (arr) {
+	WorksheetView.prototype.setCF = function (arr, deleteIdArr) {
 		var t = this;
 
 		var callback = function (success) {
@@ -20857,17 +20857,31 @@
 			History.Create_NewPoint();
 			History.StartTransaction();
 
-			for (var i = 0; i < arr.length; i++) {
-				t.model.setCFRule(arr[i]);
+			var j;
+			if (deleteIdArr) {
+				for (j = 0; j < deleteIdArr.length; j++) {
+					t.model.deleteCFRule(deleteIdArr[j].id, true);
+				}
+			}
+
+			for (j = 0; j < arr.length; j++) {
+				t.model.setCFRule(arr[j]);
 			}
 
 			History.EndTransaction();
 		};
 
-		var _selection = [];
-		for (var i = 0; i < arr.length; i++) {
+		var _selection = [], i;
+		for (i = 0; i < arr.length; i++) {
 			_selection = _selection.concat(arr[i].ranges);
 		}
+		if (deleteIdArr) {
+			for (i = 0; i < deleteIdArr.length; i++) {
+				var oRule = this.getCFRuleById(deleteIdArr[i]);
+				_selection = _selection.concat(oRule.ranges);
+			}
+		}
+
 		this._isLockedCells(_selection, /*subType*/null, callback);
 	};
 
