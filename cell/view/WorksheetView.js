@@ -20163,9 +20163,9 @@
 
 		var temp = this.model.aConditionalFormattingRules[0].clone();
 		temp.id = this.model.aConditionalFormattingRules[0].id;
-		temp.ranges.push(Asc.Range(1,1,1,1));
+		//temp.ranges.push(Asc.Range(1,1,1,1));
 
-		this.setCF([temp]);
+		this.deleteCF([temp]);
 		return;
 
 		var revertSelection = function() {
@@ -20859,6 +20859,30 @@
 
 			for (var i = 0; i < arr.length; i++) {
 				t.model.setCFRule(arr[i]);
+			}
+
+			History.EndTransaction();
+		};
+
+		var _selection = [];
+		for (var i = 0; i < arr.length; i++) {
+			_selection = _selection.concat(arr[i].ranges);
+		}
+		this._isLockedCells(_selection, /*subType*/null, callback);
+	};
+
+	WorksheetView.prototype.deleteCF = function (arr) {
+		var t = this;
+
+		var callback = function (success) {
+			if (!success) {
+				return;
+			}
+			History.Create_NewPoint();
+			History.StartTransaction();
+
+			for (var i = 0; i < arr.length; i++) {
+				t.model.deleteCFRule(arr[i].id, true);
 			}
 
 			History.EndTransaction();
