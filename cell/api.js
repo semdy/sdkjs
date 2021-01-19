@@ -4923,9 +4923,90 @@ var editor;
     return res;
   };
 
-  spreadsheet_api.prototype.asc_setCF = function (arr, deleteIdArr) {
-    var ws = this.wb.getWorksheet();
-    ws.setCF(arr, deleteIdArr);
+  spreadsheet_api.prototype.asc_generatePresetsCF = function () {
+    var arr = [];
+
+    var getGradient = function (_fill, startColor, endColor) {
+        _fill.gradientFill = new AscCommonExcel.GradientFill();
+        var stop0 = new AscCommonExcel.GradientStop();
+        stop0.position = 0;
+        stop0.color = startColor;
+        var stop1 = new AscCommonExcel.GradientStop();
+        stop1.position = 1;
+        stop1.color = endColor;
+        _fill.gradientFill.asc_putGradientStops([stop0, stop1]);
+
+        return _fill;
+    };
+
+    var xfs;
+    //TODO цвета нужно изменить
+    //отдаём 6 вариантов для преетов
+    /*xfs = new AscCommonExcel.CellXfs();
+    xfs.fill = new AscCommonExcel.Fill();
+    getGradient(xfs.fill, AscCommonExcel.createRgbColor(1, 1, 1), AscCommonExcel.createRgbColor(0, 0, 0));
+    arr.push(xfs);*/
+
+    xfs = new AscCommonExcel.CellXfs();
+    xfs.fill = new AscCommonExcel.Fill();
+    xfs.fill.fromColor(AscCommonExcel.createRgbColor(0,0,0));
+    arr.push(xfs);
+
+    xfs = new AscCommonExcel.CellXfs();
+    xfs.fill = new AscCommonExcel.Fill();
+    xfs.fill.fromColor(AscCommonExcel.createRgbColor(0,0,0));
+    arr.push(xfs);
+
+    xfs = new AscCommonExcel.CellXfs();
+    xfs.fill = new AscCommonExcel.Fill();
+    xfs.fill.fromColor(AscCommonExcel.createRgbColor(0,0,0));
+    arr.push(xfs);
+
+    xfs = new AscCommonExcel.CellXfs();
+    xfs.fill = new AscCommonExcel.Fill();
+    xfs.fill.fromColor(AscCommonExcel.createRgbColor(1,1,1));
+    xfs.font = new AscCommonExcel.Font();
+    xfs.font.setColor(AscCommonExcel.createRgbColor(255,255,255));
+    arr.push(xfs);
+
+    xfs = new AscCommonExcel.CellXfs();
+    xfs.fill = new AscCommonExcel.Fill();
+    xfs.fill.fromColor(AscCommonExcel.createRgbColor(1,1,1));
+    xfs.font = new AscCommonExcel.Font();
+    xfs.font.setColor(AscCommonExcel.createRgbColor(255,255,255));
+    arr.push(xfs);
+
+    xfs = new AscCommonExcel.CellXfs();
+    xfs.fill = new AscCommonExcel.Fill();
+    xfs.fill.fromColor(AscCommonExcel.createRgbColor(1,1,1));
+    xfs.font = new AscCommonExcel.Font();
+    xfs.font.setColor(AscCommonExcel.createRgbColor(255,255,255));
+    xfs.border = window['AscCommonExcel'].Border;
+    /*function makeBorder(b) {
+        var border = new AscCommonExcel.BorderProp();
+        if (b === false) {
+            border.setStyle(c_oAscBorderStyles.None);
+        } else if (b) {
+            if (b.style !== null && b.style !== undefined) {
+                border.setStyle(b.style);
+            }
+            if (b.color !== null && b.color !== undefined) {
+                if (b.color instanceof Asc.asc_CColor) {
+                    border.c = AscCommonExcel.CorrectAscColor(b.color);
+                }
+            }
+        }
+        return border;
+    }*/
+    xfs.font.setColor(AscCommonExcel.createRgbColor(255,255,255));
+    arr.push(xfs);
+
+    return arr;
+  };
+
+  spreadsheet_api.prototype.asc_get = function (arr, deleteIdArr) {
+      var ws = this.wb.getWorksheet();
+      ws.setCF(arr, deleteIdArr);
   };
 
   spreadsheet_api.prototype.asc_beforeInsertSlicer = function () {
