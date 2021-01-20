@@ -3037,6 +3037,47 @@ var g_oBorderProperties = {
 		//new AscCommonExcel.Font()
 		//return (AscCommon.vertalign_SuperScript === this.getFont2().setVerticalAlign());
 	};
+	CellXfs.prototype.asc_setBorder = function (val) {
+		if (val.length < 1) {
+			this.border = null;
+		}
+
+		//TODO duplicate
+		function makeBorder(b) {
+			var border = new AscCommonExcel.BorderProp();
+			if (b === false) {
+				border.setStyle(c_oAscBorderStyles.None);
+			} else if (b) {
+				if (b.style !== null && b.style !== undefined) {
+					border.setStyle(b.style);
+				}
+				if (b.color !== null && b.color !== undefined) {
+					if (b.color instanceof Asc.asc_CColor) {
+						border.c = AscCommonExcel.CorrectAscColor(b.color);
+					}
+				}
+			}
+			return border;
+		}
+		
+		var res = new AscCommonExcel.Border();
+		var c_oAscBorderOptions = asc.c_oAscBorderOptions;
+		// Diagonal
+		res.d = makeBorder(val[c_oAscBorderOptions.DiagD] || val[c_oAscBorderOptions.DiagU]);
+		res.dd = !!val[c_oAscBorderOptions.DiagD];
+		res.du = !!val[c_oAscBorderOptions.DiagU];
+		// Vertical
+		res.l = makeBorder(val[c_oAscBorderOptions.Left]);
+		res.iv = makeBorder(val[c_oAscBorderOptions.InnerV]);
+		res.r = makeBorder(val[c_oAscBorderOptions.Right]);
+		// Horizontal
+		res.t = makeBorder(val[c_oAscBorderOptions.Top]);
+		res.ih = makeBorder(val[c_oAscBorderOptions.InnerH]);
+		res.b = makeBorder(val[c_oAscBorderOptions.Bottom]);
+		
+		this.border = res;
+	};
+
 
 	/*CellXfs.prototype.asc_setNumFormat = function () {
 		return this.getNum2().getFormat();
