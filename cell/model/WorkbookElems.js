@@ -2845,7 +2845,7 @@ var g_oBorderProperties = {
 		var bcr = new AscCommon.Binary_CommonReader(reader);
 		var oDxf = new AscCommonExcel.CellXfs();
 		reader.GetUChar();
-		length = reader.GetULongLE();
+		var length = reader.GetULongLE();
 		bcr.Read1(length, function (t, l) {
 			return bsr.ReadDxf(t, l, oDxf);
 		});
@@ -2994,48 +2994,67 @@ var g_oBorderProperties = {
 		return AscCommonExcel.generateXfsStyle(width, height, api.wb, this, text);
 	};
 	CellXfs.prototype.asc_setFillColor = function (val) {
-		//var color = AscCommonExcel.CorrectAscColor(val);
-		//this.getFill2().bg() = color;
+		var color = AscCommonExcel.CorrectAscColor(val);
+		//TODO перепроверить
+		this.fill.patternFill = color;
 	};
 	CellXfs.prototype.asc_setFill = function (val) {
 		return this.setFill(val);
 	};
 	CellXfs.prototype.asc_setFontName = function (val) {
-		//new AscCommonExcel.Font()
-		return this.getFont2().setName(val);
+		if (!this.font) {
+			this.font = new AscCommonExcel.Font();
+		}
+		this.getFont().setName(val);
 	};
 	CellXfs.prototype.asc_setFontSize = function (val) {
-		//new AscCommonExcel.Font()
-		return this.getFont2().setSize(val);
+		if (!this.font) {
+			this.font = new AscCommonExcel.Font();
+		}
+		this.getFont().setSize(val);
 	};
 	CellXfs.prototype.asc_setFontColor = function (val) {
-		//new AscCommonExcel.Font()
+		if (!this.font) {
+			this.font = new AscCommonExcel.Font();
+		}
 		var color = AscCommonExcel.CorrectAscColor(val);
-		return this.getFont2().setColor(color);
+		this.getFont().setColor(color);
 	};
 	CellXfs.prototype.asc_setFontBold = function (val) {
-		//new AscCommonExcel.Font()
-		return this.getFont2().setBold(val);
+		if (!this.font) {
+			this.font = new AscCommonExcel.Font();
+		}
+		this.getFont().setBold(val);
 	};
 	CellXfs.prototype.asc_setFontItalic = function (val) {
-		//new AscCommonExcel.Font()
-		return this.getFont2().setItalic(val);
+		if (!this.font) {
+			this.font = new AscCommonExcel.Font();
+		}
+		this.getFont().setItalic(val);
 	};
 	CellXfs.prototype.asc_setFontUnderline = function (val) {
-		//new AscCommonExcel.Font()
-		//return (Asc.EUnderline.underlineNone !== this.getFont2().getUnderline());
+		if (!this.font) {
+			this.font = new AscCommonExcel.Font();
+		}
+		this.getFont().setUnderline(val);
 	};
 	CellXfs.prototype.asc_setFontStrikeout = function (val) {
-		//new AscCommonExcel.Font()
-		return this.getFont2().setStrikeout(val);
+		if (!this.font) {
+			this.font = new AscCommonExcel.Font();
+		}
+		this.getFont().setStrikeout(val);
 	};
 	CellXfs.prototype.asc_setFontSubscript = function (val) {
-		//new AscCommonExcel.Font()
-		//return (AscCommon.vertalign_SubScript === this.getFont2().setVerticalAlign(val));
+		if (!this.font) {
+			this.font = new AscCommonExcel.Font();
+		}
+		this.getFont().setVerticalAlign(val ? AscCommon.vertalign_SubScript : AscCommon.vertalign_Baseline);
 	};
 	CellXfs.prototype.asc_setFontSuperscript = function () {
-		//new AscCommonExcel.Font()
-		//return (AscCommon.vertalign_SuperScript === this.getFont2().setVerticalAlign());
+		if (!this.font) {
+			this.font = new AscCommonExcel.Font();
+		}
+		this.getFont().setVerticalAlign(val ? AscCommon.vertalign_SuperScript : AscCommon.vertalign_Baseline);
 	};
 	CellXfs.prototype.asc_setBorder = function (val) {
 		if (val.length < 1) {
@@ -11052,6 +11071,20 @@ AutoFilterDateElem.prototype.convertDateGroupItemToRange = function(oDateGroupIt
 	prot["asc_getWrapText"] = prot.asc_getWrapText;
 	prot["asc_getShrinkToFit"] = prot.asc_getShrinkToFit;
 	prot["asc_getPreview"] = prot.asc_getPreview;
+	prot["asc_setFillColor"] = prot.asc_setFillColor;
+	prot["asc_setFill"] = prot.asc_setFill;
+	prot["asc_setFontName"] = prot.asc_setFontName;
+	prot["asc_setFontSize"] = prot.asc_setFontSize;
+	prot["asc_setFontColor"] = prot.asc_setFontColor;
+	prot["asc_setFontBold"] = prot.asc_setFontBold;
+	prot["asc_setFontItalic"] = prot.asc_setFontItalic;
+	prot["asc_setFontUnderline"] = prot.asc_setFontUnderline;
+	prot["asc_setFontStrikeout"] = prot.asc_setFontStrikeout;
+	prot["asc_getFontSubscript"] = prot.asc_setFontSubscript;
+	prot["asc_setFontSuperscript"] = prot.asc_setFontSuperscript;
+	prot["asc_setBorder"] = prot.asc_setBorder;
+
+
 	window['AscCommonExcel'].Align = Align;
 	window['AscCommonExcel'].CCellStyles = CCellStyles;
 	window['AscCommonExcel'].CCellStyle = CCellStyle;
