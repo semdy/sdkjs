@@ -4014,10 +4014,7 @@
 						textX -= ct.indent * 3 * this.defaultSpaceWidth;
 					} else if (AscCommon.align_Left === ct.cellHA) {
 						textX += ct.indent * 3 * this.defaultSpaceWidth;
-					} else if (AscCommon.align_Center === ct.cellHA) {
-
-					} else if (AscCommon.align_Justify === ct.cellHA) {
-						//TODO align_Distributed
+					} else if (AscCommon.align_Distributed === ct.cellHA) {
 						//textX += ct.indent * 3 * this.defaultSpaceWidth;
 					}
 				}
@@ -5968,10 +5965,7 @@
 				//maxW += indent * 3 * this.defaultSpaceWidth + 1;
 			} else if (AscCommon.align_Left === alignH) {
 				//maxW += indent * 3 * this.defaultSpaceWidth;
-			} else if (AscCommon.align_Center === alignH) {
-
-			} else if (AscCommon.align_Justify === alignH) {
-				//TODO align_Distributed
+			} else if (AscCommon.align_Distributed === alignH) {
 				maxW -= 2 * indent * 3 * this.defaultSpaceWidth;
 				fl.textAlign = AscCommon.align_Center;
 			}
@@ -5984,10 +5978,7 @@
 				tm.width += indent * 3 * this.defaultSpaceWidth + 1;
 			} else if (AscCommon.align_Left === alignH) {
 				tm.width += indent * 3 * this.defaultSpaceWidth;
-			} else if (AscCommon.align_Center === alignH) {
-
-			} else if (AscCommon.align_Justify === alignH) {
-				//TODO align_Distributed
+			} else if (AscCommon.align_Distributed === alignH) {
 				//maxW -= indent * 3 * this.defaultSpaceWidth;
 				//fl.textAlign = AscCommon.align_Center;
 			}
@@ -14684,10 +14675,8 @@
 							arrRightS[ri] -= indent * 3 * t.defaultSpaceWidth + 1;
 						} else if (AscCommon.align_Left === align.hor) {
 							cellX += indent * 3 * t.defaultSpaceWidth;
-						} else if (AscCommon.align_Center === align.hor) {
+						} else if (AscCommon.align_Distributed === align.hor) {
 
-						} else if (AscCommon.align_Justify === align.hor) {
-							//TODO align_Distributed
 						}
 					}
 					return {l: arrLeftS, r: arrRightS, b: arrBottomS, cellX: cellX, cellY: cellY, ri: ri, bi: bi};
