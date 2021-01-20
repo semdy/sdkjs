@@ -4018,7 +4018,6 @@
 
 					} else if (AscCommon.align_Justify === ct.cellHA) {
 						//textX += ct.indent * 3 * this.defaultSpaceWidth;
-						textW -= 20;
 					}
 				}
 				this.stringRender.restoreInternalState(ct.state).render(drawingCtx, textX, textY, textW, color);
@@ -5971,7 +5970,7 @@
 			} else if (AscCommon.align_Center === alignH) {
 
 			} else if (AscCommon.align_Justify === alignH) {
-				maxW -= indent * 3 * this.defaultSpaceWidth;
+				maxW -= 2 * indent * 3 * this.defaultSpaceWidth;
 				fl.textAlign = AscCommon.align_Center;
 			}
 		}
