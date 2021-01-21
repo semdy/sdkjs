@@ -10722,7 +10722,6 @@ background-repeat: no-repeat;\
 	
 	asc_docs_api.prototype.SetDrawImagePreviewBulletChangeListLevel = function(id, props)
     {
-		id = ["bulleted-list-preview","bulleted-list-preview","bulleted-list-preview","bulleted-list-preview","bulleted-list-preview","bulleted-list-preview","bulleted-list-preview","bulleted-list-preview","bulleted-list-preview"];
 		if (this.WordControl.m_oDrawingDocument)
 			this.WordControl.m_oDrawingDocument.SetDrawImagePreviewBulletChangeListLevel(id, props);
     };
