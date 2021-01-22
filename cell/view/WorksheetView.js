@@ -15466,7 +15466,7 @@
         return arrResult;
     };
 
-	WorksheetView.prototype.getFilterButtonSize = function () {
+	WorksheetView.prototype._getFilterButtonSize = function () {
 	    return AscCommon.AscBrowser.convertToRetinaValue(filterSizeButton, true);
 	};
 
