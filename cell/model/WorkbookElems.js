@@ -2993,6 +2993,9 @@ var g_oBorderProperties = {
 	CellXfs.prototype.asc_getPreview = function (api, text, width, height) {
 		return AscCommonExcel.generateXfsStyle(width, height, api.wb, this, text);
 	};
+	CellXfs.prototype.asc_getPreview2 = function (api, id, text) {
+		return AscCommonExcel.generateXfsStyle2(id, api.wb, this, text);
+	};
 	CellXfs.prototype.asc_setFillColor = function (val) {
 		var color = AscCommonExcel.CorrectAscColor(val);
 		//TODO перепроверить

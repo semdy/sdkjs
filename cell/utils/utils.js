@@ -2248,6 +2248,38 @@
 			return new AscCommon.CStyleImage(text, null, oCanvas.toDataURL("image/png"));
 		}
 
+		function generateXfsStyle2(id, wb, xfs, text) {
+
+			var parent =  document.getElementById(id);
+			if (!parent)
+				return;
+
+			var w = parent.clientWidth;
+			var h = parent.clientHeight;
+
+			var canvas = parent.firstChild;
+			if (!canvas)
+			{
+				canvas = document.createElement('canvas');
+				canvas.style.cssText = "pointer-events: none;padding:0;margin:0;user-select:none;";
+				canvas.style.width = w + "px";
+				canvas.style.height = h + "px";
+				parent.appendChild(canvas);
+			}
+
+			canvas.width = AscCommon.AscBrowser.convertToRetinaValue(w, true);
+			canvas.height = AscCommon.AscBrowser.convertToRetinaValue(h, true);
+
+			var ctx = new Asc.DrawingContext({canvas: canvas, units: 0/*px*/, fmgrGraphics: wb.fmgrGraphics, font: wb.m_oFont});
+			var oCanvas = ctx.getCanvas();
+			var graphics = getGraphics(ctx);
+
+			var oStyle = new AscCommonExcel.CCellStyle();
+			oStyle.xfs = xfs;
+
+			drawStyle(ctx, graphics, wb.stringRender, oStyle, text, w, h);
+		}
+
 		function drawColorScalePreview(wb, w, h, colors) {
 			if (!colors || !colors.length) {
 				return null;
@@ -3112,6 +3144,7 @@
 		window["AscCommonExcel"].generateCellStyles = generateCellStyles;
 		window["AscCommonExcel"].generateSlicerStyles = generateSlicerStyles;
 		window["AscCommonExcel"].generateXfsStyle = generateXfsStyle;
+		window["AscCommonExcel"].generateXfsStyle2 = generateXfsStyle2;
 		window["AscCommonExcel"].getIconsForLoad = getIconsForLoad;
 		window["AscCommonExcel"].drawColorScalePreview = drawColorScalePreview;
 

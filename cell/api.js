@@ -4899,7 +4899,7 @@ var editor;
       return rules;
     };
 
-  spreadsheet_api.prototype.asc_getPreviewCF = function (type, props, text, w, h) {
+  /*spreadsheet_api.prototype.asc_getPreviewCF = function (type, props, text, w, h) {
     var res;
 
     if (!props) {
@@ -4921,6 +4921,10 @@ var editor;
     }
 
     return res;
+  };*/
+
+  spreadsheet_api.prototype.asc_getPreviewCF = function(id, props, text) {
+	  props.asc_getPreview2(this, id, text);
   };
 
   spreadsheet_api.prototype.asc_generatePresetsCF = function () {
