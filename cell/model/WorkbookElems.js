@@ -2997,9 +2997,9 @@ var g_oBorderProperties = {
 		return AscCommonExcel.generateXfsStyle2(id, api.wb, this, text);
 	};
 	CellXfs.prototype.asc_setFillColor = function (val) {
-		var color = AscCommonExcel.CorrectAscColor(val);
-		//TODO перепроверить
-		this.fill.patternFill = color;
+		var fill = new AscCommonExcel.Fill();
+		fill.fromColor(val);
+		return this.setFill(fill);
 	};
 	CellXfs.prototype.asc_setFill = function (val) {
 		return this.setFill(val);
@@ -3100,12 +3100,12 @@ var g_oBorderProperties = {
 		this.border = res;
 	};
 
+	CellXfs.prototype.asc_setNumFormatInfo = function (val) {
+		this.num = new AscCommonExcel.Num({f:val});
+	};
 
 	/*CellXfs.prototype.asc_setNumFormat = function () {
 		return this.getNum2().getFormat();
-	};
-	CellXfs.prototype.asc_setNumFormatInfo = function () {
-		return this.getNum2().getNumFormat().getTypeInfo();
 	};
 
 	CellXfs.prototype.asc_setHorAlign = function () {
@@ -11086,6 +11086,7 @@ AutoFilterDateElem.prototype.convertDateGroupItemToRange = function(oDateGroupIt
 	prot["asc_getFontSubscript"] = prot.asc_setFontSubscript;
 	prot["asc_setFontSuperscript"] = prot.asc_setFontSuperscript;
 	prot["asc_setBorder"] = prot.asc_setBorder;
+	prot["asc_setNumFormatInfo"] = prot.asc_setNumFormatInfo;
 
 
 	window['AscCommonExcel'].Align = Align;

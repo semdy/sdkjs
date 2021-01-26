@@ -5008,7 +5008,7 @@ var editor;
     return arr;
   };
 
-  spreadsheet_api.prototype.asc_get = function (arr, deleteIdArr) {
+  spreadsheet_api.prototype.asc_setCF = function (arr, deleteIdArr) {
       var ws = this.wb.getWorksheet();
       ws.setCF(arr, deleteIdArr);
   };
