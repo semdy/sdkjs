@@ -3083,7 +3083,7 @@ var g_oBorderProperties = {
 		}
 		
 		var res = new AscCommonExcel.Border();
-		var c_oAscBorderOptions = asc.c_oAscBorderOptions;
+		var c_oAscBorderOptions = Asc.c_oAscBorderOptions;
 		// Diagonal
 		res.d = makeBorder(val[c_oAscBorderOptions.DiagD] || val[c_oAscBorderOptions.DiagU]);
 		res.dd = !!val[c_oAscBorderOptions.DiagD];
