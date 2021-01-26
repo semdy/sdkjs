@@ -844,6 +844,7 @@
 	CConditionalFormattingRule.prototype.asc_setLocation = function (val) {
 		var t = this;
 		if (val) {
+			val = val.split(",");
 			this.ranges = [];
 			val.forEach(function (item) {
 				t.ranges.push(AscCommonExcel.g_oRangeCache.getAscRange(item));
@@ -852,7 +853,8 @@
 	};
 
 	//TODO?
-	CConditionalFormattingRule.prototype.asc_setContainsText = function () {
+	CConditionalFormattingRule.prototype.asc_setContainsText = function (val) {
+		this.text = val;
 		/*if (null !== this.text) {
 			return this.text;
 		}
@@ -1878,7 +1880,7 @@
 	prot['asc_setDxf'] = prot.asc_setDxf;
 	prot['asc_setType'] = prot.asc_setType;
 	prot['asc_setLocation'] = prot.asc_setLocation;
-	//prot['asc_setContainsText'] = prot.asc_getContainsText;
+	prot['asc_setContainsText'] = prot.asc_setContainsText;
 	prot['asc_setTimePeriod'] = prot.asc_setTimePeriod;
 	prot['asc_setOperator'] = prot.asc_setOperator;
 	prot['asc_setRank'] = prot.asc_setRank;

@@ -2994,6 +2994,7 @@ var g_oBorderProperties = {
 		return AscCommonExcel.generateXfsStyle(width, height, api.wb, this, text);
 	};
 	CellXfs.prototype.asc_getPreview2 = function (api, id, text) {
+		//подготовить текст с форматом
 		return AscCommonExcel.generateXfsStyle2(id, api.wb, this, text);
 	};
 	CellXfs.prototype.asc_setFillColor = function (val) {
