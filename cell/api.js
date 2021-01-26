@@ -4896,7 +4896,17 @@ var editor;
           rules = aRules;
         }
       }
-      return rules;
+
+      var aSheet = type === Asc.c_oAscSelectionForCFType.selection ? sheet : this.wbModel.getActiveWs();
+      var activeRanges = aSheet.selectionRange.ranges;
+      var sActiveRanges = [];
+      if (activeRanges) {
+		  activeRanges.forEach(function (item) {
+			  sActiveRanges.push(item.getAbsName());
+          });
+      }
+
+      return [rules, sActiveRanges.join(AscCommon.FormulaSeparators.functionArgumentSeparator)];
     };
 
   /*spreadsheet_api.prototype.asc_getPreviewCF = function (type, props, text, w, h) {
