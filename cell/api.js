@@ -4871,6 +4871,23 @@ var editor;
           sheet = this.wbModel.getWorksheet(id);
           break;
         case Asc.c_oAscSelectionForCFType.table:
+          var oTable;
+          if (id) {
+			  oTable = this.wbModel.getTableByName(id, true);
+			  if (oTable) {
+				  sheet = this.wbModel.aWorksheets[oTable.index];
+				  range = oTable.table.Ref;
+              }
+          } else {
+              //this table
+			  sheet = this.wbModel.getActiveWs();
+			  var thisTableIndex = sheet.autoFilters.searchRangeInTableParts(sheet.selectionRange.getLast());
+			  if (thisTableIndex >= 0) {
+				  range = sheet.TableParts[thisTableIndex].Ref;
+              } else {
+				  sheet = null;
+              }
+          }
           // ToDo
           break;
         case Asc.c_oAscSelectionForCFType.pivot:
