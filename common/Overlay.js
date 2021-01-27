@@ -43,7 +43,7 @@ var TRACK_DISTANCE_ROTATE   = 25;
 var TRACK_DISTANCE_ROTATE2  = 25;
 var TRACK_ADJUSTMENT_SIZE   = 10;
 var TRACK_WRAPPOINTS_SIZE   = 6;
-var IMAGE_ROTATE_TRACK_W    = 21;
+var ROTATE_TRACK_W    = 21;
 
 var bIsUseImageRotateTrack  = true;
 if (bIsUseImageRotateTrack)
@@ -602,6 +602,44 @@ COverlay.prototype =
         this.m_oContext.moveTo(x, top);
         this.m_oContext.lineTo(x, bottom);
         this.m_oContext.stroke();
+    },
+    drawArrow : function(ctx, x, y, len, rgb, needToCorrectLen) {
+        var rPR = AscCommon.AscBrowser.retinaPixelRatio;
+        ctx.beginPath();
+        var arrowSize = Math.round(13 * rPR);
+
+        if (needToCorrectLen && 0 == (len & 1) )
+            len += 1;
+        var _data, px,
+            _x = Math.round((arrowSize - len) / 2),
+            _y = Math.floor(arrowSize / 2),
+            r, g, b;
+        var __x = _x, __y = _y, _len = len;
+
+        // r = 147, g = 147, b = 147;
+        var r = rgb.r, g = rgb.g, b = rgb.b;
+        _data = ctx.createImageData(arrowSize, arrowSize);
+        px = _data.data;
+
+        while (_len > 0) {
+            var ind = 4 * (arrowSize * __y + __x);
+            for (var i = 0; i < _len; i++) {
+                px[ind++] = r;
+                px[ind++] = g;
+                px[ind++] = b;
+                px[ind++] = 255;
+            }
+
+            r = r >> 0;
+            g = g >> 0;
+            b = b >> 0;
+
+            __x += 1;
+            __y -= 1;
+            _len -= 2;
+        }
+
+        ctx.putImageData(_data, x, y);
     }
 };
 
@@ -1138,12 +1176,32 @@ CAutoshapeTrack.prototype =
                             var _image_track_rotate = overlay.GetImageTrackRotationImage();
                             if (_image_track_rotate.asc_complete)
                             {
-                                var _w = Math.round(IMAGE_ROTATE_TRACK_W * rPR);
-                                var _xI = (xC + indent - _w / 2) >> 0;
-                                var _yI = y1 - Math.round(TRACK_DISTANCE_ROTATE * rPR) - (_w >> 1);
-
                                 overlay.CheckRect(_xI, _yI, _w, _w);
-                                ctx.drawImage(_image_track_rotate, _xI, _yI, _w, _w);
+                                var _w = Math.round(ROTATE_TRACK_W * rPR),
+                                    _yI = y1 - Math.round(TRACK_DISTANCE_ROTATE * rPR),
+                                    radius = Math.round(6 * rPR);
+
+                                // ctx.beginPath();
+                                ctx.fillStyle = "#939393";
+
+                                overlay.drawArrow(ctx, xC - Math.round(12.5 * rPR), _yI - Math.round(4.5 * rPR), Math.round(4 * rPR), {r: 147, g: 147, b: 147}, true);
+
+                                ctx.beginPath();
+                                ctx.lineWidth = Math.round(rPR);
+                                ctx.arc(xC, _yI + Math.round(rPR), radius, -3 / 4 * Math.PI, Math.PI);
+                                ctx.stroke();
+                                ctx.beginPath();
+                                ctx.arc(xC, _yI + Math.round(rPR), _w / 16, 0, 2 * Math.PI);
+                                ctx.stroke();
+                                ctx.closePath();
+
+                                ctx.beginPath();
+                                ctx.globalCompositeOperation = "destination-over";
+                                ctx.arc(xC, _yI, _w / 2, 0, 2 * Math.PI);
+                                ctx.fillStyle = "#ffffff";
+                                ctx.fill();
+                                ctx.closePath();
+                                ctx.globalCompositeOperation = "source-over";
                             }
                         }
 
@@ -1335,10 +1393,10 @@ CAutoshapeTrack.prototype =
                             var _image_track_rotate = overlay.GetImageTrackRotationImage();
                             if (_image_track_rotate.asc_complete)
                             {
-                                var _xI = xc1 + ex2 * TRACK_DISTANCE_ROTATE * rPR;
-                                var _yI = yc1 + ey2 * TRACK_DISTANCE_ROTATE * rPR;
-                                var _w = Math.round(IMAGE_ROTATE_TRACK_W * rPR);
-                                var _w2 = Math.round(IMAGE_ROTATE_TRACK_W / 2 * rPR);
+                                var _xI = Math.round(xc1 + ex2 * TRACK_DISTANCE_ROTATE * rPR);
+                                var _yI = Math.round(yc1 + ey2 * TRACK_DISTANCE_ROTATE * rPR);
+                                var _w = Math.round(ROTATE_TRACK_W * rPR);
+                                var _w2 = Math.round(ROTATE_TRACK_W / 2 * rPR);
 
 								if (nIsCleverWithTransform)
 								{
@@ -1347,8 +1405,6 @@ CAutoshapeTrack.prototype =
 									_w2 >>= 0;
 									_w2 += 1;
 								}
-
-								//ctx.setTransform(ex1, ey1, -ey1, ex1, _xI, _yI);
 
 								var _matrix = matrix.CreateDublicate();
 								_matrix.tx = 0;
@@ -1361,9 +1417,43 @@ CAutoshapeTrack.prototype =
 
 								ctx.save();
 
-								ctx.translate(_xI, _yI);
-								ctx.transform(_px, _py, -_py, _px, 0, 0);
-                                ctx.drawImage(_image_track_rotate, -_w2, -_w2, _w, _w);
+                                var cnvs = document.createElement('canvas'),
+                                    cntx = cnvs.getContext('2d'),
+                                    cnvsRotate = document.createElement('canvas'),
+                                    cntxRotate = cnvsRotate.getContext('2d'),
+                                    x = Math.round(13 * rPR) / 2,
+                                    y = Math.round(13 * rPR) / 2,
+                                    radius = Math.round(6 * rPR);
+
+                                ctx.beginPath();
+                                //at first draw arrow
+                                overlay.drawArrow(cntx, 0, 0, Math.round(4 * rPR), {r: 147, g: 147, b: 147}, true);
+
+                                // rotate arrow depending on the angle
+                                cntxRotate.translate(x, y)
+                                cntxRotate.rotate(_angle);
+                                cntxRotate.translate(-x, -y);
+                                cntxRotate.drawImage(cnvs, 0, 0);
+                                ctx.drawImage(cnvsRotate, Math.round(_xI - 6.4 * rPR - radius * _px), Math.round(_yI - 6.4 * rPR - radius * _py));
+
+                                //draw semicircle
+                                ctx.beginPath();
+                                ctx.lineWidth = Math.round(rPR);
+                                ctx.arc(_xI, _yI, radius, -3 / 4 * Math.PI + _angle, Math.PI + _angle);
+                                ctx.stroke();
+
+                                //draw inner circle
+                                ctx.beginPath();
+                                ctx.arc(_xI, _yI, _w / 16, 0, 2 * Math.PI);
+                                ctx.stroke();
+
+                                //draw circular background
+                                ctx.globalCompositeOperation = "destination-over";
+                                ctx.arc(_xI, _yI, _w / 2, 0, 2 * Math.PI);
+                                ctx.fillStyle = "#ffffff";
+                                ctx.fill();
+                                ctx.closePath();
+                                ctx.globalCompositeOperation = "source-over";
 
                                 ctx.restore();
 
@@ -1521,12 +1611,32 @@ CAutoshapeTrack.prototype =
                             var _image_track_rotate = overlay.GetImageTrackRotationImage();
                             if (_image_track_rotate.asc_complete)
                             {
-                                var _w = Math.round(IMAGE_ROTATE_TRACK_W * rPR);
-                                var _xI = (xC + indent - _w / 2) >> 0;
-                                var _yI = y1 - Math.round(TRACK_DISTANCE_ROTATE * rPR) - (_w >> 1);
-
                                 overlay.CheckRect(_xI, _yI, _w, _w);
-                                ctx.drawImage(_image_track_rotate, _xI, _yI, _w, _w);
+                                var _w = Math.round(ROTATE_TRACK_W * rPR),
+                                    _yI = y1 - Math.round(TRACK_DISTANCE_ROTATE * rPR),
+                                    radius = Math.round(6 * rPR);
+
+                                // ctx.beginPath();
+                                ctx.fillStyle = "#939393";
+
+                                overlay.drawArrow(ctx, xC - Math.round(12.5 * rPR), _yI - Math.round(4.5 * rPR), Math.round(4 * rPR), {r: 147, g: 147, b: 147}, true);
+
+                                ctx.beginPath();
+                                ctx.lineWidth = Math.round(rPR);
+                                ctx.arc(xC, _yI + Math.round(rPR), radius, -3 / 4 * Math.PI, Math.PI);
+                                ctx.stroke();
+                                ctx.beginPath();
+                                ctx.arc(xC, _yI + Math.round(rPR), _w / 16, 0, 2 * Math.PI);
+                                ctx.stroke();
+                                ctx.closePath();
+
+                                ctx.beginPath();
+                                ctx.globalCompositeOperation = "destination-over";
+                                ctx.arc(xC, _yI, _w / 2, 0, 2 * Math.PI);
+                                ctx.fillStyle = "#ffffff";
+                                ctx.fill();
+                                ctx.closePath();
+                                ctx.globalCompositeOperation = "source-over";
                             }
                         }
 
@@ -1696,10 +1806,10 @@ CAutoshapeTrack.prototype =
                             var _image_track_rotate = overlay.GetImageTrackRotationImage();
                             if (_image_track_rotate.asc_complete)
                             {
-                                var _xI = xc1 + ex2 * TRACK_DISTANCE_ROTATE * rPR;
-                                var _yI = yc1 + ey2 * TRACK_DISTANCE_ROTATE * rPR;
-                                var _w = Math.round(IMAGE_ROTATE_TRACK_W * rPR);
-                                var _w2 = Math.round(IMAGE_ROTATE_TRACK_W / 2 * rPR);
+                                var _xI = Math.round(xc1 + ex2 * TRACK_DISTANCE_ROTATE * rPR);
+                                var _yI = Math.round(yc1 + ey2 * TRACK_DISTANCE_ROTATE * rPR);
+                                var _w = Math.round(ROTATE_TRACK_W * rPR);
+                                var _w2 = Math.round(ROTATE_TRACK_W / 2 * rPR);
 
 								if (nIsCleverWithTransform)
 								{
@@ -1722,9 +1832,43 @@ CAutoshapeTrack.prototype =
 
 								ctx.save();
 
-								ctx.translate(_xI, _yI);
-								ctx.transform(_px, _py, -_py, _px, 0, 0);
-								ctx.drawImage(_image_track_rotate, -_w2, -_w2, _w, _w);
+                                var cnvs = document.createElement('canvas'),
+                                    cntx = cnvs.getContext('2d'),
+                                    cnvsRotate = document.createElement('canvas'),
+                                    cntxRotate = cnvsRotate.getContext('2d'),
+                                    x = Math.round(13 * rPR) / 2,
+                                    y = Math.round(13 * rPR) / 2,
+                                    radius = Math.round(6 * rPR);
+
+                                ctx.beginPath();
+                                //at first draw arrow
+                                overlay.drawArrow(cntx, 0, 0, Math.round(4 * rPR), {r: 147, g: 147, b: 147}, true);
+
+                                // rotate arrow depending on the angle
+                                cntxRotate.translate(x, y)
+                                cntxRotate.rotate(_angle);
+                                cntxRotate.translate(-x, -y);
+                                cntxRotate.drawImage(cnvs, 0, 0);
+                                ctx.drawImage(cnvsRotate, Math.round(_xI - 6.4 * rPR - radius * _px), Math.round(_yI - 6.4 * rPR - radius * _py));
+
+                                //draw semicircle
+                                ctx.beginPath();
+                                ctx.lineWidth = Math.round(rPR);
+                                ctx.arc(_xI, _yI, radius, -3 / 4 * Math.PI + _angle, Math.PI + _angle);
+                                ctx.stroke();
+
+                                //draw inner circle
+                                ctx.beginPath();
+                                ctx.arc(_xI, _yI, _w / 16, 0, 2 * Math.PI);
+                                ctx.stroke();
+
+                                //draw circular background
+                                ctx.globalCompositeOperation = "destination-over";
+                                ctx.arc(_xI, _yI, _w / 2, 0, 2 * Math.PI);
+                                ctx.fillStyle = "#ffffff";
+                                ctx.fill();
+                                ctx.closePath();
+                                ctx.globalCompositeOperation = "source-over";
 
                                 ctx.restore();
 
@@ -1864,7 +2008,7 @@ CAutoshapeTrack.prototype =
                         var _image_track_rotate = overlay.GetImageTrackRotationImage();
                         if (_image_track_rotate.asc_complete)
                         {
-                            var _w = Math.round(IMAGE_ROTATE_TRACK_W * rPR);
+                            var _w = Math.round(ROTATE_TRACK_W * rPR);
                             var _xI = (xC + indent - _w / 2) >> 0;
                             var _yI = y1 - Math.round(TRACK_DISTANCE_ROTATE * rPR) - (_w >> 1);
 
@@ -1993,8 +2137,8 @@ CAutoshapeTrack.prototype =
                         {
                             var _xI = xc1 + ex2 * TRACK_DISTANCE_ROTATE * rPR;
                             var _yI = yc1 + ey2 * TRACK_DISTANCE_ROTATE * rPR;
-                            var _w = Math.round(IMAGE_ROTATE_TRACK_W * rPR);
-                            var _w2 = Math.round(IMAGE_ROTATE_TRACK_W / 2 * rPR);
+                            var _w = Math.round(ROTATE_TRACK_W * rPR);
+                            var _w2 = Math.round(ROTATE_TRACK_W / 2 * rPR);
 
                             ctx.save();
 

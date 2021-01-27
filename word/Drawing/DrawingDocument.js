@@ -1689,9 +1689,48 @@ function CPage()
 				if ((_y + _h) > overlay.max_y)
 					overlay.max_y = _y + _h;
 
-				var tmp_image = AscCommon.AscBrowser.isCustomScalingAbove2() ? table_outline_dr.image2 : table_outline_dr.image;
-				if (tmp_image.asc_complete)
-					overlay.m_oContext.drawImage(tmp_image, _x, _y, Math.round(13 * rPR), Math.round(13 * rPR));
+				var ctx = overlay.m_oContext,
+				    rectSize = Math.round(12 * rPR),
+					halfRSize = Math.round(rectSize / 2),
+					indent = 0.5 * Math.round(rPR),
+					canvasVert = document.createElement('canvas'),
+					contextVert = canvasVert.getContext('2d'),
+					canvasHor = document.createElement('canvas'),
+					contextHor = canvasHor.getContext('2d');
+
+				ctx.beginPath();
+
+                //draw top arrow
+				overlay.drawArrow(contextVert, 0,  -Math.round(3 * rPR), 3 * Math.round( rPR), {r: 68, g: 68, b: 68});
+				ctx.drawImage(canvasVert, _x, _y);
+
+				//draw bottom arrow
+				contextVert.translate(Math.round(rectSize / 2), Math.round(rectSize / 2));
+				contextVert.rotate(Math.PI);
+				contextVert.translate(-Math.round(rectSize / 2), -Math.round(rectSize / 2));
+				contextVert.drawImage(canvasVert, -Math.round(rPR), -Math.round(rPR));
+				ctx.drawImage(canvasVert, _x, _y);
+
+				// //draw left and right arrow
+				contextHor.translate(Math.round(rectSize / 2), Math.round(rectSize / 2));
+				contextHor.rotate(Math.PI / 2);
+				contextHor.translate(-Math.round(rectSize / 2), -Math.round(rectSize / 2));
+				contextHor.drawImage(canvasVert, 0, -Math.round(rPR));
+				ctx.drawImage(canvasHor, _x, _y);
+
+				ctx.lineWidth = Math.round(rPR);
+				ctx.strokeStyle = "rgb(140, 140, 140)";
+
+				//draw rect
+				ctx.strokeRect(0.5 * ctx.lineWidth + _x, 0.5 * ctx.lineWidth + _y, rectSize, rectSize);
+
+				//draw cross element
+				ctx.strokeStyle = "rgb(68, 68, 68)";
+				ctx.moveTo(_x + halfRSize - Math.round(Math.round(6 * rPR) / 2) + indent, _y + halfRSize + indent);
+				ctx.lineTo(_x + halfRSize + Math.round(Math.round(6 * rPR) / 2) + indent, _y + halfRSize + 0.5 * Math.round(rPR));
+				ctx.moveTo(_x + halfRSize + indent, _y + halfRSize - Math.round(Math.round(6 * rPR) / 2) + indent);
+				ctx.lineTo(_x + halfRSize + indent, _y + halfRSize + Math.round(Math.round(6 * rPR) / 2) + indent);
+				ctx.stroke();
 			}
 			else
 			{
