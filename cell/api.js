@@ -4858,7 +4858,7 @@ var editor;
       }
     };
 
-    spreadsheet_api.prototype.asc_getCF = function (type, id) {
+    spreadsheet_api.prototype.asc_getCF = function (type, id, aChangedRules) {
       var rules = null;
       var range, sheet;
       switch (type) {
@@ -4883,14 +4883,28 @@ var editor;
         });
         if (range) {
           rules = [];
-          var oRule, ranges, multiplyRange;
-          for (var i = 0; i < aRules.length; ++i) {
-            oRule = aRules[i];
-            ranges = oRule.ranges;
-            multiplyRange = new AscCommonExcel.MultiplyRange(ranges);
+          var putRange = function (_range) {
+            multiplyRange = new AscCommonExcel.MultiplyRange(_range);
             if (multiplyRange.isIntersect(range)) {
-              rules.push(oRule);
+                rules.push(oRule);
             }
+          };
+          var oRule, ranges, multiplyRange, i, mapChangedRules = [];
+          if (aChangedRules) {
+            for (i = 0; i < aChangedRules.length; ++i) {
+                oRule = aRules[i];
+                ranges = oRule.ranges;
+                putRange(ranges);
+                mapChangedRules[oRule.id] = 1;
+            }
+          }
+          for (i = 0; i < aRules.length; ++i) {
+            oRule = aRules[i];
+            if (mapChangedRules[oRule.id]) {
+              continue;
+            }
+            ranges = oRule.ranges;
+            putRange(ranges);
           }
         } else {
           rules = aRules;
