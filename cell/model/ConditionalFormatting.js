@@ -769,12 +769,30 @@
 	};
 	CConditionalFormattingRule.prototype.asc_getLocation = function () {
 		var arrResult = [];
+		var t = this;
+
 		if (this.ranges) {
+			var wb = Asc['editor'].wbModel;
+			var isActive = true, sheet;
+			for (var i = 0; i < wb.aWorksheets.length; i++) {
+				if (i !== wb.nActive) {
+					wb.aWorksheets[i].aConditionalFormattingRules.forEach(function (item) {
+						if (item.id === t.id) {
+							isActive = false;
+						}
+					});
+					if (!isActive) {
+						sheet = wb.aWorksheets[i];
+						break;
+					}
+				}
+			}
+
 			this.ranges.forEach(function (item) {
-				arrResult.push(item.getAbsName());
+				arrResult.push(sheet ? sheet.sName + "!" : "" + item.getAbsName());
 			});
 		}
-		return arrResult.join(AscCommon.FormulaSeparators.functionArgumentSeparator);
+		return [isActive, arrResult.join(AscCommon.FormulaSeparators.functionArgumentSeparator)];
 	};
 	CConditionalFormattingRule.prototype.asc_getContainsText = function () {
 		if (null !== this.text) {
